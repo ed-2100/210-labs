@@ -1,4 +1,7 @@
+// COMSC-210 | Lab 2 | Edwin Burwell
+
 #include <iostream>
+
 using namespace std;
 
 // The entry point of the program.
@@ -15,8 +18,9 @@ using namespace std;
 //
 // A signed integer exit code, where `0` means success.
 int main() {
-    for (int i = 1; i <= 100; i++)
+    for (int i = 1; i <= 100; i++) {
         cout << i << " ";
+    }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
