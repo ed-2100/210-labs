@@ -10,13 +10,14 @@ using namespace std;
 
 struct Restraunt {
     string name;
-    chrono::time_point<chrono::steady_clock> est;
+    chrono::time_point<chrono::system_clock> est;
     string address;
     string phone;
     uint32_t n_croissant;
 };
 
 bool input_restraunt(Restraunt &rr);
+bool input_est()
 
 int main() {
     Restraunt rr;
@@ -44,7 +45,17 @@ bool input_restraunt(Restraunt &rr) {
         return false;
     }
 
-    
+    tm time_buf;
+
+    // Note:
+    //   stoi usually throws exceptions on parsing errors,
+    //   but this code is safe, because our input is
+    //   already validated by the regex.
+    time_buf.tm_mon  = stoi(pieces_match[1]);
+    time_buf.tm_mday = stoi(pieces_match[2]);
+    time_buf.tm_year = stoi(pieces_match[3]);
+
+    chrono::system_clock::from_time_t(mktime(&time_buf));
 
     return true;
 }
