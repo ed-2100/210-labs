@@ -51,10 +51,12 @@ bool input_restraunt(Restraunt &rr) {
     getline(cin, rr.name);
 
     if (!input_phone(rr.phone)) {
+        cerr << "Improper phone number entry!";
         return false;
     }
 
     if (!input_croissant(rr.n_croissant)) {
+        cerr << "Improper date entry!";
         return false;
     }
 
@@ -70,7 +72,6 @@ bool input_est(Time &t) {
     smatch matches;
     
     if (!regex_match(date_buf, matches, date_regex)) {
-        cerr << "Improper date entry!\n";
         return false;
     }
 
@@ -85,11 +86,13 @@ bool input_est(Time &t) {
     auto year  = stoi(matches[3]);
 
     if (month < 1 || month > 12) {
-        cerr << "Invalid month!\n";
         return false;
     }
 
-    if (day < 1 || day > )
+    // FIXME: Days are currently not validated against the month and year.
+    if (day < 1 || day > 31) {
+        return false;
+    }
 
     time_buf.tm_mon  = month - 1;
     time_buf.tm_mday = day;
@@ -109,7 +112,6 @@ bool input_phone(string& phone) {
     smatch matches;
 
     if (!regex_match(phone_buf, matches, phone_regex)) {
-        cerr << "Improper phone number entry!\n";
         return false;
     }
 
@@ -130,17 +132,13 @@ bool input_croissant(float& n_croissant) {
         temp_croissant = stof(croissant_buf, &n_parsed);
     }
     catch (invalid_argument e) {
-        cerr << "Invalid number!\n";
         return false;
     }
     catch (out_of_range e) {
-        cerr << "Number is too big!";
         return false;
     }
     
     if (n_parsed != croissant_buf.size()) {
-        cerr << "The number parsed, but something else was"
-                "also found in the input, which is erroneous!\n";
         return false;
     }
 
