@@ -25,7 +25,7 @@ struct Restraunt {
 bool input_restraunt(Restraunt &rr);
 bool input_est(Time &t);
 bool input_phone(string& phone);
-bool input_croissants(float& n_croissant);
+bool input_croissant(float& n_croissant);
 
 int main() {
     Restraunt rr;
@@ -54,6 +54,10 @@ bool input_restraunt(Restraunt &rr) {
         return false;
     }
 
+    if (!input_croissant(rr.n_croissant)) {
+        return false;
+    }
+
     return true;
 }
 
@@ -76,9 +80,20 @@ bool input_est(Time &t) {
     //   stoi usually throws exceptions on parsing errors,
     //   but this code is safe, because our input is
     //   already validated by the regex.
-    time_buf.tm_mon  = stoi(matches[1]);
-    time_buf.tm_mday = stoi(matches[2]);
-    time_buf.tm_year = stoi(matches[3]);
+    auto month = stoi(matches[1]);
+    auto day   = stoi(matches[2]);
+    auto year  = stoi(matches[3]);
+
+    if (month < 1 || month > 12) {
+        cerr << "Invalid month!\n";
+        return false;
+    }
+
+    if (day < 1 || day > )
+
+    time_buf.tm_mon  = month - 1;
+    time_buf.tm_mday = day;
+    time_buf.tm_year = month - 1900;
 
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
 
@@ -103,7 +118,7 @@ bool input_phone(string& phone) {
     return true;
 }
 
-bool input_croissants(float& n_croissant) {
+bool input_croissant(float& n_croissant) {
     string croissant_buf;
     cout << "Number of Croissants (any positive decimal number):" << flush;
     getline(cin, croissant_buf);
