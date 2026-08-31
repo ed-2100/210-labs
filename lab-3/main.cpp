@@ -19,12 +19,13 @@ struct Restraunt {
     Time est;
     string address;
     string phone;
-    uint32_t n_croissant;
+    float n_croissant;
 };
 
 bool input_restraunt(Restraunt &rr);
 bool input_est(Time &t);
-bool input_phone(string phone);
+bool input_phone(string& phone);
+bool input_croissants(float& n_croissant);
 
 int main() {
     Restraunt rr;
@@ -82,11 +83,25 @@ bool input_est(Time &t) {
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
 }
 
-bool input_phone(string phone) {
+bool input_phone(string& phone) {
     string phone_buf;
     cout << "Phone Number ((xxx) xxx-xxx):" << flush;
     getline(cin, phone_buf);
 
+    const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{3}");
+    smatch matches;
 
-    const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}");
+    if (!regex_match(phone_buf, matches, phone_regex)) {
+        cerr << "Improper phone number entry!\n";
+        return false;
+    }
+
+    phone = std::move(phone_buf);
+}
+
+bool input_croissants(float& n_croissant) {
+    string croissant_buf;
+    cout << "Phone Number ((xxx) xxx-xxx):" << flush;
+    getline(cin, phone_buf);
+
 }
