@@ -9,6 +9,7 @@
 #include <chrono>
 #include <iostream>
 #include <regex>
+#include <iomanip>
 
 using namespace std;
 
@@ -33,6 +34,10 @@ int main() {
     if (!input_restraunt(rr)) {
         cerr << "Failed to properly parse restraunt info!\n";
     }
+    
+    time_t tt_est = chrono::system_clock::to_time_t(rr.est);
+
+    cout << rr.name << ' ' << put_time(localtime(&tt_est), "%m %d %Y");
 
     cout << "Exiting...\n";
 }
