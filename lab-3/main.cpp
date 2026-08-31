@@ -4,9 +4,6 @@
 #include <string>
 #include <chrono>
 #include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <ctime>
 #include <regex>
 
 using namespace std;
@@ -39,8 +36,15 @@ bool input_restraunt(Restraunt &rr) {
     cout << "Date Established (MMDDYYYY):" << flush;
     getline(cin, date_buf);
 
-    const regex date_regex("[a-z]{10}");
-    const regex date_subregex("([0-9]{2})");
+    const regex date_subregex("([0-9]{2})([0-9]{2})([0-9]{4})");
+    smatch pieces_match;
+    
+    if (!regex_match(date_buf, pieces_match, date_subregex)) {
+        cout << "Improper date entry!\n";
+        return false;
+    }
+
+    
 
     return true;
 }
