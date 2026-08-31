@@ -1,10 +1,16 @@
 import subprocess
-
+import datetime
 
 while True:
-    output = ""
-
-    subprocess.run(["git", "status"], stdout=output)
 
 
-    print(f"Output: {output}")
+    if subprocess.check_output(["git", "status"]):
+        message = f"Periodic commit {datetime.datetime.now()}"
+        
+        # subprocess.run(["git", "add", "."])
+        # subprocess.run(["git", "commit", "-m", ])
+        print()
+    else:
+        pass
+
+
