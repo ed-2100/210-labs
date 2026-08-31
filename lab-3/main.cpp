@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <chrono>
+#include <iostream>
 
 using namespace std;
 
@@ -17,9 +18,17 @@ struct Restraunt {
 Restraunt input_restraunt();
 
 int main() {
-
+    
 }
 
-Restraunt input_restraunt() {
+void input_restraunt(Restraunt* rr) {
+    cout << "Name: ";
+    getline(cin, rr->name);
     
+
+    string date_buf;
+
+    cout << "Date Established (MMDDYY):";
+
+    getline()
 }
