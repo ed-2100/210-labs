@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <ctime>
+#include <regex>
 
 using namespace std;
 
@@ -34,14 +35,12 @@ bool input_restraunt(Restraunt &rr) {
     cout << "Name: ";
     getline(cin, rr.name);
 
-    tm time_buf;
-
+    string date_buf;
     cout << "Date Established (MMDDYYYY):" << flush;
-    cin >> get_time(&time_buf, "%m%d%Y");
+    getline(cin, date_buf);
 
-    if (cin.fail()) {
-        return false;
-    }
+    const regex date_regex("[a-z]{10}");
+    const regex date_subregex("([0-9]{2})");
 
     return true;
 }
