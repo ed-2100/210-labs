@@ -1,11 +1,8 @@
 // COMSC-210 | Lab 3 | Edwin Burwell
 //
 // Note:
-//   The coding conventions require that input is fully
-//   validated, and the assignment requires that I don't
-//   use stuff that wasn't already taught. Aside from input
-//   validation, this code is as minimal as possible and
-//   does not use any advanced constructs.
+//   The coding conventions require that input is fully validated.
+//   Aside from input validation, this code is as minimal as possible.
 
 #include <cstdint>
 #include <string>
@@ -64,10 +61,10 @@ bool input_est(Time &t) {
     cout << "Date Established (MMDDYYYY):" << flush;
     getline(cin, date_buf);
 
-    const regex date_subregex("([0-9]{2})([0-9]{2})([0-9]{4})");
-    smatch pieces_match;
+    const regex date_regex("([0-9]{2})([0-9]{2})([0-9]{4})");
+    smatch matches;
     
-    if (!regex_match(date_buf, pieces_match, date_subregex)) {
+    if (!regex_match(date_buf, matches, date_regex)) {
         cerr << "Improper date entry!\n";
         return false;
     }
@@ -78,9 +75,18 @@ bool input_est(Time &t) {
     //   stoi usually throws exceptions on parsing errors,
     //   but this code is safe, because our input is
     //   already validated by the regex.
-    time_buf.tm_mon  = stoi(pieces_match[1]);
-    time_buf.tm_mday = stoi(pieces_match[2]);
-    time_buf.tm_year = stoi(pieces_match[3]);
+    time_buf.tm_mon  = stoi(matches[1]);
+    time_buf.tm_mday = stoi(matches[2]);
+    time_buf.tm_year = stoi(matches[3]);
 
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
+}
+
+bool input_phone(string phone) {
+    string phone_buf;
+    cout << "Phone Number ((xxx) xxx-xxx):" << flush;
+    getline(cin, phone_buf);
+
+
+    const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}");
 }
