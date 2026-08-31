@@ -81,6 +81,8 @@ bool input_est(Time &t) {
     time_buf.tm_year = stoi(matches[3]);
 
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
+
+    return true;
 }
 
 bool input_phone(string& phone) {
@@ -97,11 +99,37 @@ bool input_phone(string& phone) {
     }
 
     phone = std::move(phone_buf);
+
+    return true;
 }
 
 bool input_croissants(float& n_croissant) {
     string croissant_buf;
-    cout << "Phone Number ((xxx) xxx-xxx):" << flush;
-    getline(cin, phone_buf);
+    cout << "Number of Croissants (any positive decimal number):" << flush;
+    getline(cin, croissant_buf);
 
+    float temp_croissant;
+    size_t n_parsed;
+
+    try {
+        temp_croissant = stof(croissant_buf, &n_parsed);
+    }
+    catch (invalid_argument e) {
+        cerr << "Invalid number!\n";
+        return false;
+    }
+    catch (out_of_range e) {
+        cerr << "Number is too big!";
+        return false;
+    }
+    
+    if (n_parsed != croissant_buf.size()) {
+        cerr << "The number parsed, but something else was"
+                "also found in the input, which is erroneous!\n";
+        return false;
+    }
+
+    n_croissant = temp_croissant;
+
+    return true;
 }
