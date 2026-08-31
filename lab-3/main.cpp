@@ -4,6 +4,9 @@
 #include <string>
 #include <chrono>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <ctime>
 
 using namespace std;
 
@@ -24,11 +27,13 @@ int main() {
 void input_restraunt(Restraunt* rr) {
     cout << "Name: ";
     getline(cin, rr->name);
-    
 
-    string date_buf;
+    tm time_buf;
 
     cout << "Date Established (MMDDYY):";
+    cin >> get_time(&time_buf, "");
 
-    getline()
+    if (cin.fail()) {
+        
+    }
 }
