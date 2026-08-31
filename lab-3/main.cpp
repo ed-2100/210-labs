@@ -37,7 +37,7 @@ int main() {
     
     time_t tt_est = chrono::system_clock::to_time_t(rr.est);
 
-    cout << rr.name << ' ' << put_time(localtime(&tt_est), "%m %d %Y");
+    cout << '\n' << rr.name << '\n' << put_time(localtime(&tt_est), "%m %d %Y") << '\n';
 
     cout << "Exiting...\n";
 }
@@ -46,14 +46,12 @@ bool input_restraunt(Restraunt &rr) {
     cout << "Name: " << flush;
     getline(cin, rr.name);
 
-    Time est;
-
-    if (!input_est(est)) {
+    if (!input_est(rr.est)) {
         return false;
     }
 
-    cout << "Address: " << flush;
-    getline(cin, rr.name);
+    cout << "\nAddress: " << flush;
+    getline(cin, rr.address);
 
     if (!input_phone(rr.phone)) {
         cerr << "Improper phone number entry!";
@@ -70,7 +68,7 @@ bool input_restraunt(Restraunt &rr) {
 
 bool input_est(Time &t) {
     string date_buf;
-    cout << "Date Established (MMDDYYYY):" << flush;
+    cout << "\nDate Established (MMDDYYYY):" << flush;
     getline(cin, date_buf);
 
     const regex date_regex("([0-9]{2})([0-9]{2})([0-9]{4})");
@@ -101,7 +99,9 @@ bool input_est(Time &t) {
 
     time_buf.tm_mon  = month - 1;
     time_buf.tm_mday = day;
-    time_buf.tm_year = month - 1900;
+    time_buf.tm_year = year - 1900;
+
+    cerr << '\n' << day << '\n';
 
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
 
@@ -110,10 +110,10 @@ bool input_est(Time &t) {
 
 bool input_phone(string& phone) {
     string phone_buf;
-    cout << "Phone Number ((xxx) xxx-xxx):" << flush;
+    cout << "\nPhone Number ((xxx) xxx-xxx):" << flush;
     getline(cin, phone_buf);
 
-    const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{3}");
+    const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}");
     smatch matches;
 
     if (!regex_match(phone_buf, matches, phone_regex)) {
@@ -127,7 +127,7 @@ bool input_phone(string& phone) {
 
 bool input_croissant(float& n_croissant) {
     string croissant_buf;
-    cout << "Number of Croissants (any positive decimal number):" << flush;
+    cout << "\nNumber of Croissants (any positive decimal number):" << flush;
     getline(cin, croissant_buf);
 
     float temp_croissant;
