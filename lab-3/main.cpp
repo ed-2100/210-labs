@@ -27,6 +27,7 @@ bool input_restraunt(Restraunt &rr);
 bool input_est(Time &t);
 bool input_phone(string& phone);
 bool input_croissant(float& n_croissant);
+void print_restraunt(const Restraunt &rr);
 
 int main() {
     Restraunt rr;
@@ -34,15 +35,8 @@ int main() {
     if (!input_restraunt(rr)) {
         cerr << "Failed to properly parse restraunt info!\n";
     }
-    
-    time_t tt_est = chrono::system_clock::to_time_t(rr.est);
 
-    cout << '\n' << rr.name
-         << '\n' << put_time(localtime(&tt_est), "%m %d %Y")
-         << '\n' << rr.address
-         << '\n' << rr.phone
-         << '\n' << rr.n_croissant
-         << '\n';
+    print_restraunt(rr);
 
     cout << "Exiting...\n";
 }
@@ -52,6 +46,7 @@ bool input_restraunt(Restraunt &rr) {
     getline(cin, rr.name);
 
     if (!input_est(rr.est)) {
+        cerr << "Improper date entry!\n";
         return false;
     }
 
@@ -59,12 +54,12 @@ bool input_restraunt(Restraunt &rr) {
     getline(cin, rr.address);
 
     if (!input_phone(rr.phone)) {
-        cerr << "Improper phone number entry!";
+        cerr << "Improper phone number entry!\n";
         return false;
     }
 
     if (!input_croissant(rr.n_croissant)) {
-        cerr << "Improper date entry!";
+        cerr << "Improper croissant count!\n";
         return false;
     }
 
@@ -153,4 +148,15 @@ bool input_croissant(float& n_croissant) {
     n_croissant = temp_croissant;
 
     return true;
+}
+
+void print_restraunt(const Restraunt &rr) {
+    time_t tt_est = chrono::system_clock::to_time_t(rr.est);
+
+    cout << "\nName:                 " << rr.name
+         << "\nDate Established:     " << put_time(localtime(&tt_est), "%B %d, %Y")
+         << "\nAddress:              " << rr.address
+         << "\nPhone Number:         " << rr.phone
+         << "\nNumber of Croissants: " << rr.n_croissant
+         << "\n";
 }
