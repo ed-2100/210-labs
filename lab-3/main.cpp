@@ -44,7 +44,7 @@ int main() {
          << '\n' << rr.n_croissant
          << '\n';
 
-    cout << "Exiting... :)\n";
+    cout << "Exiting...\n";
 }
 
 bool input_restraunt(Restraunt &rr) {
