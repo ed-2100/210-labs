@@ -18,22 +18,30 @@ struct Restraunt {
     uint32_t n_croissant;
 };
 
-Restraunt input_restraunt();
+bool input_restraunt(Restraunt &rr);
 
 int main() {
-    
+    Restraunt rr;
+
+    if (!input_restraunt(rr)) {
+        cout << "Failed to properly parse!\n";
+    }
+
+    cout << "Exiting...\n";
 }
 
-void input_restraunt(Restraunt* rr) {
+bool input_restraunt(Restraunt &rr) {
     cout << "Name: ";
-    getline(cin, rr->name);
+    getline(cin, rr.name);
 
     tm time_buf;
 
-    cout << "Date Established (MMDDYY):";
-    cin >> get_time(&time_buf, "");
+    cout << "Date Established (MMDDYYYY):" << flush;
+    cin >> get_time(&time_buf, "%m%d%Y");
 
     if (cin.fail()) {
-        
+        return false;
     }
+
+    return true;
 }
