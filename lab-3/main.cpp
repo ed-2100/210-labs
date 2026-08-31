@@ -1,4 +1,11 @@
 // COMSC-210 | Lab 3 | Edwin Burwell
+//
+// Note:
+//   The coding conventions require that input is fully
+//   validated, and the assignment requires that I don't
+//   use stuff that wasn't already taught. Aside from input
+//   validation, this code is as minimal as possible and
+//   does not use any advanced constructs.
 
 #include <cstdint>
 #include <string>
@@ -8,31 +15,51 @@
 
 using namespace std;
 
+using Time = chrono::time_point<chrono::system_clock>;
+
 struct Restraunt {
     string name;
-    chrono::time_point<chrono::system_clock> est;
+    Time est;
     string address;
     string phone;
     uint32_t n_croissant;
 };
 
 bool input_restraunt(Restraunt &rr);
-bool input_est()
+bool input_est(Time &t);
+bool input_phone(string phone);
 
 int main() {
     Restraunt rr;
 
     if (!input_restraunt(rr)) {
-        cout << "Failed to properly parse!\n";
+        cerr << "Failed to properly parse restraunt info!\n";
     }
 
     cout << "Exiting...\n";
 }
 
 bool input_restraunt(Restraunt &rr) {
-    cout << "Name: ";
+    cout << "Name: " << flush;
     getline(cin, rr.name);
 
+    Time est;
+
+    if (!input_est(est)) {
+        return false;
+    }
+
+    cout << "Address: " << flush;
+    getline(cin, rr.name);
+
+    if (!input_phone(rr.phone)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool input_est(Time &t) {
     string date_buf;
     cout << "Date Established (MMDDYYYY):" << flush;
     getline(cin, date_buf);
@@ -41,7 +68,7 @@ bool input_restraunt(Restraunt &rr) {
     smatch pieces_match;
     
     if (!regex_match(date_buf, pieces_match, date_subregex)) {
-        cout << "Improper date entry!\n";
+        cerr << "Improper date entry!\n";
         return false;
     }
 
@@ -55,7 +82,5 @@ bool input_restraunt(Restraunt &rr) {
     time_buf.tm_mday = stoi(pieces_match[2]);
     time_buf.tm_year = stoi(pieces_match[3]);
 
-    chrono::system_clock::from_time_t(mktime(&time_buf));
-
-    return true;
+    t = chrono::system_clock::from_time_t(mktime(&time_buf));
 }
