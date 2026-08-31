@@ -78,7 +78,6 @@ bool input_est(Time &t) {
         return false;
     }
 
-    tm time_buf;
 
     // Note:
     //   stoi usually throws exceptions on parsing errors,
@@ -97,11 +96,13 @@ bool input_est(Time &t) {
         return false;
     }
 
-    time_buf.tm_mon  = month - 1;
-    time_buf.tm_mday = day;
-    time_buf.tm_year = year - 1900;
+    tm time_buf = {
+        .tm_mday = day,
+        .tm_mon = month - 1,
+        .tm_year = year - 1900,
+    };
 
-    cerr << '\n' << day << '\n';
+    cerr << '\n' << asctime(&time_buf) << '\n';
 
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
 
