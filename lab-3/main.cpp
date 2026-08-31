@@ -37,7 +37,12 @@ int main() {
     
     time_t tt_est = chrono::system_clock::to_time_t(rr.est);
 
-    cout << '\n' << rr.name << '\n' << put_time(localtime(&tt_est), "%m %d %Y") << '\n';
+    cout << '\n' << rr.name
+         << '\n' << put_time(localtime(&tt_est), "%m %d %Y")
+         << '\n' << rr.address
+         << '\n' << rr.phone
+         << '\n' << rr.n_croissant
+         << '\n';
 
     cout << "Exiting...\n";
 }
@@ -78,7 +83,6 @@ bool input_est(Time &t) {
         return false;
     }
 
-
     // Note:
     //   stoi usually throws exceptions on parsing errors,
     //   but this code is safe, because our input is
@@ -102,8 +106,6 @@ bool input_est(Time &t) {
         .tm_year = year - 1900,
     };
 
-    cerr << '\n' << asctime(&time_buf) << '\n';
-
     t = chrono::system_clock::from_time_t(mktime(&time_buf));
 
     return true;
@@ -111,7 +113,7 @@ bool input_est(Time &t) {
 
 bool input_phone(string& phone) {
     string phone_buf;
-    cout << "\nPhone Number ((xxx) xxx-xxx):" << flush;
+    cout << "\nPhone Number ((XXX) XXX-XXXX):" << flush;
     getline(cin, phone_buf);
 
     const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}");
