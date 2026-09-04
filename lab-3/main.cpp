@@ -25,10 +25,10 @@ struct Restraunt {
     float n_croissant;
 };
 
-bool input_restraunt(istream &is, Restraunt &rr);
-bool input_est(istream &is, Time &t);
-bool input_phone(istream &is, string& phone);
-bool input_croissant(istream &is, float& n_croissant);
+bool input_restraunt(istream &is, Restraunt &rr, bool prompt);
+bool input_est(istream &is, Time &t, bool prompt);
+bool input_phone(istream &is, string& phone, bool prompt);
+bool input_croissant(istream &is, float& n_croissant, bool prompt);
 void print_restraunt(const Restraunt &rr);
 
 int main() {
@@ -36,26 +36,34 @@ int main() {
 
     cout << "Taking user input for the first test...\n";
 
-    if (!input_restraunt(cin, rr)) {
+    if (!input_restraunt(cin, rr, true)) {
         cerr << "Failed to properly parse restraunt info!\n";
     }
 
+    cout << "\n\nRestraunt struct contents:\n";
+
     print_restraunt(rr);
 
-    cout << "Parsing file input...\n";
+    cout << "\n\nParsing file input...\n\n";
 
     try {
         for(const auto &entry : filesystem::directory_iterator("./tests")) {
             if (entry.is_regular_file()) {
                 ifstream file(entry.path());
 
-                if (!input_restraunt(file, rr)) {
+                cout << "\nReceiving file data...";
+
+                if (!input_restraunt(file, rr, false)) {
                     cerr << "Failed to properly parse file.\n"
                          << "Continuing...\n";
                     continue;
                 }
 
+                cout << "\n\nRestraunt struct contents:\n";
+
                 print_restraunt(rr);
+
+                cout << "\n";
             }
         }
     } catch (exception e) { // TODO: Specify exception.
@@ -65,24 +73,28 @@ int main() {
     cout << "Exiting...\n";
 }
 
-bool input_restraunt(istream &is, Restraunt &rr) {
-    cout << "Name: " << flush;
+bool input_restraunt(istream &is, Restraunt &rr, bool prompt) {
+    if (prompt) {
+        cout << "Name: " << flush;
+    }
     getline(is, rr.name);
 
-    if (!input_est(is, rr.est)) {
+    if (!input_est(is, rr.est, prompt)) {
         cerr << "\nImproper date entry!\n";
         return false;
     }
 
-    cout << "\nAddress: " << flush;
+    if (prompt) {
+        cout << "\nAddress: " << flush;
+    }
     getline(is, rr.address);
 
-    if (!input_phone(is, rr.phone)) {
+    if (!input_phone(is, rr.phone, prompt)) {
         cerr << "\nImproper phone number entry!\n";
         return false;
     }
 
-    if (!input_croissant(is, rr.n_croissant)) {
+    if (!input_croissant(is, rr.n_croissant, prompt)) {
         cerr << "\nImproper croissant count!\n";
         return false;
     }
@@ -90,9 +102,13 @@ bool input_restraunt(istream &is, Restraunt &rr) {
     return true;
 }
 
-bool input_est(istream &is, Time &t) {
+bool input_est(istream &is, Time &t, bool prompt) {
     string date_buf;
-    cout << "\nDate Established (MMDDYYYY):" << flush;
+
+    if (prompt) {
+        cout << "\nDate Established (MMDDYYYY):" << flush;
+    }
+
     getline(is, date_buf);
 
     const regex date_regex("([0-9]{2})([0-9]{2})([0-9]{4})");
@@ -130,9 +146,13 @@ bool input_est(istream &is, Time &t) {
     return true;
 }
 
-bool input_phone(istream &is, string& phone) {
+bool input_phone(istream &is, string& phone, bool prompt) {
     string phone_buf;
-    cout << "\nPhone Number ((XXX) XXX-XXXX):" << flush;
+
+    if (prompt) {
+        cout << "\nPhone Number ((XXX) XXX-XXXX):" << flush;
+    }
+
     getline(is, phone_buf);
 
     const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}");
@@ -147,9 +167,13 @@ bool input_phone(istream &is, string& phone) {
     return true;
 }
 
-bool input_croissant(istream &is, float& n_croissant) {
+bool input_croissant(istream &is, float& n_croissant, bool prompt) {
     string croissant_buf;
-    cout << "\nNumber of Croissants (any positive decimal number):" << flush;
+
+    if (prompt) {
+        cout << "\nNumber of Croissants (any positive decimal number):" << flush;
+    }
+
     getline(is, croissant_buf);
 
     float temp_croissant;
@@ -177,7 +201,7 @@ bool input_croissant(istream &is, float& n_croissant) {
 void print_restraunt(const Restraunt &rr) {
     time_t tt_est = chrono::system_clock::to_time_t(rr.est);
 
-    cout << "\nName:                 " << rr.name
+    cout <<   "Name:                 " << rr.name
          << "\nDate Established:     " << put_time(localtime(&tt_est), "%B %d, %Y")
          << "\nAddress:              " << rr.address
          << "\nPhone Number:         " << rr.phone
