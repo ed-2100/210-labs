@@ -23,17 +23,29 @@ struct Restraunt {
     float n_croissant;
 };
 
-bool input_restraunt(Restraunt &rr);
-bool input_est(Time &t);
-bool input_phone(string& phone);
-bool input_croissant(float& n_croissant);
-void print_restraunt(const Restraunt &rr);
+bool input_restraunt(istream &is, Restraunt &rr);
+bool input_est(istream &is, Time &t);
+bool input_phone(istream &is, string& phone);
+bool input_croissant(istream &is, float& n_croissant);
+void print_restraunt(istream &is, const Restraunt &rr);
+
+constexpr char fname[] = "";
 
 int main() {
     Restraunt rr;
 
-    if (!input_restraunt(rr)) {
+    cout << "Taking user input for the first test...\n";
+
+    if (!input_restraunt(cin, rr)) {
         cerr << "Failed to properly parse restraunt info!\n";
+    }
+
+    cout << "Parsing file input...\n";
+
+    try {
+        ifstream file;
+    } catch (exception e) { // TODO: Specify exception.
+
     }
 
     print_restraunt(rr);
@@ -41,24 +53,24 @@ int main() {
     cout << "Exiting...\n";
 }
 
-bool input_restraunt(Restraunt &rr) {
+bool input_restraunt(istream &is, Restraunt &rr) {
     cout << "Name: " << flush;
-    getline(cin, rr.name);
+    getline(is, rr.name);
 
-    if (!input_est(rr.est)) {
+    if (!input_est(is, rr.est)) {
         cerr << "Improper date entry!\n";
         return false;
     }
 
     cout << "\nAddress: " << flush;
-    getline(cin, rr.address);
+    getline(is, rr.address);
 
-    if (!input_phone(rr.phone)) {
+    if (!input_phone(is, rr.phone)) {
         cerr << "Improper phone number entry!\n";
         return false;
     }
 
-    if (!input_croissant(rr.n_croissant)) {
+    if (!input_croissant(is, rr.n_croissant)) {
         cerr << "Improper croissant count!\n";
         return false;
     }
@@ -66,10 +78,10 @@ bool input_restraunt(Restraunt &rr) {
     return true;
 }
 
-bool input_est(Time &t) {
+bool input_est(istream &is, Time &t) {
     string date_buf;
     cout << "\nDate Established (MMDDYYYY):" << flush;
-    getline(cin, date_buf);
+    getline(is, date_buf);
 
     const regex date_regex("([0-9]{2})([0-9]{2})([0-9]{4})");
     smatch matches;
@@ -106,10 +118,10 @@ bool input_est(Time &t) {
     return true;
 }
 
-bool input_phone(string& phone) {
+bool input_phone(istream &is, string& phone) {
     string phone_buf;
     cout << "\nPhone Number ((XXX) XXX-XXXX):" << flush;
-    getline(cin, phone_buf);
+    getline(is, phone_buf);
 
     const regex phone_regex("\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}");
     smatch matches;
@@ -123,10 +135,10 @@ bool input_phone(string& phone) {
     return true;
 }
 
-bool input_croissant(float& n_croissant) {
+bool input_croissant(istream &is, float& n_croissant) {
     string croissant_buf;
     cout << "\nNumber of Croissants (any positive decimal number):" << flush;
-    getline(cin, croissant_buf);
+    getline(is, croissant_buf);
 
     float temp_croissant;
     size_t n_parsed;
