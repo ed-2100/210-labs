@@ -1,6 +1,6 @@
 #!/bin/bash
+set -e
 
-M_PATH=$(dirname "$0")
-pushd $M_PATH
-dir
-popd
+cd $(dirname "$0")
+g++ ./main.cpp -o a.out
+cat ./test_hardees.txt | ./a.out
