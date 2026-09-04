@@ -25,6 +25,17 @@ struct Restraunt {
     float n_croissant;
 };
 
+// Parses data from `is` and populates `rr`.
+//
+// ### Arguments
+//
+// - `is`: The stream to recieve properly formatted input from
+// - `rr`: Struct to be populated
+// - `prompt`: If true, will print user guidance to stdout
+//
+// ### Returns
+//
+// A boolean value that is true on success and false on failure
 bool input_restraunt(istream &is, Restraunt &rr, bool prompt);
 bool input_est(istream &is, Time &t, bool prompt);
 bool input_phone(istream &is, string& phone, bool prompt);
@@ -34,7 +45,7 @@ void print_restraunt(const Restraunt &rr);
 int main() {
     Restraunt rr;
 
-    cout << "Taking user input for the first test...\n";
+    cout << "Stage 1: Taking input from stdin for the first test...\n";
 
     if (!input_restraunt(cin, rr, true)) {
         cerr << "Failed to properly parse restraunt info!\n";
@@ -44,14 +55,14 @@ int main() {
 
     print_restraunt(rr);
 
-    cout << "\n\nParsing file input...\n\n";
+    cout << "\nStage 2: Parsing test-input files...\n\n";
 
     try {
         for(const auto &entry : filesystem::directory_iterator("./tests")) {
             if (entry.is_regular_file()) {
                 ifstream file(entry.path());
 
-                cout << "\nReceiving file data...";
+                cout << "Receiving file data...";
 
                 if (!input_restraunt(file, rr, false)) {
                     cerr << "Failed to properly parse file.\n"
@@ -59,7 +70,7 @@ int main() {
                     continue;
                 }
 
-                cout << "\n\nRestraunt struct contents:\n";
+                cout << "\nRestraunt struct contents:\n";
 
                 print_restraunt(rr);
 
