@@ -25,23 +25,92 @@ struct Restraunt {
     float n_croissant;
 };
 
-// Parses data from `is` and populates `rr`.
+// Populates a `Restraunt` struct using data from an input stream.
+//
+// Format: See other functions.
 //
 // ### Arguments
 //
 // - `is`: The stream to recieve properly formatted input from
 // - `rr`: Struct to be populated
-// - `prompt`: If true, will print user guidance to stdout
+// - `prompt`: If true, will print user guidance to `stdout`
 //
 // ### Returns
 //
-// A boolean value that is true on success and false on failure
+// A boolean value that is true on success.
 bool input_restraunt(istream &is, Restraunt &rr, bool prompt);
+
+// Parses data from an input stream and populates `t`.
+//
+// Format: `MMDDYYYY`
+//
+// ### Arguments
+//
+// - `is`: The stream to recieve properly formatted input from
+// - `t`: The time point to be populated
+// - `prompt`: If true, will print user guidance to `stdout`
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 bool input_est(istream &is, Time &t, bool prompt);
+
+
+// Parses data from an input stream and populates `phone`.
+//
+// Format: `(XXX) XXX-XXXX`
+//
+// ### Arguments
+//
+// - `is`: The stream to recieve properly formatted input from
+// - `phone`: The phone number to be populated
+// - `prompt`: If true, will print user guidance to `stdout`
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 bool input_phone(istream &is, string& phone, bool prompt);
+
+
+// Parses data from an input stream and populates `n_croissant`.
+//
+// Format: Positi
+//
+// ### Arguments
+//
+// - `is`: The stream to recieve properly formatted input from
+// - `n_croissant`: The croissant index
+// - `prompt`: If true, will print user guidance to `stdout`
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 bool input_croissant(istream &is, float& n_croissant, bool prompt);
+
+
+// Pretty-prints a `Restraunt` struct.
+//
+// ### Arguments
+//
+// - `rr`: The `Restraunt` in question
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 void print_restraunt(const Restraunt &rr);
 
+
+// The main function.
+//
+// Takes user input and parses files per assignment guidelines.
+//
+// ### Arguments
+//
+// - None
+//
+// ### Returns
+//
+// A signed integer, where `0` means success.
 int main() {
     Restraunt rr;
 

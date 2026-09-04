@@ -2,4 +2,4 @@ Wendy's
 11151969
 1 Dave Thomas Boulevard
 (888) 624-8140
-0.000001
+9000.01
