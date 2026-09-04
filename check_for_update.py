@@ -3,7 +3,7 @@ import datetime
 import time
 
 while True:
-    if subprocess.check_output(["git", "status"]):
+    if subprocess.check_output(["git", "status", "--porcelain"]):
         t = datetime.datetime.now()
 
         print("Making commit... ", end="")
