@@ -10,6 +10,7 @@
 #include <iostream>
 #include <regex>
 #include <iomanip>
+#include <fstream>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ bool input_phone(istream &is, string& phone);
 bool input_croissant(istream &is, float& n_croissant);
 void print_restraunt(istream &is, const Restraunt &rr);
 
-constexpr char fname[] = "";
+constexpr char fname[] = "./test_multiple.txt";
 
 int main() {
     Restraunt rr;
@@ -40,15 +41,17 @@ int main() {
         cerr << "Failed to properly parse restraunt info!\n";
     }
 
+    print_restraunt(rr);
+
     cout << "Parsing file input...\n";
 
     try {
-        ifstream file;
+        ifstream file(fname); // Closed by destructor.
+
+        
     } catch (exception e) { // TODO: Specify exception.
-
+        
     }
-
-    print_restraunt(rr);
 
     cout << "Exiting...\n";
 }
