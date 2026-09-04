@@ -17,6 +17,9 @@ using namespace std;
 
 using Time = chrono::time_point<chrono::system_clock>;
 
+// The `Restraunt` struct.
+//
+// Holds information about a restraunt.
 struct Restraunt {
     string name;
     Time est;
@@ -74,7 +77,7 @@ bool input_phone(istream &is, string& phone, bool prompt);
 
 // Parses data from an input stream and populates `n_croissant`.
 //
-// Format: Positi
+// Format: A positive decimal number (eg. 123.4).
 //
 // ### Arguments
 //
@@ -126,28 +129,24 @@ int main() {
 
     cout << "\nStage 2: Parsing test-input files...\n\n";
 
-    try {
-        for(const auto &entry : filesystem::directory_iterator("./tests")) {
-            if (entry.is_regular_file()) {
-                ifstream file(entry.path());
+    for(const auto &entry : filesystem::directory_iterator("./tests")) {
+        if (entry.is_regular_file()) {
+            ifstream file(entry.path());
 
-                cout << "Receiving file data...";
+            cout << "Receiving file data...";
 
-                if (!input_restraunt(file, rr, false)) {
-                    cerr << "Failed to properly parse file.\n"
-                         << "Continuing...\n";
-                    continue;
-                }
-
-                cout << "\nRestraunt struct contents:\n";
-
-                print_restraunt(rr);
-
-                cout << "\n";
+            if (!input_restraunt(file, rr, false)) {
+                cerr << "Failed to properly parse file.\n"
+                        << "Continuing...\n";
+                continue;
             }
+
+            cout << "\nRestraunt struct contents:\n";
+
+            print_restraunt(rr);
+
+            cout << "\n";
         }
-    } catch (exception e) { // TODO: Specify exception.
-        cout << e.what();
     }
 
     cout << "Exiting...\n";
