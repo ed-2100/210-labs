@@ -49,7 +49,7 @@ int main() {
             if (entry.is_regular_file()) {
                 ifstream file(entry.path());
 
-                if (!input_restraunt(cin, rr)) {
+                if (!input_restraunt(file, rr)) {
                     cerr << "Failed to properly parse file.\n"
                          << "Continuing...\n";
                     continue;
@@ -100,7 +100,6 @@ bool input_est(istream &is, Time &t) {
     
     if (!regex_match(date_buf, matches, date_regex)) {
         return false;
-        cout << "here1";
     }
 
     // Note:
@@ -113,13 +112,11 @@ bool input_est(istream &is, Time &t) {
 
     if (month < 1 || month > 12) {
         return false;
-        cout << "here2";
     }
 
     // FIXME: Days are currently not validated against the month and year.
     if (day < 1 || day > 31) {
         return false;
-        cout << "here3";
     }
 
     tm time_buf = {
