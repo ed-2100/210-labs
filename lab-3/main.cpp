@@ -11,6 +11,7 @@
 #include <regex>
 #include <iomanip>
 #include <fstream>
+#include <filesystem>
 
 using namespace std;
 
@@ -28,9 +29,7 @@ bool input_restraunt(istream &is, Restraunt &rr);
 bool input_est(istream &is, Time &t);
 bool input_phone(istream &is, string& phone);
 bool input_croissant(istream &is, float& n_croissant);
-void print_restraunt(istream &is, const Restraunt &rr);
-
-constexpr char fname[] = "./test_multiple.txt";
+void print_restraunt(const Restraunt &rr);
 
 int main() {
     Restraunt rr;
@@ -46,11 +45,21 @@ int main() {
     cout << "Parsing file input...\n";
 
     try {
-        ifstream file(fname); // Closed by destructor.
+        for(const auto &entry : filesystem::directory_iterator("./tests")) {
+            if (entry.is_regular_file()) {
+                ifstream file(entry.path());
 
-        
+                if (!input_restraunt(cin, rr)) {
+                    cerr << "Failed to properly parse file.\n"
+                         << "Continuing...\n";
+                    continue;
+                }
+
+                print_restraunt(rr);
+            }
+        }
     } catch (exception e) { // TODO: Specify exception.
-        
+        cout << e.what();
     }
 
     cout << "Exiting...\n";
@@ -61,7 +70,7 @@ bool input_restraunt(istream &is, Restraunt &rr) {
     getline(is, rr.name);
 
     if (!input_est(is, rr.est)) {
-        cerr << "Improper date entry!\n";
+        cerr << "\nImproper date entry!\n";
         return false;
     }
 
@@ -69,12 +78,12 @@ bool input_restraunt(istream &is, Restraunt &rr) {
     getline(is, rr.address);
 
     if (!input_phone(is, rr.phone)) {
-        cerr << "Improper phone number entry!\n";
+        cerr << "\nImproper phone number entry!\n";
         return false;
     }
 
     if (!input_croissant(is, rr.n_croissant)) {
-        cerr << "Improper croissant count!\n";
+        cerr << "\nImproper croissant count!\n";
         return false;
     }
 
@@ -91,6 +100,7 @@ bool input_est(istream &is, Time &t) {
     
     if (!regex_match(date_buf, matches, date_regex)) {
         return false;
+        cout << "here1";
     }
 
     // Note:
@@ -103,11 +113,13 @@ bool input_est(istream &is, Time &t) {
 
     if (month < 1 || month > 12) {
         return false;
+        cout << "here2";
     }
 
     // FIXME: Days are currently not validated against the month and year.
     if (day < 1 || day > 31) {
         return false;
+        cout << "here3";
     }
 
     tm time_buf = {
