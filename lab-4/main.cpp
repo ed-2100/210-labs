@@ -22,13 +22,11 @@ struct Color {
 void print_colors(ostream& f, const Color *colors, size_t n_colors);
 
 int main() {
+    srand(42);
+
     vector<Color> test_vec;
 
-    test_vec.push_back(Color {
-        .red = 42,
-        .green = 0,
-        .blue = 255,
-    });
+    for (int )
 
     print_colors(cout, test_vec.data(), test_vec.size());
 
