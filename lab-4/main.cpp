@@ -11,26 +11,31 @@ struct Color {
     uint8_t blue;
 };
 
-void print_color_table(ostream f, const Color *colors, size_t n_colors);
-void print_color_row(ostream f, const Color &color);
+void print_colors(ostream& f, const Color *colors, size_t n_colors);
 
-void print_color_table(ostream f, const Color *colors, size_t n_colors) {
+void print_colors(ostream& f, const Color *colors, size_t n_colors) {
     f << "| Color # | R value | G value | B value |\n"
       << "| ------- | ------- | ------- | ------- |\n";
     
     for (size_t i = 0; i < n_colors; i++) {
         const Color& color = colors[i];
 
-        f << "|   " << setw(3) << i << "   |   " << setw(3) << color.red ;
+        f <<    "|   " << setw(3) << i + 1
+          << "   |   " << setw(3) << static_cast<int>(color.red)
+          << "   |   " << setw(3) << static_cast<int>(color.green)
+          << "   |   " << setw(3) << static_cast<int>(color.blue)
+          << "   |\n";
     }
 }
 
-void print_color_row(ostream f, const Color &color) {
-
-}
-
 int main() {
-    
+    Color test_color = {
+        .red = 42,
+        .green = 0,
+        .blue = 255,
+    };
+
+    print_colors(cout, &test_color, 1);
 
     return 0;
 }
