@@ -3,6 +3,7 @@
 #include <ostream>
 #include <iomanip>
 #include <vector>
+#include <random>
 
 using namespace std;
 
@@ -22,11 +23,19 @@ struct Color {
 void print_colors(ostream& f, const Color *colors, size_t n_colors);
 
 int main() {
-    srand(42);
-
     vector<Color> test_vec;
 
-    for (int )
+    mt19937 gen(42);
+    uniform_int_distribution<size_t> dist_n_color(25, 50);
+    uniform_int_distribution<uint8_t> dist_n_color(25, 50);
+
+    size_t n_color = dist_n_color(gen);
+
+    test_vec.reserve(n_color);
+
+    for (size_t i = 0; i < n_color; i++) {
+
+    }
 
     print_colors(cout, test_vec.data(), test_vec.size());
 
