@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ostream>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -21,15 +22,17 @@ struct Color {
 void print_colors(ostream& f, const Color *colors, size_t n_colors);
 
 int main() {
-    Color test_color = {
+    vector<Color> test_vec;
+
+    test_vec.push_back(Color {
         .red = 42,
         .green = 0,
         .blue = 255,
-    };
+    });
 
-    print_colors(cout, &test_color, 1);
+    print_colors(cout, test_vec.data(), test_vec.size());
 
-    return 0; // :)
+    return 0;
 }
 
 void print_colors(ostream& f, const Color *colors, size_t n_colors) {
