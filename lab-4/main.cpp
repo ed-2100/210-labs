@@ -11,10 +11,21 @@ struct Color {
     uint8_t blue;
 };
 
-void print_color(ostream f, const Color &color) {
-    cout << "| Color # | R value | G value | B value |\n"
-         << "| ------- | ------- | ------- | ------- |\n"
-         << "";
+void print_color_table(ostream f, const const Color colors[]);
+void print_color_row(ostream f, const Color &color);
+
+void print_color_table(ostream f, const const Color colors[]) {
+    f << "| Color # | R value | G value | B value |\n"
+      << "| ------- | ------- | ------- | ------- |\n";
+    
+    for (const auto &color : colors) {
+        
+    }
+}
+
+void print_color_row(ostream f, const Color &color) {
+      << "|   " << setw(3) << color << "   |   " << setw(3) << ;
+
 }
 
 int main() {
