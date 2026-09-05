@@ -29,7 +29,7 @@ int main() {
 
     print_colors(cout, &test_color, 1);
 
-    return 0;
+    return 0; // :)
 }
 
 void print_colors(ostream& f, const Color *colors, size_t n_colors) {
