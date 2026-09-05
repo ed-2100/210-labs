@@ -27,14 +27,18 @@ int main() {
 
     mt19937 gen(42);
     uniform_int_distribution<size_t> dist_n_color(25, 50);
-    uniform_int_distribution<uint8_t> dist_n_color(25, 50);
+    uniform_int_distribution<uint32_t> dist_value(0, 255);
 
     size_t n_color = dist_n_color(gen);
 
-    test_vec.reserve(n_color);
+    test_vec.reserve(test_vec.size() + n_color);
 
     for (size_t i = 0; i < n_color; i++) {
-
+        test_vec.push_back(Color {
+            .red   = static_cast<uint8_t>(dist_value(gen)),
+            .green = static_cast<uint8_t>(dist_value(gen)),
+            .blue  = static_cast<uint8_t>(dist_value(gen)),
+        });
     }
 
     print_colors(cout, test_vec.data(), test_vec.size());
