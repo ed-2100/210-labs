@@ -1,3 +1,5 @@
+// COMSC-210 | Lab 4 | Edwin Burwell
+
 #include <cstdint>
 #include <iostream>
 #include <ostream>
@@ -7,6 +9,9 @@
 
 using namespace std;
 
+// The `Color` struct.
+//
+// Holds an 8-bit RGB value.
 struct Color {
     uint8_t red;
     uint8_t green;
@@ -22,6 +27,17 @@ struct Color {
 // - `n_colors`: The length of `colors`
 void print_colors(ostream& f, const Color *colors, size_t n_colors);
 
+// The main function.
+//
+// Prints a formatted table of random color values.
+//
+// ### Arguments
+//
+// - None
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     vector<Color> test_vec;
 
@@ -43,7 +59,7 @@ int main() {
 
     print_colors(cout, test_vec.data(), test_vec.size());
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void print_colors(ostream& f, const Color *colors, size_t n_colors) {
