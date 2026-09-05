@@ -59,7 +59,7 @@ int main() {
 
     print_colors(cout, test_vec.data(), test_vec.size());
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // (^_^)
 }
 
 void print_colors(ostream& f, const Color *colors, size_t n_colors) {
