@@ -114,7 +114,7 @@ void print_restraunt(const Restraunt &rr);
 // ### Returns
 //
 // A signed integer, where `0` means success.
-int main() {
+int main(int argc, char** argv) {
     Restraunt rr;
 
     cout << "Stage 1: Taking input from stdin for the first test...\n";
@@ -128,6 +128,8 @@ int main() {
     print_restraunt(rr);
 
     cout << "\nStage 2: Parsing test-input files...\n\n";
+
+    filesystem::path(argv[0]);
 
     for(const auto &entry : filesystem::directory_iterator("./tests")) {
         if (entry.is_regular_file()) {
