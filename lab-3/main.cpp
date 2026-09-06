@@ -110,7 +110,8 @@ void print_restraunt(const Restraunt &rr);
 //
 // ### Arguments
 //
-// - None
+// - `argc`: The length of `argv`
+// - `argv`: The arguments passed to the program
 //
 // ### Returns
 //
