@@ -121,6 +121,7 @@ int main(int argc, char** argv) {
 
     if (!input_restraunt(cin, rr, true)) {
         cerr << "Failed to properly parse restraunt info!\n";
+        return EXIT_FAILURE;
     }
 
     cout << "\n\nRestraunt struct contents:\n";
@@ -131,7 +132,7 @@ int main(int argc, char** argv) {
 
     filesystem::path exe_dir(argv[0]);
 
-    for(const auto &entry : filesystem::directory_iterator(exe_dir / "/tests")) {
+    for(const auto &entry : filesystem::directory_iterator(exe_dir.parent_path() / "tests")) {
         if (entry.is_regular_file()) {
             ifstream file(entry.path());
 
