@@ -129,9 +129,9 @@ int main(int argc, char** argv) {
 
     cout << "\nStage 2: Parsing test-input files...\n\n";
 
-    filesystem::path(argv[0]);
+    filesystem::path exe_dir(argv[0]);
 
-    for(const auto &entry : filesystem::directory_iterator("./tests")) {
+    for(const auto &entry : filesystem::directory_iterator(exe_dir / "/tests")) {
         if (entry.is_regular_file()) {
             ifstream file(entry.path());
 
