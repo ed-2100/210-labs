@@ -21,21 +21,25 @@ int main() {
     return EXIT_SUCCESS;
 }
 
-bool enterArrayData(double* arr, size_t n_arr) {
+bool enterArrayData(double* arr, size_t n_arr, bool retry_on_fail) {
     cout << "Data entry for the array:\n";
 
     for (size_t i = 0; i < n_arr; i++) {
         cout << "    > Element #" << i << ": ";
-        while (!(cin >> arr[i])) {
-            cin.sync();
-            cerr << 
-        }
         
+        if (!(cin >> arr[i])) {
+            cerr << "Invalid number!";
+            break;
+        }
     }
+
+    cout << "Data entry complete.";
 }
 
-void outputArrayData(double* arr, size_t n_arr) {
 
+void outputArrayData(double* arr, size_t n_arr) {
+    cout << "Outputting array elements: ";
+    for (size_t i = 0)
 }
 
 double sumArray() {
