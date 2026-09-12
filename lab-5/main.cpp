@@ -6,11 +6,54 @@
 
 using namespace std;
 
-// TODO: add function declarations
+// Parses numbers from `stdin` and populates `arr`.
+//
+// ### Arguments
+//
+// - `arr`: The array to be initialized
+// - `n_arr`: The length of `arr`
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 bool enterArrayData(double* arr, size_t n_arr);
+
+// Prints a formatted array to `stdout`.
+//
+// ### Arguments
+//
+// - `arr`: The array to be printed
+// - `n_arr`: The length of `arr`
+//
+// ### Returns
+//
+// A boolean value that is true on success.
 void outputArrayData(double* arr, size_t n_arr);
+
+// Calculates the sum of all elements in an array.
+//
+// ### Arguments
+//
+// - `arr`: The array to be summed
+// - `n_arr`: The length of `arr`
+//
+// ### Returns
+//
+// The sum of all elements in the array.
 double sumArray(double* arr, size_t n_arr);
 
+// The main function.
+//
+// Takes user input, prints it, sums it, and prints
+// it again, per assignment guidelines.
+//
+// ### Arguments
+//
+// - None
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     vector<double> arr;
     arr.resize(5);
