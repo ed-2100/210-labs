@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 
@@ -23,7 +24,14 @@ int main() {
 bool enterArrayData(double* arr, size_t n_arr) {
     cout << "Data entry for the array:\n";
 
-    for 
+    for (size_t i = 0; i < n_arr; i++) {
+        cout << "    > Element #" << i << ": ";
+        while (!(cin >> arr[i])) {
+            cin.sync();
+            cerr << 
+        }
+        
+    }
 }
 
 void outputArrayData(double* arr, size_t n_arr) {
