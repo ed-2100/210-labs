@@ -59,7 +59,6 @@ bool input_restraunt(istream &is, Restraunt &rr, bool prompt);
 // A boolean value that is true on success.
 bool input_est(istream &is, Time &t, bool prompt);
 
-
 // Parses data from an input stream and populates `phone`.
 //
 // Format: `(XXX) XXX-XXXX`
@@ -74,7 +73,6 @@ bool input_est(istream &is, Time &t, bool prompt);
 //
 // A boolean value that is true on success.
 bool input_phone(istream &is, string& phone, bool prompt);
-
 
 // Parses data from an input stream and populates `n_croissant`.
 //
@@ -91,14 +89,12 @@ bool input_phone(istream &is, string& phone, bool prompt);
 // A boolean value that is true on success.
 bool input_croissant(istream &is, float& n_croissant, bool prompt);
 
-
 // Pretty-prints a `Restraunt` struct.
 //
 // ### Arguments
 //
 // - `rr`: The `Restraunt` in question
 void print_restraunt(const Restraunt &rr);
-
 
 // The main function.
 //
