@@ -4,8 +4,21 @@
 
 using namespace std;
 
+void reverseArray(string* arr, size_t n_arr);
+void displayArray(string* arr, size_t n_arr);
+
 int main() {
-    
+    vector<string> arr = {"Henry", "Johannes", "Charles", "Sylvester", "Emily"};
+
+    cout << "Original array: ";
+    displayArray(arr.data(), arr.size());
+    cout << '\n';
+
+    reverseArray(arr.data(), arr.size());
+
+    cout << "Reversed array: ";
+    displayArray(arr.data(), arr.size());
+    cout << '\n';
 }
 
 void reverseArray(string* arr, size_t n_arr) {
