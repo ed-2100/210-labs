@@ -13,10 +13,6 @@ using namespace std;
 //
 // - `arr`: The array to be initialized
 // - `n_arr`: The length of `arr`
-//
-// ### Returns
-//
-// A boolean value that is true on success.
 bool enterArrayData(double* arr, size_t n_arr);
 
 // Prints a formatted array to `stdout`.
@@ -25,10 +21,6 @@ bool enterArrayData(double* arr, size_t n_arr);
 //
 // - `arr`: The array to be printed
 // - `n_arr`: The length of `arr`
-//
-// ### Returns
-//
-// A boolean value that is true on success.
 void outputArrayData(double* arr, size_t n_arr);
 
 // Calculates the sum of all elements in an array.

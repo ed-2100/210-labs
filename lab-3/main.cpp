@@ -97,10 +97,6 @@ bool input_croissant(istream &is, float& n_croissant, bool prompt);
 // ### Arguments
 //
 // - `rr`: The `Restraunt` in question
-//
-// ### Returns
-//
-// A boolean value that is true on success.
 void print_restraunt(const Restraunt &rr);
 
 

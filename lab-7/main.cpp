@@ -4,9 +4,33 @@
 
 using namespace std;
 
+// Reverses an array of `string`s in-place.
+//
+// ### Arguments
+//
+// - `arr`: The array to be reversed
+// - `n_arr`: The length of `arr`
 void reverseArray(string* arr, size_t n_arr);
+
+// Prints an array of `string`s `stdout`, separated by spaces.
+//
+// ### Arguments
+//
+// - `arr`: The array to be printed
+// - `n_arr`: The length of `arr`
 void displayArray(string* arr, size_t n_arr);
 
+// The main function.
+//
+// Displays an array of `string`s, reverses it, and displays it again.
+//
+// ### Arguments
+//
+// - None
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     vector<string> arr = {"Henry", "Johannes", "Charles", "Sylvester", "Emily"};
 
