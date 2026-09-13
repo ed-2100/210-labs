@@ -1,3 +1,5 @@
+// COMSC-210 | Lab 7 | Edwin Burwell
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -10,7 +12,11 @@ using namespace std;
 //
 // - `arr`: The array to be reversed
 // - `n_arr`: The length of `arr`
-void reverseArray(string* arr, size_t n_arr);
+//
+// ### Returns
+//
+// .
+string* reverseArray(string* arr, size_t n_arr);
 
 // Prints an array of `string`s `stdout`, separated by spaces.
 //
@@ -45,10 +51,12 @@ int main() {
     cout << '\n';
 }
 
-void reverseArray(string* arr, size_t n_arr) {
+string* reverseArray(string* arr, size_t n_arr) {
     for (size_t a = 0, b = n_arr - 1; a < b; a++, b--) {
         std::swap(arr[a], arr[b]);
     }
+
+    return arr;
 }
 
 void displayArray(string* arr, size_t n_arr) {
