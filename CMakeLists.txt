@@ -7,6 +7,6 @@ set(CXX_EXTENSIONS OFF)
 
 add_subdirectory(lab-3)
 add_subdirectory(lab-4)
-add_subdirectory(lab-6)
+add_subdirectory(lab-7)
 
 # (O.O)
