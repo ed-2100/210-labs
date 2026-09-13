@@ -15,7 +15,7 @@ using namespace std;
 //
 // ### Returns
 //
-// .
+// The `arr` pointer.
 string* reverseArray(string* arr, size_t n_arr);
 
 // Prints an array of `string`s `stdout`, separated by spaces.
