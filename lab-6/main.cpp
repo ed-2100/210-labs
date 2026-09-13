@@ -1,8 +1,9 @@
+// COMSC-210 | Lab 6 | Edwin Burwell
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <unistd.h>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ double sumArray(double* arr, size_t n_arr);
 // The main function.
 //
 // Takes user input, prints it, sums it, and prints
-// it again, per assignment guidelines.
+// the sum, per assignment guidelines.
 //
 // ### Arguments
 //
@@ -59,7 +60,7 @@ int main() {
     arr.resize(5);
 
     if (!enterArrayData(arr.data(), arr.size())) {
-        cerr << "Failed to properly parse input!";
+        cerr << "Failed to properly parse input!\n";
         return EXIT_FAILURE;
     }
 
@@ -77,7 +78,7 @@ bool enterArrayData(double* arr, size_t n_arr) {
         cout << "    > Element #" << i << ": ";
         
         if (!(cin >> arr[i])) {
-            cerr << "Invalid number!";
+            cerr << "Invalid number!\n";
             return false;
         }
     }
