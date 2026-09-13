@@ -5,6 +5,7 @@ set(CXX_STANDARD C++11)
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
+add_subdirectory(lab-1)
 add_subdirectory(lab-2)
 add_subdirectory(lab-3)
 add_subdirectory(lab-4)
