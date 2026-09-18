@@ -32,22 +32,22 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
             aug[i][c] *= rcp;
         }
 
-        for (size_t r = 0; r < i; r++) {
+        for (size_t r = 0; r < DIM; r++) {
+            if (r == i) {
+                continue;
+            }
 
-        }
+            float k = aug[r][i];
 
-        for (size_t r = i + 1; r < DIM; r++) {
-
+            for (size_t c = i; c < DIM + 1; c++) {
+                aug[r][c] -= aug[i][c] * k;
+            }
         }
     }
 }
 
-void rmul(array<float, DIM + 1>& row, float k) {
-    
-}
-
-void radd(array<float, DIM + 1>& a, const array<float, DIM + 1>& b) {
-    for (size_t i = 0; i < DIM + 1; i++) {
-        a[i] += b[i];
+void print_array(const array<array<float, DIM + 1>, DIM>& aug) {
+    for (const auto& row : aug) {
+        for (const auto& item : aug)
     }
 }
