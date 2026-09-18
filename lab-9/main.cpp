@@ -19,11 +19,11 @@ int main() {
     array<float, DIM> b;
     array<array<float, DIM + 1>, DIM> aug = {
         array<float, DIM + 1>
-        {-59, -74,  69, -39, -62,  22},
-        {  9,   0, -72,   8, -32,  59},
-        {  0,   0,   0,  58,   0,  29},
-        { 95,   9, -90, -12,   0, -28},
-        {-51, -76, -31,  50,  -2,  -7},
+        {-9, -4,  9, -9, -2,  2},
+        { 9,  0, -2,  0, -2,  9},
+        { 0,  0,  5,  0,  0,  9},
+        { 5,  9,  0, -2,  0, -8},
+        { 0, -6,  0,  0, -2, -7},
     };
 
     print_array(aug);
@@ -36,9 +36,6 @@ int main() {
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
     for (size_t i = 0, j = 0; j < DIM; i++, j++) {
-        print_array(aug);
-        cout << "\n\n";
-
         while (aug[i][j] == 0) {
             size_t r = DIM - 1;
 
@@ -67,11 +64,16 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
             aug[i][c] *= rcp;
         }
 
-        print_array(aug);
-        cout << "\n\n";
+        for (size_t r = 0; r < DIM; r++) {
+            if (r == i) {
+                continue;
+            }
 
-        for (size_t r = i + 1; r < DIM; r++) {
             float k = aug[r][j];
+
+            if (k == 0) {
+                continue;
+            }
 
             aug[r][j] = 0;
             for (size_t c = j + 1; c < DIM + 1; c++) {
