@@ -36,6 +36,9 @@ int main() {
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
     for (size_t i = 0, j = 0; j < DIM; i++, j++) {
+        print_array(aug);
+        cout << "\n\n";
+
         while (aug[i][j] == 0) {
             size_t r = DIM - 1;
 
@@ -60,12 +63,12 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
 
         float rcp = 1.0 / aug[i][j];
 
-        if (isnan(rcp))
-
-        aug[i][j] = 1;
-        for (size_t c = j + 1; c < DIM + 1; c++) {
+        for (size_t c = j; c < DIM + 1; c++) {
             aug[i][c] *= rcp;
         }
+
+        print_array(aug);
+        cout << "\n\n";
 
         for (size_t r = i + 1; r < DIM; r++) {
             float k = aug[r][j];
