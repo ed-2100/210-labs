@@ -7,7 +7,7 @@
 
 using namespace std;
 
-constexpr int DIM = 5;
+constexpr size_t DIM = 5;
 
 int main() {
     array<array<float, DIM>, DIM> A;
@@ -23,5 +23,25 @@ int main() {
 }
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
+    for (size_t i = 0; i < DIM - 1; i++) {
+        float n1 = aug[i][i];
+        float n2 = aug[i][i];
 
+        float q = - n2 / n1;
+
+        let 
+
+    }
+}
+
+void rmul(array<float, DIM + 1>& row, float k) {
+    for (auto& i : row) {
+        i *= k;
+    }
+}
+
+void radd(array<float, DIM + 1>& a, const array<float, DIM + 1>& b) {
+    for (size_t i = 0; i < DIM + 1; i++) {
+        a[i] += b[i];
+    }
 }
