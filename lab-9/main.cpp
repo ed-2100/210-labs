@@ -5,6 +5,7 @@
 #include <array>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
@@ -19,9 +20,9 @@ int main() {
     array<array<float, DIM + 1>, DIM> aug = {
         array<float, DIM + 1>
         {-59, -74,  69, -39, -62,  22},
-        {  9,  25, -72,   8, -32,  59},
-        {-72,  20, -50,  58,  62,  29},
-        { 95,   9, -90, -12,  95, -28},
+        {  9,   0, -72,   8, -32,  59},
+        {  0,   0,   0,  58,   0,  29},
+        { 95,   9, -90, -12,   0, -28},
         {-51, -76, -31,  50,  -2,  -7},
     };
 
@@ -59,14 +60,18 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
 
         float rcp = 1.0 / aug[i][j];
 
-        for (size_t c = j; c < DIM + 1; c++) {
-            aug[j][c] *= rcp;
+        if (isnan(rcp))
+
+        aug[i][j] = 1;
+        for (size_t c = j + 1; c < DIM + 1; c++) {
+            aug[i][c] *= rcp;
         }
 
         for (size_t r = i + 1; r < DIM; r++) {
-            float k = aug[r][i];
+            float k = aug[r][j];
 
-            for (size_t c = i; c < DIM + 1; c++) {
+            aug[r][j] = 0;
+            for (size_t c = j + 1; c < DIM + 1; c++) {
                 aug[r][c] -= aug[i][c] * k;
             }
         }
@@ -79,10 +84,10 @@ void print_array(const array<array<float, DIM + 1>, DIM>& aug) {
             continue;
         }
 
-        cout << setprecision(3) << setw(7) << row[0];
+        cout << ' ' << row[0];
 
         for (size_t i = 1; i < row.size(); i++) {
-            cout << setprecision(3) << setw(7) << row[i];
+            cout << ' ' << row[i];
         }
 
         cout << '\n';
