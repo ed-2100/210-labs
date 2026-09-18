@@ -1,4 +1,4 @@
-// System of linear equations solver, limited to 5x5 A matrices.
+// Compute the Reduced Row-Echelon form of a 5x6 matrix.
 
 // Given Ax = b, solve for x.
 
@@ -21,7 +21,7 @@ int main() {
         array<float, DIM + 1>
         {-9, -4,  9, -9, -2,  2},
         { 0,  0, -2,  0, -2,  9},
-        { 0,  0,  5,  0,  0,  9},
+        { 0,  3,  5,  0,  0,  9},
         { 0,  0,  0, -2,  0, -8},
         { 0,  0,  1,  0, -2, -7},
     };
@@ -34,13 +34,8 @@ int main() {
 }
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
-    for (size_t i = 0, j = 0; j < DIM; i++, j++) {
-        float rcp;
-        while (true) {
-            rcp = 1.0 / aug[i][j];
-
-            if (!isinf() && !ifnan())
-
+    for (size_t i = 0, j = 0; i < DIM && j < DIM + 1; i++, j++) {
+        while (aug[i][j] == 0) {
             size_t r = DIM - 1;
 
             while (aug[r][j] == 0 && r > i) {
@@ -62,8 +57,10 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
             }
         }
 
-        
-        for (size_t c = j; c < DIM + 1; c++) {
+        float rcp = 1.0 / aug[i][j];
+
+        aug[i][j] = 1;
+        for (size_t c = j + 1; c < DIM + 1; c++) {
             aug[i][c] *= rcp;
         }
 
