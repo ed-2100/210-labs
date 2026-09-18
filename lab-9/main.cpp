@@ -23,21 +23,24 @@ int main() {
 }
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
+    array<float, DIM + 1> row;
+
     for (size_t i = 0; i < DIM - 1; i++) {
         float n1 = aug[i][i];
         float n2 = aug[i][i];
 
         float q = - n2 / n1;
 
-        let 
+        for (size_t j = i; j < DIM + 1; j++) {
+            row[j] = aug[i][j] * q;
+        }
 
+        for (size_t r = 0; r < )
     }
 }
 
 void rmul(array<float, DIM + 1>& row, float k) {
-    for (auto& i : row) {
-        i *= k;
-    }
+    
 }
 
 void radd(array<float, DIM + 1>& a, const array<float, DIM + 1>& b) {
