@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
 
 using namespace std;
 
@@ -82,6 +84,10 @@ void rref(array<float, NROW * NCOL>& aug) {
 }
 
 void print_array(const array<float, NROW * NCOL>& aug) {
+    if (aug.size() == 0) {
+        return;
+    }
+
     for (size_t r = 0; r < NROW; r++) {
         cout << ' ' << aug[r * NCOL];
 
@@ -91,4 +97,10 @@ void print_array(const array<float, NROW * NCOL>& aug) {
 
         cout << '\n';
     }
+}
+
+void load_array(array<float, NROW * NCOL>& aug, const char* path) {
+    ifstream file(path);
+    
+    
 }
