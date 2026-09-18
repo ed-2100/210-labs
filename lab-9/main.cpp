@@ -33,12 +33,22 @@ int main() {
 }
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
-    for (size_t i = 0; i < DIM; i++) {
-        float rcp = 1.0 / aug[i][i];
+    size_t r_end = DIM;
 
-        for (size_t c = i; c < DIM + 1; c++) {
-            aug[i][c] *= rcp;
+    for (size_t i = 0, j = 0; j < DIM; i++, j++) {
+        print_array(aug);
+        cout << "\n\n";
+
+        while (aug[i][j] == 0) {
+            j
         }
+
+        float rcp = 1.0 / aug[i][j];
+
+        for (size_t c = j; c < DIM + 1; c++) {
+            aug[j][c] *= rcp;
+        }
+
 
         for (size_t r = i + 1; r < DIM; r++) {
             float k = aug[r][i];
