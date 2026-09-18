@@ -20,14 +20,13 @@ int main() {
     array<array<float, DIM + 1>, DIM> aug = {
         array<float, DIM + 1>
         {-9, -4,  9, -9, -2,  2},
-        { 9,  0, -2,  0, -2,  9},
+        { 0,  0, -2,  0, -2,  9},
         { 0,  0,  5,  0,  0,  9},
-        { 5,  9,  0, -2,  0, -8},
-        { 0, -6,  0,  0, -2, -7},
+        { 0,  0,  0, -2,  0, -8},
+        { 0,  0,  1,  0, -2, -7},
     };
 
     print_array(aug);
-
     cout << "\n\n";
 
     rref(aug);
@@ -36,7 +35,12 @@ int main() {
 
 void rref(array<array<float, DIM + 1>, DIM>& aug) {
     for (size_t i = 0, j = 0; j < DIM; i++, j++) {
-        while (aug[i][j] == 0) {
+        float rcp;
+        while (true) {
+            rcp = 1.0 / aug[i][j];
+
+            if (!isinf() && !ifnan())
+
             size_t r = DIM - 1;
 
             while (aug[r][j] == 0 && r > i) {
@@ -58,8 +62,7 @@ void rref(array<array<float, DIM + 1>, DIM>& aug) {
             }
         }
 
-        float rcp = 1.0 / aug[i][j];
-
+        
         for (size_t c = j; c < DIM + 1; c++) {
             aug[i][c] *= rcp;
         }
