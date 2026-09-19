@@ -43,7 +43,8 @@ void load_array(array<float, NROW * NCOL>& mat, const char* path);
 
 // The main function.
 //
-// Loads an array from a file, displays it, reduces it to reduced row-echelon, and displays it again.
+// Loads an array from a file, displays it, reduces it
+// to reduced row-echelon form, and displays it again.
 //
 // ### Arguments
 //
