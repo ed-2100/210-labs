@@ -95,22 +95,16 @@ void print_array(const array<float, NROW * NCOL>& aug) {
         return;
     }
 
-    auto print_line = [&aug](size_t r) {
-        auto print_item = [&aug, &r](size_t c){
-            cout << aug[r * NCOL + c];
-        };
+    cout << aug[0];
+    for (size_t c = 1; c < NCOL; c++) {
+        cout << ' ' << aug[c];
+    }
 
-        print_item(0);
-        for (size_t c = 1; c < NCOL; c++) {
-            cout << ' ';
-            print_item(c);
-        }
-    };
-
-    print_line(0);
     for (size_t r = 1; r < NROW; r++) {
-        cout << '\n';
-        print_line(r);
+        cout << '\n' << aug[r * NCOL];
+        for (size_t c = 1; c < NCOL; c++) {
+            cout << ' ' << aug[r * NCOL + c];
+        }
     }
 }
 
