@@ -1,6 +1,6 @@
 // COMSC-210 | Lab 9 | Edwin Burwell
 //
-// Compute the Reduced Row-Echelon form of a 4x5 matrix.
+// Compute the reduced row-echelon form of a 4x5 matrix.
 
 #include <array>
 #include <iostream>
@@ -13,13 +13,13 @@ using namespace std;
 
 // The row reducer implementation.
 //
-// Converts `aug` to Reduced Row-Echelon.
+// Converts `aug` to reduced row-echelon form.
 //
 // ### Arguments
 //
 // - `aug`: The matrix to be reduced, stored in row-major order.
-template <const size_t NROW, const size_t NCOL>
-void rref(array<float, NROW * NCOL>& aug);
+template <size_t NROW, size_t NCOL>
+void rref(array<float, NROW * NCOL>& mat);
 
 // The matrix display function.
 //
@@ -28,8 +28,8 @@ void rref(array<float, NROW * NCOL>& aug);
 // ### Arguments
 //
 // - `aug`: The matrix to display, stored in row-major order.
-template <const size_t NROW, const size_t NCOL>
-void print_array(const array<float, NROW * NCOL>& aug);
+template <size_t NROW, size_t NCOL>
+void print_array(const array<float, NROW * NCOL>& mat);
 
 // The matrix loader.
 //
@@ -38,12 +38,12 @@ void print_array(const array<float, NROW * NCOL>& aug);
 // ### Arguments
 // 
 // - `aug`: The array to load the matrix into.
-template <const size_t NROW, const size_t NCOL>
-void load_array(array<float, NROW * NCOL>& aug, const char* path);
+template <size_t NROW, size_t NCOL>
+void load_array(array<float, NROW * NCOL>& mat, const char* path);
 
 // The main function.
 //
-// Loads an array from a file, displays it, reduces it to Reduced Row-Echelon, and displays it again.
+// Loads an array from a file, displays it, reduces it to reduced row-echelon, and displays it again.
 //
 // ### Arguments
 //
@@ -57,32 +57,32 @@ int main(int argc, const char** argv) {
     constexpr size_t NROW = 4;
     constexpr size_t NCOL = 5;
 
-    array<float, NROW * NCOL> aug;
+    array<float, NROW * NCOL> mat;
 
     auto file = filesystem::path(argv[0]).parent_path() / "test_sample.txt";
 
-    load_array<NROW, NCOL>(aug, file.c_str());
+    load_array<NROW, NCOL>(mat, file.c_str());
 
     cout << "Input array:\n";
 
-    print_array<NROW, NCOL>(aug);
+    print_array<NROW, NCOL>(mat);
 
-    rref<NROW, NCOL>(aug);
+    rref<NROW, NCOL>(mat);
 
     cout << "\n\nReduced Row-Echelon Form:\n";
 
-    print_array<NROW, NCOL>(aug);
+    print_array<NROW, NCOL>(mat);
 
     cout << '\n';
 }
 
-template <const size_t NROW, const size_t NCOL>
-void rref(array<float, NROW * NCOL>& aug) {
+template <size_t NROW, size_t NCOL>
+void rref(array<float, NROW * NCOL>& mat) {
     for (size_t i = 0, j = 0; i < NROW && j < NCOL; i++, j++) {
-        while (aug[i * NCOL + j] == 0) {
+        while (mat[i * NCOL + j] == 0) {
             size_t r = NROW - 1;
 
-            while (aug[r * NCOL + j] == 0 && r > i) {
+            while (mat[r * NCOL + j] == 0 && r > i) {
                 r -= 1;
             }
 
@@ -97,15 +97,15 @@ void rref(array<float, NROW * NCOL>& aug) {
             }
 
             for (size_t c = i; c < NCOL; c++) {
-                swap(aug[i * NCOL + c], aug[r * NCOL + c]);
+                swap(mat[i * NCOL + c], mat[r * NCOL + c]);
             }
         }
 
-        float rcp = 1.0 / aug[i * NCOL + j];
+        float rcp = 1.0 / mat[i * NCOL + j];
 
-        aug[i * NCOL + j] = 1;
+        mat[i * NCOL + j] = 1;
         for (size_t c = j + 1; c < NCOL; c++) {
-            aug[i * NCOL + c] *= rcp;
+            mat[i * NCOL + c] *= rcp;
         }
 
         for (size_t r = 0; r < NROW; r++) {
@@ -113,29 +113,29 @@ void rref(array<float, NROW * NCOL>& aug) {
                 continue;
             }
 
-            float k = aug[r * NCOL + j];
+            float k = mat[r * NCOL + j];
 
             if (k == 0) {
                 continue;
             }
 
-            aug[r * NCOL + j] = 0;
+            mat[r * NCOL + j] = 0;
             for (size_t c = j + 1; c < NCOL; c++) {
-                aug[r * NCOL + c] -= aug[i * NCOL + c] * k;
+                mat[r * NCOL + c] -= mat[i * NCOL + c] * k;
             }
         }
     }
 }
 
-template <const size_t NROW, const size_t NCOL>
-void print_array(const array<float, NROW * NCOL>& aug) {
-    if (aug.size() == 0) {
+template <size_t NROW, size_t NCOL>
+void print_array(const array<float, NROW * NCOL>& mat) {
+    if (mat.size() == 0) {
         return;
     }
 
-    auto print_line = [&aug](size_t r) {
-        auto print_item = [&aug, &r](size_t c) {
-            cout << aug[r * NCOL + c];
+    auto print_line = [&mat](size_t r) {
+        auto print_item = [&mat, &r](size_t c) {
+            cout << mat[r * NCOL + c];
         };
 
         print_item(0);
@@ -152,8 +152,8 @@ void print_array(const array<float, NROW * NCOL>& aug) {
     }
 }
 
-template <const size_t NROW, const size_t NCOL>
-void load_array(array<float, NROW * NCOL>& aug, const char* path) {
+template <size_t NROW, size_t NCOL>
+void load_array(array<float, NROW * NCOL>& mat, const char* path) {
     ifstream file(path);
 
     size_t i = 0;
@@ -163,7 +163,7 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
         stringstream line_stream(line);
         string item;
         while (getline(line_stream, item, ',')) {
-            aug[i] = stof(item);
+            mat[i] = stof(item);
 
             i += 1;
         }
