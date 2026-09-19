@@ -11,9 +11,6 @@
 
 using namespace std;
 
-constexpr size_t NROW = 4;
-constexpr size_t NCOL = 5;
-
 // The row reducer implementation.
 //
 // Converts `aug` to Reduced Row-Echelon.
@@ -21,6 +18,7 @@ constexpr size_t NCOL = 5;
 // ### Arguments
 //
 // - `aug`: The matrix to be reduced, stored in row-major order.
+template <const size_t NROW, const size_t NCOL>
 void rref(array<float, NROW * NCOL>& aug);
 
 // The matrix display function.
@@ -30,6 +28,7 @@ void rref(array<float, NROW * NCOL>& aug);
 // ### Arguments
 //
 // - `aug`: The matrix to display, stored in row-major order.
+template <const size_t NROW, const size_t NCOL>
 void print_array(const array<float, NROW * NCOL>& aug);
 
 // The matrix loader.
@@ -39,6 +38,7 @@ void print_array(const array<float, NROW * NCOL>& aug);
 // ### Arguments
 // 
 // - `aug`: The array to load the matrix into.
+template <const size_t NROW, const size_t NCOL>
 void load_array(array<float, NROW * NCOL>& aug, const char* path);
 
 // The main function.
@@ -54,28 +54,32 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path);
 //
 // A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
+    constexpr size_t NROW = 4;
+    constexpr size_t NCOL = 5;
+
     array<float, NROW * NCOL> aug;
 
     auto file = filesystem::path(argv[0]).parent_path() / "test_sample.txt";
 
-    load_array(aug, file.c_str());
+    load_array<NROW, NCOL>(aug, file.c_str());
 
     cout << "Input array:\n";
 
-    print_array(aug);
+    print_array<NROW, NCOL>(aug);
 
-    rref(aug);
+    rref<NROW, NCOL>(aug);
 
     cout << "\n\nReduced Row-Echelon Form:\n";
 
-    print_array(aug);
+    print_array<NROW, NCOL>(aug);
 
     cout << '\n';
 }
 
+template <const size_t NROW, const size_t NCOL>
 void rref(array<float, NROW * NCOL>& aug) {
     for (size_t i = 0, j = 0; i < NROW && j < NCOL; i++, j++) {
-        while (get(aug,i * NCOL + j) == 0) {
+        while (aug[i * NCOL + j] == 0) {
             size_t r = NROW - 1;
 
             while (aug[r * NCOL + j] == 0 && r > i) {
@@ -123,6 +127,7 @@ void rref(array<float, NROW * NCOL>& aug) {
     }
 }
 
+template <const size_t NROW, const size_t NCOL>
 void print_array(const array<float, NROW * NCOL>& aug) {
     if (aug.size() == 0) {
         return;
@@ -147,6 +152,7 @@ void print_array(const array<float, NROW * NCOL>& aug) {
     }
 }
 
+template <const size_t NROW, const size_t NCOL>
 void load_array(array<float, NROW * NCOL>& aug, const char* path) {
     ifstream file(path);
 
