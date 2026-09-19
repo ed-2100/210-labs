@@ -80,10 +80,10 @@ int main(int argc, const char** argv) {
 template <size_t NROW, size_t NCOL>
 void rref(array<float, NROW * NCOL>& mat) {
     for (size_t i = 0, j = 0; i < NROW && j < NCOL; i++, j++) {
-        while (mat[i * NCOL + j] == 0) {
+        while (mat.at(i * NCOL + j) == 0) {
             size_t r = NROW - 1;
 
-            while (mat[r * NCOL + j] == 0 && r > i) {
+            while (mat.at(r * NCOL + j) == 0 && r > i) {
                 r -= 1;
             }
 
@@ -98,15 +98,15 @@ void rref(array<float, NROW * NCOL>& mat) {
             }
 
             for (size_t c = i; c < NCOL; c++) {
-                swap(mat[i * NCOL + c], mat[r * NCOL + c]);
+                swap(mat.at(i * NCOL + c), mat.at(r * NCOL + c));
             }
         }
 
-        float rcp = 1.0 / mat[i * NCOL + j];
+        float rcp = 1.0 / mat.at(i * NCOL + j);
 
-        mat[i * NCOL + j] = 1;
+        mat.at(i * NCOL + j) = 1;
         for (size_t c = j + 1; c < NCOL; c++) {
-            mat[i * NCOL + c] *= rcp;
+            mat.at(i * NCOL + c) *= rcp;
         }
 
         for (size_t r = 0; r < NROW; r++) {
@@ -114,15 +114,15 @@ void rref(array<float, NROW * NCOL>& mat) {
                 continue;
             }
 
-            float k = mat[r * NCOL + j];
+            float k = mat.at(r * NCOL + j);
 
             if (k == 0) {
                 continue;
             }
 
-            mat[r * NCOL + j] = 0;
+            mat.at(r * NCOL + j) = 0;
             for (size_t c = j + 1; c < NCOL; c++) {
-                mat[r * NCOL + c] -= mat[i * NCOL + c] * k;
+                mat.at(r * NCOL + c) -= mat.at(i * NCOL + c) * k;
             }
         }
     }
@@ -136,7 +136,7 @@ void print_array(const array<float, NROW * NCOL>& mat) {
 
     auto print_line = [&mat](size_t r) {
         auto print_item = [&mat, &r](size_t c) {
-            cout << mat[r * NCOL + c];
+            cout << mat.at(r * NCOL + c);
         };
 
         print_item(0);
