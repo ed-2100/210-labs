@@ -104,9 +104,7 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
     size_t i = 0;
 
     string line;
-    while (true) {
-        getline(file, line, '\n');
-
+    while (getline(file, line, '\n')) {
         if (line.empty()) {
             break;
         }
@@ -114,9 +112,7 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
         stringstream line_stream(line);
 
         string item;
-        while (true) {
-            getline(line_stream, item, ',');
-
+        while (getline(line_stream, item, ',')) {
             if (item.empty()) {
                 break;
             }
@@ -124,7 +120,10 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
             cout << item << '\n';
 
             aug[i] = stof(item);
+
             i += 1;
         }
+
+        cout << '\n';
     }
 }
