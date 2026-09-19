@@ -1,6 +1,6 @@
-// Compute the Reduced Row-Echelon form of a 5x6 matrix.
-
-// Given Ax = b, solve for x.
+// COMSC-210 | Lab 9 | Edwin Burwell
+//
+// Compute the Reduced Row-Echelon form of a 4x5 matrix.
 
 #include <array>
 #include <iostream>
@@ -15,7 +15,9 @@ constexpr size_t NROW = 4;
 constexpr size_t NCOL = 5;
 
 void rref(array<float, NROW * NCOL>& aug);
+
 void print_array(const array<float, NROW * NCOL>& aug);
+
 void load_array(array<float, NROW * NCOL>& aug, const char* path);
 
 int main(int argc, const char** argv) {
@@ -29,10 +31,13 @@ int main(int argc, const char** argv) {
 
     print_array(aug);
 
+    rref(aug);
+
     cout << "\n\nReduced Row-Echelon Form:\n";
 
-    rref(aug);
     print_array(aug);
+
+    cout << '\n';
 }
 
 void rref(array<float, NROW * NCOL>& aug) {
@@ -90,16 +95,22 @@ void print_array(const array<float, NROW * NCOL>& aug) {
         return;
     }
 
+    auto print_line = [&aug](size_t r) {
+        auto print_item = [&aug, &r](size_t c){
+            cout << aug[r * NCOL + c];
+        };
 
-    for (size_t r = 0; r < NROW; r++) {
-        auto print_line = [&aug, &r](){};
-        print_line();
-
+        print_item(0);
         for (size_t c = 1; c < NCOL; c++) {
-            cout << ' ' << aug[r * NCOL + c];
+            cout << ' ';
+            print_item(c);
         }
+    };
 
+    print_line(0);
+    for (size_t r = 1; r < NROW; r++) {
         cout << '\n';
+        print_line(r);
     }
 }
 
