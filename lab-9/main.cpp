@@ -16,8 +16,9 @@ constexpr size_t NCOL = 6;
 
 void rref(array<float, NROW * NCOL>& aug);
 void print_array(const array<float, NROW * NCOL>& aug);
+void load_array(array<float, NROW * NCOL>& aug, const char* path);
 
-int main() {
+int main(int argc, const char** argv) {
     array<float, NROW * NCOL> aug = {
         -9, -4,  9, -9, -2,  2,
          0,  0, -2,  0, -2,  9,
@@ -25,6 +26,8 @@ int main() {
          0,  0,  0, -2,  0, -8,
          0,  0,  1,  0, -2, -7,
     };
+
+    load_array(aug, argv[0]);
 
     print_array(aug);
     cout << "\n\n";
@@ -104,12 +107,17 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
 
     string line;
 
-    
-    while (getline(file, line, '\n')) {
+    size_t i = 0;
+    getline(file, line, '\n');
+    while (line.e) {
         stringstream line_stream(line);
 
-        while (getline(file, line, ',')) {
-            
+        string item;
+
+        while (getline(line_stream, item, ',')) {
+            aug[i] = stof(item);
+            i += 1;
         }
+
     }
 }
