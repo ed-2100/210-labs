@@ -165,7 +165,7 @@ void rref_a(array<float, NROW * NCOL>& mat) {
                 continue;
             }
 
-            for (size_t c = i; c < NCOL; c++) {
+            for (size_t c = j; c < NCOL; c++) {
                 swap(mat.at(i * NCOL + c), mat.at(r * NCOL + c));
             }
         }
@@ -262,7 +262,7 @@ void rref_v(vector<float>& mat, size_t n_row, size_t n_col) {
                 continue;
             }
 
-            for (size_t c = i; c < n_col; c++) {
+            for (size_t c = j; c < n_col; c++) {
                 swap(mat.at(i * n_col + c), mat.at(r * n_col + c));
             }
         }
