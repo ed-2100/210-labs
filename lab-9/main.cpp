@@ -1,6 +1,6 @@
 // COMSC-210 | Lab 9 | Edwin Burwell
 //
-// Compute the reduced row-echelon form of a 4x5 matrix.
+// Compute the reduced row-echelon form of a 5x6 matrix.
 
 #include <array>
 #include <iostream>
@@ -43,7 +43,7 @@ void load_array(array<float, NROW * NCOL>& mat, const char* path);
 
 // The main function.
 //
-// Loads an array from a file, displays it, reduces it
+// Loads a matrix from a file, displays it, reduces it
 // to reduced row-echelon form, and displays it again.
 //
 // ### Arguments
@@ -55,8 +55,8 @@ void load_array(array<float, NROW * NCOL>& mat, const char* path);
 //
 // A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
-    constexpr size_t NROW = 4;
-    constexpr size_t NCOL = 5;
+    constexpr size_t NROW = 5;
+    constexpr size_t NCOL = 6;
 
     array<float, NROW * NCOL> mat;
 
