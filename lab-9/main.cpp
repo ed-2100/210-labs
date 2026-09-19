@@ -14,12 +14,45 @@ using namespace std;
 constexpr size_t NROW = 4;
 constexpr size_t NCOL = 5;
 
+// The row reducer implementation.
+//
+// Converts `aug` to Reduced Row-Echelon.
+//
+// ### Arguments
+//
+// - `aug`: The matrix to be reduced, stored in contiguous row-major memory.
 void rref(array<float, NROW * NCOL>& aug);
 
+// The matrix display function.
+//
+// Prints `aug` to `stdout`.
+//
+// ### Arguments
+//
+// - `aug`: The matrix to display.
 void print_array(const array<float, NROW * NCOL>& aug);
 
+// The matrix loader.
+//
+// Loads a matrix from the file specified by `path` into `aug`.
+//
+// ### Arguments
+// 
+// - `aug`: The array to load the matrix into.
 void load_array(array<float, NROW * NCOL>& aug, const char* path);
 
+// The main function.
+//
+// Loads an array from a file, displays it, reduces it to Reduced Row-Echelon, and displays it again.
+//
+// ### Arguments
+//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     array<float, NROW * NCOL> aug;
 
@@ -95,16 +128,22 @@ void print_array(const array<float, NROW * NCOL>& aug) {
         return;
     }
 
-    cout << aug[0];
-    for (size_t c = 1; c < NCOL; c++) {
-        cout << ' ' << aug[c];
-    }
+    auto print_line = [&aug](size_t r) {
+        auto print_item = [&aug, &r](size_t c) {
+            cout << aug[r * NCOL + c];
+        };
 
-    for (size_t r = 1; r < NROW; r++) {
-        cout << '\n' << aug[r * NCOL];
+        print_item(0);
         for (size_t c = 1; c < NCOL; c++) {
-            cout << ' ' << aug[r * NCOL + c];
+            cout << ' ';
+            print_item(c);
         }
+    };
+
+    print_line(0);
+    for (size_t r = 1; r < NROW; r++) {
+        cout << '\n';
+        print_line(r);
     }
 }
 
