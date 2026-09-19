@@ -19,15 +19,11 @@ void print_array(const array<float, NROW * NCOL>& aug);
 void load_array(array<float, NROW * NCOL>& aug, const char* path);
 
 int main(int argc, const char** argv) {
-    array<float, NROW * NCOL> aug = {
-        -9, -4,  9, -9, -2,  2,
-         0,  0, -2,  0, -2,  9,
-         0,  3,  5,  0,  0,  9,
-         0,  0,  0, -2,  0, -8,
-         0,  0,  1,  0, -2, -7,
-    };
+    array<float, NROW * NCOL> aug;
 
-    load_array(aug, argv[0]);
+    auto file = filesystem::path(argv[0]).parent_path() / "test_sample.txt";
+
+    load_array(aug, file.c_str());
 
     print_array(aug);
     cout << "\n\n";
@@ -105,19 +101,30 @@ void print_array(const array<float, NROW * NCOL>& aug) {
 void load_array(array<float, NROW * NCOL>& aug, const char* path) {
     ifstream file(path);
 
-    string line;
-
     size_t i = 0;
-    getline(file, line, '\n');
-    while (line.e) {
+
+    string line;
+    while (true) {
+        getline(file, line, '\n');
+
+        if (line.empty()) {
+            break;
+        }
+
         stringstream line_stream(line);
 
         string item;
+        while (true) {
+            getline(line_stream, item, ',');
 
-        while (getline(line_stream, item, ',')) {
+            if (item.empty()) {
+                break;
+            }
+
+            cout << item << '\n';
+
             aug[i] = stof(item);
             i += 1;
         }
-
     }
 }
