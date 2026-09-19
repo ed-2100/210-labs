@@ -11,8 +11,8 @@
 
 using namespace std;
 
-constexpr size_t NROW = 5;
-constexpr size_t NCOL = 11;
+constexpr size_t NROW = 4;
+constexpr size_t NCOL = 5;
 
 void rref(array<float, NROW * NCOL>& aug);
 void print_array(const array<float, NROW * NCOL>& aug);
@@ -25,8 +25,11 @@ int main(int argc, const char** argv) {
 
     load_array(aug, file.c_str());
 
+    cout << "Input array:\n";
+
     print_array(aug);
-    cout << "\n\n";
+
+    cout << "\n\nReduced Row-Echelon Form:\n";
 
     rref(aug);
     print_array(aug);
@@ -87,8 +90,10 @@ void print_array(const array<float, NROW * NCOL>& aug) {
         return;
     }
 
+
     for (size_t r = 0; r < NROW; r++) {
-        cout << ' ' << aug[r * NCOL];
+        auto print_line = [&aug, &r](){};
+        print_line();
 
         for (size_t c = 1; c < NCOL; c++) {
             cout << ' ' << aug[r * NCOL + c];
