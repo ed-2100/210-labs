@@ -101,6 +101,15 @@ void print_array(const array<float, NROW * NCOL>& aug) {
 
 void load_array(array<float, NROW * NCOL>& aug, const char* path) {
     ifstream file(path);
+
+    string line;
+
     
-    
+    while (getline(file, line, '\n')) {
+        stringstream line_stream(line);
+
+        while (getline(file, line, ',')) {
+            
+        }
+    }
 }
