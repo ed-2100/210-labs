@@ -20,7 +20,7 @@ constexpr size_t NCOL = 5;
 //
 // ### Arguments
 //
-// - `aug`: The matrix to be reduced, stored in contiguous row-major memory.
+// - `aug`: The matrix to be reduced, stored in row-major order.
 void rref(array<float, NROW * NCOL>& aug);
 
 // The matrix display function.
@@ -29,12 +29,12 @@ void rref(array<float, NROW * NCOL>& aug);
 //
 // ### Arguments
 //
-// - `aug`: The matrix to display.
+// - `aug`: The matrix to display, stored in row-major order.
 void print_array(const array<float, NROW * NCOL>& aug);
 
 // The matrix loader.
 //
-// Loads a matrix from the file specified by `path` into `aug`.
+// Loads a matrix from the file specified by `path` into row-major order.
 //
 // ### Arguments
 // 
@@ -75,7 +75,7 @@ int main(int argc, const char** argv) {
 
 void rref(array<float, NROW * NCOL>& aug) {
     for (size_t i = 0, j = 0; i < NROW && j < NCOL; i++, j++) {
-        while (aug[i * NCOL + j] == 0) {
+        while (get(aug,i * NCOL + j) == 0) {
             size_t r = NROW - 1;
 
             while (aug[r * NCOL + j] == 0 && r > i) {
