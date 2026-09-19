@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 4.0.0)
 project (210-labs)
 
-set(CXX_STANDARD C++11)
+set(CXX_STANDARD C++23)
 set(CXX_STANDARD_REQUIRED OFF)
 set(CXX_EXTENSIONS OFF)
 
