@@ -12,7 +12,7 @@
 using namespace std;
 
 constexpr size_t NROW = 5;
-constexpr size_t NCOL = 6;
+constexpr size_t NCOL = 11;
 
 void rref(array<float, NROW * NCOL>& aug);
 void print_array(const array<float, NROW * NCOL>& aug);
@@ -105,25 +105,12 @@ void load_array(array<float, NROW * NCOL>& aug, const char* path) {
 
     string line;
     while (getline(file, line, '\n')) {
-        if (line.empty()) {
-            break;
-        }
-
         stringstream line_stream(line);
-
         string item;
         while (getline(line_stream, item, ',')) {
-            if (item.empty()) {
-                break;
-            }
-
-            cout << item << '\n';
-
             aug[i] = stof(item);
 
             i += 1;
         }
-
-        cout << '\n';
     }
 }
