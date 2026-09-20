@@ -16,7 +16,8 @@ struct KVPair {
     string key;
     string value;
 
-    // Stored pre-computed in order to reduce CPU cycles on resize.
+    // Stored pre-computed in hash in order
+    // to reduce CPU cycles on resize.
     size_t hash;
 };
 
@@ -39,18 +40,35 @@ int main() {
     cout << "Setting \"Name\" to \"Edwin\"...";
     hashmap_put(map, "Name", "Edwin");
 
-    cout << " Done.\nSetting \"Class\" to \"COMSC 210\"...";
+    cout << " Done.\n\nSetting \"Class\" to \"COMSC 210\"...";
     hashmap_put(map, "Class", "COMSC 210");
 
-    cout << " Done.\nSetting \"Shirt Color\" to \"Blue\"...";
+    cout << " Done.\n\nSetting \"Shirt Color\" to \"Blue\"...";
     hashmap_put(map, "Shirt Color", "Blue");
 
-    cout << " Done.\nGetting \"Name\"...";
+    cout << " Done.\n\nGetting \"Name\"...";
 
-    string* maybe_name = hashmap_get(map, "Name");
-    cout << "\nName: "
-         << (maybe_name ? *maybe_name : not_found)
-         << '\n';
+    {
+        string* maybe_name = hashmap_get(map, "Name");
+        cout << "\nName: "
+                << (maybe_name ? *maybe_name : not_found);
+    }
+
+    cout << "\n\nSetting \"Name\" to \"Charles\"...\n"
+         << "Old Name: "
+         << hashmap_put(map, "Name", "Charles").value_or(not_found);
+
+    cout << "\n\nRemoving \"Name\"...\nOld Name: "
+         << hashmap_remove(map, "Name").value_or(not_found);
+
+    cout << "\n\nGetting \"Name\"...";
+
+    {
+        string* maybe_name = hashmap_get(map, "Name");
+        cout << "\nName: "
+             << (maybe_name ? *maybe_name : not_found)
+             << '\n';
+    }
 }
 
 optional<string> hashmap_put(HashMap& map, string key, string value) {
@@ -141,7 +159,7 @@ void hashmap_resize(HashMap& map, size_t n) {
         return;
     }
 
-    vector<vector<KVPair>> coarse_new{};
+    vector<vector<KVPair>> coarse_new;
     coarse_new.resize(n);
 
     for (auto&& fine : map.coarse) {
