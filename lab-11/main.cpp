@@ -12,23 +12,43 @@
 
 using namespace std;
 
+// The key-value struct.
+//
+// Holds data associated with a `HashMap` entry.
 struct KVPair {
     string key;
     string value;
 
-    // Stored pre-computed in hash in order
-    // to reduce CPU cycles on resize.
+    // Pre-computed hash to reduce
+    // CPU cycles on resize.
     size_t hash;
 };
 
+// A simple hashmap made using standard library.
+//
+// Holds string data with an amoritzed look-up complexity of O(1).
 struct HashMap {
     vector<vector<KVPair>> coarse = {};
     size_t count = 0;
 };
 
+// Puts an entry on a `HashMap`.
+//
+// ### Arguments
+//
+// - `map`: The `HashMap` to put the entry on.
+// - `key`: The key to the entry.
+// - `value`: The value the entry contains.
+//
+// ### Returns
+//
+// The value of the original entry, if present.
 optional<string> hashmap_put(HashMap& map, string key, string value);
+
 string* hashmap_get(HashMap& map, string key);
+
 optional<string> hashmap_remove(HashMap& map, string key);
+
 void hashmap_resize(HashMap& map, size_t n);
 
 int main() {
@@ -66,7 +86,23 @@ int main() {
     {
         string* maybe_name = hashmap_get(map, "Name");
         cout << "\nName: "
-             << (maybe_name ? *maybe_name : not_found)
+             << (maybe_name ? *maybe_name : not_found);
+    }
+
+    cout << "\n\nGetting \"Class\"...";
+
+    {
+        string* maybe_class = hashmap_get(map, "Class");
+        cout << "\nClass: "
+             << (maybe_class ? *maybe_class : not_found);
+    }
+
+    cout << "\n\nGetting \"Shirt Color\"...";
+
+    {
+        string* maybe_class = hashmap_get(map, "Shirt Color");
+        cout << "\nShirt Color: "
+             << (maybe_class ? *maybe_class : not_found)
              << '\n';
     }
 }
