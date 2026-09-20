@@ -79,8 +79,7 @@ void hashmap_resize(HashMap& map, size_t n);
 
 // The main function.
 //
-// Loads a matrix from a file, displays it, reduces it
-// to reduced row-echelon form, and displays it again.
+// Tests the features of a homebrew `HashMap` implementation.
 //
 // ### Arguments
 //
