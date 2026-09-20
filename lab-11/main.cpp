@@ -14,6 +14,9 @@ using namespace std;
 struct KVPair {
     string key;
     string value;
+
+    // Stored pre-computed in order to reduce CPU cycles on resize.
+    size_t hash;
 };
 
 struct HashMap {
@@ -43,7 +46,8 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
     if (it_narrow == fine.end()) { // Doesn't exist.
         fine.push_back(KVPair {
             .key = move(key),
-            .value = move(value)
+            .value = move(value),
+            .hash = key_hash,
         });
 
         return {};
@@ -103,7 +107,16 @@ void hashmap_resize(HashMap map, size_t n) {
         return;
     }
 
-    vector<
+    vector<vector<string>> coarse_new{};
+    coarse_new.resize(n);
+
+    for (auto&& fine : map.coarse) {
+        for (auto&& item : fine) {
+            size_t idx_broad = item.hash % coarse_new.size();
+
+            coarse_new[idx_broad].push_back(move(item));
+        }
+    }
 }
 
 int main() {
