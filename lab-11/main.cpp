@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <optional>
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -20,13 +21,29 @@ struct KVPair {
 };
 
 struct HashMap {
-    vector<vector<KVPair>> coarse;
-    size_t count;
+    vector<vector<KVPair>> coarse = {};
+    size_t count = 0;
 };
+
+optional<string> hashmap_put(HashMap& map, string key, string value);
+optional<string&> hashmap_get(HashMap& map, string key);
+optional<string> hashmap_remove(HashMap map, string key);
+void hashmap_resize(HashMap map, size_t n);
+
+int main() {
+    HashMap map;
+
+    cout << "Homebrew HashMap Implementation\n\n";
+
+    cout << "Setting \"Name\" to \"Edwin\"";
+    hashmap_put(map, "Name", "Edwin");
+
+    
+}
 
 optional<string> hashmap_put(HashMap& map, string key, string value) {
     if (map.count >= map.coarse.size()) {
-        hashmap_resize(map, map.coarse.size() << 1);
+        hashmap_resize(map, map.coarse.size() == 0 ? 1 : map.coarse.size() );
     }
 
     size_t key_hash = hash<string>{}(key);
@@ -56,7 +73,7 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
     }
 }
 
-optional<string*> hashmap_get(HashMap& map, string key) {
+optional<string&> hashmap_get(HashMap& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
@@ -74,7 +91,7 @@ optional<string*> hashmap_get(HashMap& map, string key) {
     if (it_narrow == fine.end()) { // Doesn't exist.
         return {};
     } else { // Exists.
-        return &it_narrow.base()->value;
+        return it_narrow.base()->value;
     }
 }
 
@@ -97,7 +114,11 @@ optional<string> hashmap_remove(HashMap map, string key) {
         return {};
     } else { // Exists.
         KVPair p = exchange(*it_narrow.base(), move(fine.back()));
+        
+        // Wish this function would just return
+        // the value of the thing it removed.
         fine.pop_back();
+        
         return p.value;
     }
 }
@@ -118,8 +139,4 @@ void hashmap_resize(HashMap map, size_t n) {
     }
 
     map.coarse = coarse_new;
-}
-
-int main() {
-
 }
