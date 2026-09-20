@@ -26,12 +26,13 @@ struct HashMap {
 };
 
 optional<string> hashmap_put(HashMap& map, string key, string value);
-optional<string&> hashmap_get(HashMap& map, string key);
+string* hashmap_get(HashMap& map, string key);
 optional<string> hashmap_remove(HashMap map, string key);
 void hashmap_resize(HashMap map, size_t n);
 
 int main() {
     HashMap map;
+    string not_found = "Not Found";
 
     cout << "Homebrew HashMap Implementation\n\n";
 
@@ -44,8 +45,11 @@ int main() {
     cout << " Done.\nSetting \"Shirt Color\" to \"Blue\"...";
     hashmap_put(map, "Shirt Color", "Blue");
 
-    cout << " Done.\nGetting \"Name\"...\nName: "
-         << hashmap_get(map, "Name").value_or("Not Found")
+    cout << " Done.\nGetting \"Name\"...";
+    
+    string* maybe_name = hashmap_get(map, "Name");
+    cout << "\nName: "
+         << (maybe_name ? *maybe_name : not_found)
          << '\n';
 }
 
@@ -81,7 +85,7 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
     }
 }
 
-optional<string&> hashmap_get(HashMap& map, string key) {
+string* hashmap_get(HashMap& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
@@ -99,7 +103,7 @@ optional<string&> hashmap_get(HashMap& map, string key) {
     if (it_narrow == fine.end()) { // Doesn't exist.
         return {};
     } else { // Exists.
-        return it_narrow.base()->value;
+        return &it_narrow.base()->value;
     }
 }
 
