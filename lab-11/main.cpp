@@ -12,11 +12,14 @@
 
 using namespace std;
 
+// Personal data struct.
+//
+// Holds data related to a person.
 struct PersonalInfo {
     string name;
     string age;
     string favorite_color;
-    string inventory;
+    vector<string> inventory;
 };
 
 // The key-value struct.
@@ -66,7 +69,7 @@ optional<T> hashmap_put(HashMap<T>& map, string key, string value);
 //
 // A pointer to the entry's value, null if not found.
 template <typename T>
-T* hashmap_get(HashMap<T>& map, string key);
+T* hashmap_get(const HashMap<T>& map, string key);
 
 // Removes an entry in a `HashMap`.
 //
@@ -90,6 +93,8 @@ optional<T> hashmap_remove(HashMap<T>& map, string key);
 template <typename T>
 void hashmap_resize(HashMap<T>& map, size_t n);
 
+void print_personal_info(const PersonalInfo& pi);
+
 // The main function.
 //
 // Tests the features of a homebrew `HashMap` implementation.
@@ -104,6 +109,16 @@ void hashmap_resize(HashMap<T>& map, size_t n);
 int main() {
     HashMap<PersonalInfo> map;
     
+    cout << "Homebrew `HashMap` Implementation\n";
+
+    cout << "Setting \"Edwin\" to\n";
+    PersonalInfo edwin {
+        .name = "Edwin",
+        .age = "20",
+        .favorite_color = "Blue",
+        .inventory = {"Phone", "Pencil", "Keys"}
+    };
+    print_personal_info(edwin);
 
 
     return EXIT_SUCCESS;
@@ -144,7 +159,7 @@ optional<T> hashmap_put(HashMap<T>& map, string key, string value) {
 }
 
 template <typename T>
-T* hashmap_get(HashMap<T>& map, string key) {
+T* hashmap_get(const HashMap<T>& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
@@ -154,7 +169,7 @@ T* hashmap_get(HashMap<T>& map, string key) {
     auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](KVPair& p){
+        [&key](KVPair<T>& p){
             return key == p.key;
         }
     );
@@ -208,4 +223,21 @@ void hashmap_resize(HashMap<T>& map, size_t n) {
     }
 
     map.coarse = move(coarse_new);
+}
+
+void print_personal_info(const PersonalInfo& pi) {
+    cout << "Name: " << pi.name
+         << "\nAge: " << pi.age
+         << "\nFavorite Color: " << pi.favorite_color
+         << "\nInventory: ";
+
+    if (pi.inventory.size() != 0) {
+        cout << pi.inventory[0];
+
+        for (size_t i = 1; i < pi.inventory.size(); i++) {
+            cout << ", " << pi.inventory[i];
+        }
+    }
+
+    cout << '\n';
 }
