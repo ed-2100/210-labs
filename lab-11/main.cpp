@@ -19,23 +19,18 @@ struct KVPair {
 struct HashMap {
     vector<vector<KVPair>> coarse;
     size_t count;
-
-    optional<string> put(string key, string value);
-    optional<string*> get(string key);
-    string remove(string key);
-    void resize(size_t n);
 };
 
-optional<string> HashMap::put(string key, string value) {
-    if (count >= coarse.size()) {
-        resize(coarse.size() << 1);
+optional<string> hashmap_put(HashMap& map, string key, string value) {
+    if (map.count >= map.coarse.size()) {
+        hashmap_resize(map, map.coarse.size() << 1);
     }
 
     size_t key_hash = hash<string>{}(key);
 
-    size_t idx_broad = key_hash % coarse.size();
+    size_t idx_broad = key_hash % map.coarse.size();
 
-    vector<KVPair>& fine = coarse[idx_broad];
+    vector<KVPair>& fine = map.coarse[idx_broad];
 
     auto it_narrow = find(
         fine.begin(),
@@ -57,12 +52,12 @@ optional<string> HashMap::put(string key, string value) {
     }
 }
 
-optional<string*> HashMap::get(string key) {
+optional<string*> hashmap_get(HashMap& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
-    size_t idx_broad = key_hash % coarse.size();
+    size_t idx_broad = key_hash % map.coarse.size();
 
-    vector<KVPair>& fine = coarse[idx_broad];
+    vector<KVPair>& fine = map.coarse[idx_broad];
 
     auto it_narrow = find(
         fine.begin(),
@@ -72,12 +67,43 @@ optional<string*> HashMap::get(string key) {
         }
     );
 
+    if (it_narrow == fine.end()) { // Doesn't exist.
+        return {};
+    } else { // Exists.
+        return &it_narrow.base()->value;
+    }
+}
+
+optional<string> hashmap_remove(HashMap map, string key) {
+    size_t key_hash = hash<string>{}(key);
+
+    size_t idx_broad = key_hash % map.coarse.size();
+
+    vector<KVPair>& fine = map.coarse[idx_broad];
+
+    auto it_narrow = find(
+        fine.begin(),
+        fine.end(),
+        [&key](auto&& k){
+            return key == k;
+        }
+    );
 
     if (it_narrow == fine.end()) { // Doesn't exist.
         return {};
-    } else { // Already exists.
-        return exchange(it_narrow.base()->value, value);
+    } else { // Exists.
+        string temp = move(it_narrow.base()->value);
+        fine.erase(it_narrow);
+        return move(temp);
     }
+}
+
+void hashmap_resize(HashMap map, size_t n) {
+    if (n <= map.coarse.size()) {
+        return;
+    }
+
+    vector<
 }
 
 int main() {
