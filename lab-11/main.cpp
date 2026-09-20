@@ -35,10 +35,18 @@ int main() {
 
     cout << "Homebrew HashMap Implementation\n\n";
 
-    cout << "Setting \"Name\" to \"Edwin\"";
+    cout << "Setting \"Name\" to \"Edwin\"...";
     hashmap_put(map, "Name", "Edwin");
 
-    
+    cout << " Done.\nSetting \"Class\" to \"COMSC 210\"...";
+    hashmap_put(map, "Class", "COMSC 210");
+
+    cout << " Done.\nSetting \"Shirt Color\" to \"Blue\"...";
+    hashmap_put(map, "Shirt Color", "Blue");
+
+    cout << " Done.\nGetting \"Name\"...\nName: "
+         << hashmap_get(map, "Name").value_or("Not Found")
+         << '\n';
 }
 
 optional<string> hashmap_put(HashMap& map, string key, string value) {
@@ -52,11 +60,11 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
 
     vector<KVPair>& fine = map.coarse[idx_broad];
 
-    auto it_narrow = find(
+    auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](auto&& k){
-            return key == k;
+        [&key](KVPair& p){
+            return key == p.key;
         }
     );
 
@@ -80,11 +88,11 @@ optional<string&> hashmap_get(HashMap& map, string key) {
 
     vector<KVPair>& fine = map.coarse[idx_broad];
 
-    auto it_narrow = find(
+    auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](auto&& k){
-            return key == k;
+        [&key](KVPair& p){
+            return key == p.key;
         }
     );
 
@@ -102,11 +110,11 @@ optional<string> hashmap_remove(HashMap map, string key) {
 
     vector<KVPair>& fine = map.coarse[idx_broad];
 
-    auto it_narrow = find(
+    auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](auto&& k){
-            return key == k;
+        [&key](KVPair& p){
+            return key == p.key;
         }
     );
 
