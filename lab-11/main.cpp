@@ -96,9 +96,9 @@ optional<string> hashmap_remove(HashMap map, string key) {
     if (it_narrow == fine.end()) { // Doesn't exist.
         return {};
     } else { // Exists.
-        string temp = move(it_narrow.base()->value);
-        fine.erase(it_narrow);
-        return move(temp);
+        KVPair p = exchange(*it_narrow.base(), move(fine.back()));
+        fine.pop_back();
+        return p.value;
     }
 }
 
@@ -107,16 +107,17 @@ void hashmap_resize(HashMap map, size_t n) {
         return;
     }
 
-    vector<vector<string>> coarse_new{};
+    vector<vector<KVPair>> coarse_new{};
     coarse_new.resize(n);
 
     for (auto&& fine : map.coarse) {
         for (auto&& item : fine) {
             size_t idx_broad = item.hash % coarse_new.size();
-
             coarse_new[idx_broad].push_back(move(item));
         }
     }
+
+    map.coarse = coarse_new;
 }
 
 int main() {
