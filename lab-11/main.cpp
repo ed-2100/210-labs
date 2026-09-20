@@ -12,12 +12,20 @@
 
 using namespace std;
 
+struct PersonalInfo {
+    string name;
+    string age;
+    string favorite_color;
+    string inventory;
+};
+
 // The key-value struct.
 //
 // Holds data associated with a `HashMap` entry.
+template <typename T>
 struct KVPair {
     string key;
-    string value;
+    T value;
 
     // Pre-computed hash to reduce
     // CPU cycles on resize.
@@ -27,8 +35,9 @@ struct KVPair {
 // A simple hashmap made using standard library.
 //
 // Holds string data with an amoritzed look-up complexity of O(1).
+template <typename T>
 struct HashMap {
-    vector<vector<KVPair>> coarse = {};
+    vector<vector<KVPair<T>>> coarse = {};
     size_t count = 0;
 };
 
@@ -43,7 +52,8 @@ struct HashMap {
 // ### Returns
 //
 // The original value of the entry, if present.
-optional<string> hashmap_put(HashMap& map, string key, string value);
+template <typename T>
+optional<T> hashmap_put(HashMap<T>& map, string key, string value);
 
 // Gets a pointer to an entry's value in a `HashMap`.
 //
@@ -55,7 +65,8 @@ optional<string> hashmap_put(HashMap& map, string key, string value);
 // ### Returns
 //
 // A pointer to the entry's value, null if not found.
-string* hashmap_get(HashMap& map, string key);
+template <typename T>
+T* hashmap_get(HashMap<T>& map, string key);
 
 // Removes an entry in a `HashMap`.
 //
@@ -67,7 +78,8 @@ string* hashmap_get(HashMap& map, string key);
 // ### Returns
 //
 // The value of the former entry, if present.
-optional<string> hashmap_remove(HashMap& map, string key);
+template <typename T>
+optional<T> hashmap_remove(HashMap<T>& map, string key);
 
 // Resizes a hashmap to contain exactly `n` buckets.
 //
@@ -75,7 +87,8 @@ optional<string> hashmap_remove(HashMap& map, string key);
 //
 // - `map`: The `HashMap` to resize.
 // - `n`: The target number of buckets.
-void hashmap_resize(HashMap& map, size_t n);
+template <typename T>
+void hashmap_resize(HashMap<T>& map, size_t n);
 
 // The main function.
 //
@@ -89,64 +102,15 @@ void hashmap_resize(HashMap& map, size_t n);
 //
 // A signed integer value, where `0` means success.
 int main() {
-    HashMap map;
-    string not_found = "Not Found";
+    HashMap<PersonalInfo> map;
+    
 
-    cout << "Homebrew HashMap Implementation\n\n";
-
-    cout << "Setting \"Name\" to \"Edwin\"...";
-    hashmap_put(map, "Name", "Edwin");
-
-    cout << " Done.\n\nSetting \"Class\" to \"COMSC 210\"...";
-    hashmap_put(map, "Class", "COMSC 210");
-
-    cout << " Done.\n\nSetting \"Shirt Color\" to \"Blue\"...";
-    hashmap_put(map, "Shirt Color", "Blue");
-
-    cout << " Done.\n\nGetting \"Name\"...";
-
-    {
-        string* maybe_name = hashmap_get(map, "Name");
-        cout << "\nName: "
-                << (maybe_name ? *maybe_name : not_found);
-    }
-
-    cout << "\n\nSetting \"Name\" to \"Charles\"...\n"
-         << "Old Name: "
-         << hashmap_put(map, "Name", "Charles").value_or(not_found);
-
-    cout << "\n\nRemoving \"Name\"...\nOld Name: "
-         << hashmap_remove(map, "Name").value_or(not_found);
-
-    cout << "\n\nGetting \"Name\"...";
-
-    {
-        string* maybe_name = hashmap_get(map, "Name");
-        cout << "\nName: "
-             << (maybe_name ? *maybe_name : not_found);
-    }
-
-    cout << "\n\nGetting \"Class\"...";
-
-    {
-        string* maybe_class = hashmap_get(map, "Class");
-        cout << "\nClass: "
-             << (maybe_class ? *maybe_class : not_found);
-    }
-
-    cout << "\n\nGetting \"Shirt Color\"...";
-
-    {
-        string* maybe_class = hashmap_get(map, "Shirt Color");
-        cout << "\nShirt Color: "
-             << (maybe_class ? *maybe_class : not_found)
-             << '\n';
-    }
 
     return EXIT_SUCCESS;
 }
 
-optional<string> hashmap_put(HashMap& map, string key, string value) {
+template <typename T>
+optional<T> hashmap_put(HashMap<T>& map, string key, string value) {
     if (map.count >= map.coarse.size()) {
         size_t n = map.coarse.size() == 0 ? 1 : map.coarse.size();
         hashmap_resize(map, n);
@@ -156,18 +120,18 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
 
     size_t idx_broad = key_hash % map.coarse.size();
 
-    vector<KVPair>& fine = map.coarse[idx_broad];
+    vector<KVPair<T>>& fine = map.coarse[idx_broad];
 
     auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](KVPair& p){
+        [&key](KVPair<T>& p){
             return key == p.key;
         }
     );
 
     if (it_narrow == fine.end()) { // Doesn't exist.
-        fine.push_back(KVPair {
+        fine.push_back(KVPair<T> {
             .key = move(key),
             .value = move(value),
             .hash = key_hash,
@@ -179,12 +143,13 @@ optional<string> hashmap_put(HashMap& map, string key, string value) {
     }
 }
 
-string* hashmap_get(HashMap& map, string key) {
+template <typename T>
+T* hashmap_get(HashMap<T>& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
 
-    vector<KVPair>& fine = map.coarse[idx_broad];
+    vector<KVPair<T>>& fine = map.coarse[idx_broad];
 
     auto it_narrow = find_if(
         fine.begin(),
@@ -201,17 +166,18 @@ string* hashmap_get(HashMap& map, string key) {
     }
 }
 
-optional<string> hashmap_remove(HashMap& map, string key) {
+template <typename T>
+optional<T> hashmap_remove(HashMap<T>& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
 
-    vector<KVPair>& fine = map.coarse[idx_broad];
+    vector<KVPair<T>>& fine = map.coarse[idx_broad];
 
     auto it_narrow = find_if(
         fine.begin(),
         fine.end(),
-        [&key](KVPair& p){
+        [&key](KVPair<T>& p){
             return key == p.key;
         }
     );
@@ -219,7 +185,7 @@ optional<string> hashmap_remove(HashMap& map, string key) {
     if (it_narrow == fine.end()) { // Doesn't exist.
         return {};
     } else { // Exists.
-        KVPair p = exchange(*it_narrow.base(), move(fine.back()));
+        KVPair<T> p = exchange(*it_narrow.base(), move(fine.back()));
         
         // I wish this function would just return
         // the value of the thing it popped.
@@ -229,8 +195,9 @@ optional<string> hashmap_remove(HashMap& map, string key) {
     }
 }
 
-void hashmap_resize(HashMap& map, size_t n) {
-    vector<vector<KVPair>> coarse_new;
+template <typename T>
+void hashmap_resize(HashMap<T>& map, size_t n) {
+    vector<vector<KVPair<T>>> coarse_new;
     coarse_new.resize(n);
 
     for (auto&& fine : map.coarse) {
