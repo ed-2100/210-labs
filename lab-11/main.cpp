@@ -42,15 +42,53 @@ struct HashMap {
 //
 // ### Returns
 //
-// The value of the original entry, if present.
+// The original value of the entry, if present.
 optional<string> hashmap_put(HashMap& map, string key, string value);
 
+// Gets a pointer to an entry's value in a `HashMap`.
+//
+// ### Arguments
+//
+// - `map`: The `HashMap` to get the entry from.
+// - `key`: The key to the entry.
+//
+// ### Returns
+//
+// A pointer to the entry's value, null if not found.
 string* hashmap_get(HashMap& map, string key);
 
+// Removes an entry in a `HashMap`.
+//
+// ### Arguments
+//
+// - `map`: The `HashMap` to remove the entry from.
+// - `key`: The key to the entry.
+//
+// ### Returns
+//
+// The value of the former entry, if present.
 optional<string> hashmap_remove(HashMap& map, string key);
 
+// Resizes a hashmap to contain exactly `n` buckets.
+//
+// ### Arguments
+//
+// - `map`: The `HashMap` to resize.
+// - `n`: The target number of buckets.
 void hashmap_resize(HashMap& map, size_t n);
 
+// The main function.
+//
+// Loads a matrix from a file, displays it, reduces it
+// to reduced row-echelon form, and displays it again.
+//
+// ### Arguments
+//
+// - None.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     HashMap map;
     string not_found = "Not Found";
@@ -105,6 +143,8 @@ int main() {
              << (maybe_class ? *maybe_class : not_found)
              << '\n';
     }
+
+    return EXIT_SUCCESS;
 }
 
 optional<string> hashmap_put(HashMap& map, string key, string value) {
@@ -182,8 +222,8 @@ optional<string> hashmap_remove(HashMap& map, string key) {
     } else { // Exists.
         KVPair p = exchange(*it_narrow.base(), move(fine.back()));
         
-        // Wish this function would just return
-        // the value of the thing it removed.
+        // I wish this function would just return
+        // the value of the thing it popped.
         fine.pop_back();
         
         return p.value;
@@ -191,10 +231,6 @@ optional<string> hashmap_remove(HashMap& map, string key) {
 }
 
 void hashmap_resize(HashMap& map, size_t n) {
-    if (n <= map.coarse.size()) {
-        return;
-    }
-
     vector<vector<KVPair>> coarse_new;
     coarse_new.resize(n);
 
