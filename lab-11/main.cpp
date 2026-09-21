@@ -35,7 +35,7 @@ struct KVPair {
     size_t hash;
 };
 
-// A simple hashmap made using standard library.
+// A simple hashmap made using the standard library.
 //
 // Holds string data with an amoritzed look-up complexity of O(1).
 template <typename T>
