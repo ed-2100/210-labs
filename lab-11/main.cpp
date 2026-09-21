@@ -56,7 +56,7 @@ struct HashMap {
 //
 // The original value of the entry, if present.
 template <typename T>
-optional<T> hashmap_put(HashMap<T>& map, string key, string value);
+optional<T> hashmap_put(HashMap<T>& map, string key, T value);
 
 // Gets a pointer to an entry's value in a `HashMap`.
 //
@@ -69,7 +69,7 @@ optional<T> hashmap_put(HashMap<T>& map, string key, string value);
 //
 // A pointer to the entry's value, null if not found.
 template <typename T>
-T* hashmap_get(const HashMap<T>& map, string key);
+T* hashmap_get(HashMap<T>& map, string key);
 
 // Removes an entry in a `HashMap`.
 //
@@ -109,9 +109,9 @@ void print_personal_info(const PersonalInfo& pi);
 int main() {
     HashMap<PersonalInfo> map;
     
-    cout << "Homebrew `HashMap` Implementation\n";
+    cout << "Homebrew `HashMap` Implementation\n\n";
 
-    cout << "Setting \"Edwin\" to\n";
+    cout << "Setting \"Student A\" to:\n";
     PersonalInfo edwin {
         .name = "Edwin",
         .age = "20",
@@ -119,13 +119,35 @@ int main() {
         .inventory = {"Phone", "Pencil", "Keys"}
     };
     print_personal_info(edwin);
+    hashmap_put(map, "Student A", edwin);
 
+
+    {
+    cout`
+    }
+
+    cout << "\n Overwriting \"Student A\":\n";
+    edwin.favorite_color = "Green";
+    print_personal_info(edwin);
+    hashmap_put(map, "Student A", edwin);
+
+    {
+        cout << "\nGetting \"Student A\":\n";
+
+        PersonalInfo* maybe_edwin = hashmap_get(map, "Student A");
+
+        if (maybe_edwin) {
+            print_personal_info(*maybe_edwin);
+        } else {
+            cout << "Not Found\n";
+        }
+    }
 
     return EXIT_SUCCESS;
 }
 
 template <typename T>
-optional<T> hashmap_put(HashMap<T>& map, string key, string value) {
+optional<T> hashmap_put(HashMap<T>& map, string key, T value) {
     if (map.count >= map.coarse.size()) {
         size_t n = map.coarse.size() == 0 ? 1 : map.coarse.size();
         hashmap_resize(map, n);
@@ -159,7 +181,7 @@ optional<T> hashmap_put(HashMap<T>& map, string key, string value) {
 }
 
 template <typename T>
-T* hashmap_get(const HashMap<T>& map, string key) {
+T* hashmap_get(HashMap<T>& map, string key) {
     size_t key_hash = hash<string>{}(key);
 
     size_t idx_broad = key_hash % map.coarse.size();
