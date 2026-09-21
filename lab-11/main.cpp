@@ -121,23 +121,47 @@ int main() {
     print_personal_info(edwin);
     hashmap_put(map, "Student A", edwin);
 
-
     {
-    cout`
+        cout << "\nGetting \"Student A\":\n";
+
+        PersonalInfo* maybe_student = hashmap_get(map, "Student A");
+
+        if (maybe_student) {
+            print_personal_info(*maybe_student);
+        } else {
+            cout << "Not Found\n";
+        }
     }
 
-    cout << "\n Overwriting \"Student A\":\n";
-    edwin.favorite_color = "Green";
-    print_personal_info(edwin);
-    hashmap_put(map, "Student A", edwin);
+    cout << "\nSetting \"Student A\":\n";
+    PersonalInfo charles {
+        .name = "Charles",
+        .age = "35",
+        .favorite_color = "Green",
+        .inventory = {"Measuring Tape", "Calipers"},
+    };
+    print_personal_info(charles);
+    hashmap_put(map, "Student A", charles);
+
+    {
+        cout << "\nRemoving \"Student A\":\n";
+
+        optional<PersonalInfo> maybe_student = hashmap_remove(map, "Student A");
+
+        if (maybe_student) {
+            print_personal_info(maybe_student.value());
+        } else {
+            cout << "Not Found\n";
+        }
+    }
 
     {
         cout << "\nGetting \"Student A\":\n";
 
-        PersonalInfo* maybe_edwin = hashmap_get(map, "Student A");
+        PersonalInfo* maybe_student = hashmap_get(map, "Student A");
 
-        if (maybe_edwin) {
-            print_personal_info(*maybe_edwin);
+        if (maybe_student) {
+            print_personal_info(*maybe_student);
         } else {
             cout << "Not Found\n";
         }
