@@ -203,6 +203,8 @@ optional<T> hashmap_put(HashMap<T>& map, string key, T value) {
             .hash = key_hash,
         });
 
+        map.count += 1;
+
         return {};
     } else { // Already exists.
         return exchange(it_narrow.base()->value, value);
@@ -256,6 +258,8 @@ optional<T> hashmap_remove(HashMap<T>& map, string key) {
         // I wish this function would just return
         // the value of the thing it popped.
         fine.pop_back();
+
+        map.count -= 1;
         
         return p.value;
     }
