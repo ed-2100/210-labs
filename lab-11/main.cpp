@@ -93,6 +93,11 @@ optional<T> hashmap_remove(HashMap<T>& map, string key);
 template <typename T>
 void hashmap_resize(HashMap<T>& map, size_t n);
 
+// Prints the `PersonalInfo` struct.
+//
+// ### Arguments
+//
+// - `pi`: The `PersonalInfo` struct.
 void print_personal_info(const PersonalInfo& pi);
 
 // The main function.
