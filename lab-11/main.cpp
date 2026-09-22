@@ -228,7 +228,7 @@ T* hashmap_get(HashMap<T>& map, string key) {
     );
 
     if (it_narrow == fine.end()) { // Doesn't exist.
-        return {};
+        return nullptr;
     } else { // Exists.
         return &it_narrow.base()->value;
     }
