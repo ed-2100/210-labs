@@ -7,10 +7,22 @@ using namespace std;
 struct Student {
     uint32_t id;
     float grade;
+
+    bool operator>(Student &rhs) {
+        if (id > rhs.id) {
+            return true;
+        } else if (id == rhs.id) {
+            
+        }
+    }
 };
+
+void read_grades(vector<Student> &students, filesystem::path file);
 
 template <typename T>
 void sort(T* arr, size_t n_arr);
+
+void write_grades(const vector<Student> &students, filesystem::path file);
 
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
@@ -58,7 +70,7 @@ void read_grades(vector<Student> &students, filesystem::path file) {
 template <typename T>
 void sort(T* arr, size_t n_arr) {
     for (size_t i = 0; i < n_arr - 1; i++) {
-        T* current = &arr[i]
+        T* current = &arr[i];
         T* max = current;
 
         for (size_t j = i + 1; j < n_arr; j++) {
@@ -76,7 +88,9 @@ void sort(T* arr, size_t n_arr) {
 }
 
 void write_grades(const vector<Student> &students, filesystem::path file) {
-    ofstream grades_file;
+    ofstream grades_file(file, _S_out | _S_trunc);
 
-    grades_file.
+    for (const Student& student : students) {
+        grades_file << student.grade << ' ' << student.id << '\n';
+    }
 }
