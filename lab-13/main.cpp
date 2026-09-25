@@ -24,6 +24,8 @@ size_t max_score(span<Student> students);
 
 float mean_score(span<Student> students);
 
+float median_score(span<Student> students);
+
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
 
@@ -68,7 +70,11 @@ int main(int argc, const char** argv) {
          << mean
          << '\n';
 
+    float median = median_score(students);
 
+    cout << "Median Score: "
+         << median
+         << '\n';
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
@@ -159,10 +165,17 @@ float mean_score(span<Student> students) {
     return sum;
 }
 
-float meadian_score(span<Student> students) {
+float median_score(span<Student> students) {
+    std::sort_
+
+    size_t middle = students.size() >> 1;
+
     if (students.size() & 0x1) {
-        return students[students.size() >> 1].grade;
+        return students[middle].grade;
     } else {
-        return students[students.size() >> 1].grade + 
+        return (
+            students[middle].grade
+          + students[middle + 1].grade
+        ) / 2;
     }
 }
