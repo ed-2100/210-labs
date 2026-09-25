@@ -40,5 +40,10 @@ int main(int argc, const char** argv) {
         });
     }
 
-    
+
+}
+
+template <typename T>
+void sort(T* arr, size_t n, ) {
+
 }
