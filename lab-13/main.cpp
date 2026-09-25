@@ -14,8 +14,6 @@ struct Student {
 
 void read_grades(vector<Student> &students, filesystem::path file);
 
-void sort(span<Student> students);
-
 void write_grades(const vector<Student> &students, filesystem::path file);
 
 size_t min_score(span<Student> students);
@@ -40,9 +38,15 @@ int main(int argc, const char** argv) {
 
     cout << "Read " << students.size() << " student records\n" << flush;
 
-    sort(students);
+    sort(
+        students.begin(),
+        students.end(),
+        [](const Student& a, const Student& b) {
+            return a.id < b.id;
+        }
+    );
 
-    cout << "Sorted results written to " << sorted_grades_path.filename() << "\n\n" << flush;
+    cout << "Sorted results written to " << sorted_grades_path.filename().string() << "\n\n" << flush;
 
     write_grades(students, sorted_grades_path);
 
@@ -103,24 +107,6 @@ void read_grades(vector<Student> &students, filesystem::path file) {
     }
 }
 
-void sort(span<Student> students) {
-    if (students.size() < 2) return;
-    
-    for (size_t i = 0; i < students.size() - 1; i++) {
-        size_t min = i;
-
-        for (size_t j = i + 1; j < students.size(); j++) {
-            if (students[j].id < students[min].id) {
-                min = j;
-            }
-        }
-
-        if (i != min) {
-            swap(students[i], students[min]);
-        }
-    }
-}
-
 void write_grades(const vector<Student> &students, filesystem::path file) {
     ofstream grades_file(file, _S_out | _S_trunc);
 
@@ -166,16 +152,27 @@ float mean_score(span<Student> students) {
 }
 
 float median_score(span<Student> students) {
-    std::sort_
+    vector<float> grades;
+
+    grades.reserve(students.size());
+
+    for (const Student& student : students) {
+        grades.push_back(student.grade);
+    }
+
+    sort(grades.begin(), grades.end());
 
     size_t middle = students.size() >> 1;
 
     if (students.size() & 0x1) {
-        return students[middle].grade;
+        return grades[middle];
     } else {
-        return (
-            students[middle].grade
-          + students[middle + 1].grade
-        ) / 2;
+        return (grades[middle] + grades[middle + 1]) / 2;
     }
+}
+
+float score_stddev(span<Student> students) {
+    float mean = mean_score(students);
+
+    float 
 }
