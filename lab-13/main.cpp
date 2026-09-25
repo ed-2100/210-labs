@@ -1,5 +1,6 @@
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -15,5 +16,29 @@ int main(int argc, const char** argv) {
 
     auto grades_path = exe_dir / "210-lab-13-grades.txt";
 
-    ifstream grades_file();
+    ifstream grades_file(grades_path);
+
+    vector<Student> students;
+
+    string buf;
+    string segment;
+
+    while (getline(grades_file, buf)) {
+        stringstream line_buf;
+
+        getline(line_buf, segment);
+
+        uint32_t id = stoul(segment);
+        
+        getline(line_buf, segment);
+
+        float grade = stof(segment);
+
+        students.push_back(Student {
+            .id = id,
+            .grade = grade,
+        });
+    }
+
+    
 }
