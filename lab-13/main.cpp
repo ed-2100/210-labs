@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -12,8 +13,7 @@ struct Student {
 
 void read_grades(vector<Student> &students, filesystem::path file);
 
-template <typename T>
-void sort(T* arr, size_t n_arr);
+void sort(Student* arr, size_t n_arr);
 
 void write_grades(const vector<Student> &students, filesystem::path file);
 
@@ -27,19 +27,19 @@ int main(int argc, const char** argv) {
 
     vector<Student> students;
 
-    cout << "Stage 1\n" << flush;
-
     read_grades(students, grades_path);
 
-    cout << "Stage 2\n" << flush;
+    cout << "Read " << students.size() << " student records\n" << flush;
 
     sort(students.data(), students.size());
 
-    cout << "Stage 3\n" << flush;
+    cout << "Sorted results written to " << sorted_grades_path.filename() << "\n\n" << flush;
 
     write_grades(students, sorted_grades_path);
 
-    cout << "Done\n" << flush;
+    cout << "--- Summary Statistics ---\n" << flush;
+
+    
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
