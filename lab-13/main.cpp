@@ -73,17 +73,6 @@ void sort(Student* arr, size_t n_arr) {
     
     for (size_t i = 0; i < n_arr - 1; i++) {
         Student& current = arr[i];
-        Student* min = &current;
-
-        for (size_t j = i + 1; j < n_arr; j++) {
-            Student& temp = arr[j];
-
-            if (temp.id < min->id
-             || (temp.id == min->id
-              && temp.grade < min->grade)) {
-                min = &temp;
-            }
-        }
 
         if (&current != min) {
             swap(current, *min);
@@ -97,4 +86,24 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     for (const Student& student : students) {
         grades_file << student.id << ' ' << student.grade << '\n';
     }
+}
+
+void min(const Student* students, size_t n_students) {
+    const Student* begin = students;
+    const Student* end = students + n_students;
+
+    const Student* min = begin;
+
+    for (begin += 1; begin < end; begin++) {
+        if (begin->id < min->id
+            || (begin->id == min->id
+            && begin->grade < min->grade)) {
+            min = begin;
+        }
+    }
+    
+}
+
+void max() {
+
 }
