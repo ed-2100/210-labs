@@ -9,8 +9,8 @@ struct Student {
     uint32_t id;
     float grade;
 
-    bool operator>(Student &rhs) {
-        return id > rhs.id || (id == rhs.id && grade > rhs.grade);
+    bool operator<(Student &rhs) {
+        return id < rhs.id || (id == rhs.id && grade < rhs.grade);
     }
 };
 
@@ -51,11 +51,11 @@ void read_grades(vector<Student> &students, filesystem::path file) {
 
     ifstream grades_file(file);
 
-    string buf;
+    string line;
     string segment;
 
-    while (getline(grades_file, buf)) {
-        stringstream line_buf;
+    while (getline(grades_file, line)) {
+        stringstream line_buf(line);
 
         getline(line_buf, segment);
 
@@ -74,11 +74,13 @@ void read_grades(vector<Student> &students, filesystem::path file) {
 
 template <typename T>
 void sort(T* arr, size_t n_arr) {
+    if (n_arr < 2) return;
+    
     for (size_t i = 0; i < n_arr - 1; i++) {
         T* max = &arr[i];
 
         for (size_t j = i + 1; j < n_arr; j++) {
-            if (arr[j] > *max) {
+            if (arr[j] < *max) {
                 max = &arr[j];
             }
         }
@@ -93,6 +95,6 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     ofstream grades_file(file, _S_out | _S_trunc);
 
     for (const Student& student : students) {
-        grades_file << student.grade << ' ' << student.id << '\n';
+        grades_file << student.id << ' ' << student.grade << '\n';
     }
 }
