@@ -8,10 +8,6 @@ using namespace std;
 struct Student {
     uint32_t id;
     float grade;
-
-    bool operator<(Student &rhs) {
-        return id < rhs.id || (id == rhs.id && grade < rhs.grade);
-    }
 };
 
 void read_grades(vector<Student> &students, filesystem::path file);
@@ -57,11 +53,11 @@ void read_grades(vector<Student> &students, filesystem::path file) {
     while (getline(grades_file, line)) {
         stringstream line_buf(line);
 
-        getline(line_buf, segment);
+        getline(line_buf, segment, ' ');
 
         uint32_t id = stoul(segment);
         
-        getline(line_buf, segment);
+        getline(line_buf, segment, ' ');
 
         float grade = stof(segment);
 
@@ -72,21 +68,25 @@ void read_grades(vector<Student> &students, filesystem::path file) {
     }
 }
 
-template <typename T>
-void sort(T* arr, size_t n_arr) {
+void sort(Student* arr, size_t n_arr) {
     if (n_arr < 2) return;
     
     for (size_t i = 0; i < n_arr - 1; i++) {
-        T* max = &arr[i];
+        Student& current = arr[i];
+        Student* min = &current;
 
         for (size_t j = i + 1; j < n_arr; j++) {
-            if (arr[j] < *max) {
-                max = &arr[j];
+            Student& temp = arr[j];
+
+            if (temp.id < min->id
+             || (temp.id == min->id
+              && temp.grade < min->grade)) {
+                min = &temp;
             }
         }
 
-        if (&arr[i] != max) {
-            swap(arr[i], *max);
+        if (&current != min) {
+            swap(current, *min);
         }
     }
 }
