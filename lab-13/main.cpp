@@ -20,6 +20,10 @@ void write_grades(const vector<Student> &students, filesystem::path file);
 
 size_t min_score(span<Student> students);
 
+size_t max_score(span<Student> students);
+
+float mean_score(span<Student> students);
+
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
 
@@ -42,9 +46,29 @@ int main(int argc, const char** argv) {
 
     cout << "--- Summary Statistics ---\n" << flush; 
     
-    auto min = min_score(students);
+    Student& min = students[min_score(students)];
 
-    cout << "Minimum Score: " << students[min].grade << " (Student ID: " << students[min].id << ")\n";
+    cout << "Minimum Score: "
+         << min.grade
+         << " (Student ID: "
+         << min.id
+         << ")\n";
+
+    Student& max = students[max_score(students)];
+
+    cout << "Maximum Score: "
+         << max.grade
+         << " (Student ID: "
+         << max.id
+         << ")\n";
+    
+    float mean = mean_score(students);
+
+    cout << "Mean Score: "
+         << mean
+         << '\n';
+
+
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
@@ -121,4 +145,24 @@ size_t max_score(span<Student> students) {
     }
 
     return max;
+}
+
+float mean_score(span<Student> students) {
+    float sum = 0;
+
+    for (const Student& student : students) {
+        sum += student.grade;
+    }
+
+    sum /= students.size();
+
+    return sum;
+}
+
+float meadian_score(span<Student> students) {
+    if (students.size() & 0x1) {
+        return students[students.size() >> 1].grade;
+    } else {
+        return students[students.size() >> 1].grade + 
+    }
 }
