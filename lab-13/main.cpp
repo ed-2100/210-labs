@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <fstream>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -9,11 +10,7 @@ struct Student {
     float grade;
 
     bool operator>(Student &rhs) {
-        if (id > rhs.id) {
-            return true;
-        } else if (id == rhs.id) {
-            
-        }
+        return id > rhs.id || (id == rhs.id && grade > rhs.grade);
     }
 };
 
@@ -34,11 +31,19 @@ int main(int argc, const char** argv) {
 
     vector<Student> students;
 
+    cout << "Stage 1\n" << flush;
+
     read_grades(students, grades_path);
+
+    cout << "Stage 2\n" << flush;
 
     sort(students.data(), students.size());
 
+    cout << "Stage 3\n" << flush;
+
     write_grades(students, sorted_grades_path);
+
+    cout << "Done\n" << flush;
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
@@ -70,19 +75,16 @@ void read_grades(vector<Student> &students, filesystem::path file) {
 template <typename T>
 void sort(T* arr, size_t n_arr) {
     for (size_t i = 0; i < n_arr - 1; i++) {
-        T* current = &arr[i];
-        T* max = current;
+        T* max = &arr[i];
 
         for (size_t j = i + 1; j < n_arr; j++) {
-            T& tmp = arr[j];
-
-            if (tmp > *max) {
-                max = &tmp;
+            if (arr[j] > *max) {
+                max = &arr[j];
             }
         }
 
-        if (current != max) {
-            swap(*current, *max);
+        if (&arr[i] != max) {
+            swap(arr[i], *max);
         }
     }
 }
