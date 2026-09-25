@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <span>
 
 using namespace std;
 
@@ -74,9 +75,9 @@ void sort(Student* arr, size_t n_arr) {
     for (size_t i = 0; i < n_arr - 1; i++) {
         Student& current = arr[i];
 
-        if (&current != min) {
-            swap(current, *min);
-        }
+        // if (&current != min) {
+        //     swap(current, *min);
+        // }
     }
 }
 
@@ -88,19 +89,18 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     }
 }
 
-void min(const Student* students, size_t n_students) {
-    const Student* begin = students;
-    const Student* end = students + n_students;
+void min(span<Student> students) {
+    // const Student* min = students;
 
-    const Student* min = begin;
+    // for (size_t i = 0; i < n_students; i++) {
+    //     const Student* current = &students[i];
 
-    for (begin += 1; begin < end; begin++) {
-        if (begin->id < min->id
-            || (begin->id == min->id
-            && begin->grade < min->grade)) {
-            min = begin;
-        }
-    }
+    //     if (current->id < min->id
+    //         || (current->id == min->id
+    //         && current->grade < min->grade)) {
+    //         min = current;
+    //     }
+    // }
     
 }
 
