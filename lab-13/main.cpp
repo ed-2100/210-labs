@@ -10,21 +10,15 @@ using namespace std;
 struct Student {
     uint32_t id;
     float grade;
-
-    bool operator<(const Student& rhs) {
-        return id < rhs.id || (id == rhs.id && grade < rhs.grade);
-    }
-
-    bool operator>(const Student& rhs) {
-        return id > rhs.id || (id == rhs.id && grade > rhs.grade);
-    }
 };
 
 void read_grades(vector<Student> &students, filesystem::path file);
 
-void sort(Student* arr, size_t n_arr);
+void sort(span<Student> students);
 
 void write_grades(const vector<Student> &students, filesystem::path file);
+
+size_t min_score(span<Student> students);
 
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
@@ -40,7 +34,7 @@ int main(int argc, const char** argv) {
 
     cout << "Read " << students.size() << " student records\n" << flush;
 
-    sort(students.data(), students.size());
+    sort(students);
 
     cout << "Sorted results written to " << sorted_grades_path.filename() << "\n\n" << flush;
 
@@ -48,7 +42,9 @@ int main(int argc, const char** argv) {
 
     cout << "--- Summary Statistics ---\n" << flush; 
     
-    cout << "" << *min_element(students.begin(), students.end()).base();
+    auto min = min_score(students);
+
+    cout << "Minimum Score: " << students[min].grade << " (Student ID: " << students[min].id << ")\n";
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
@@ -77,15 +73,21 @@ void read_grades(vector<Student> &students, filesystem::path file) {
     }
 }
 
-void sort(Student* arr, size_t n_arr) {
-    if (n_arr < 2) return;
+void sort(span<Student> students) {
+    if (students.size() < 2) return;
     
-    for (size_t i = 0; i < n_arr - 1; i++) {
-        Student& current = arr[i];
+    for (size_t i = 0; i < students.size() - 1; i++) {
+        size_t min = i;
 
-        // if (&current != min) {
-        //     swap(current, *min);
-        // }
+        for (size_t j = i + 1; j < students.size(); j++) {
+            if (students[j].id < students[min].id) {
+                min = j;
+            }
+        }
+
+        if (i != min) {
+            swap(students[i], students[min]);
+        }
     }
 }
 
@@ -97,13 +99,11 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     }
 }
 
-size_t min(span<Student> students) {
+size_t min_score(span<Student> students) {
     size_t min = 0;
 
     for (size_t i = 1; i < students.size(); i++) {
-        if (students[i].id < students[min].id
-            || (students[i].id == students[min].id
-            && students[i].grade < students[min].grade)) {
+        if (students[i].grade < students[min].grade) {
             min = i;
         }
     }
@@ -111,13 +111,11 @@ size_t min(span<Student> students) {
     return min;
 }
 
-size_t max(span<Student> students) {
+size_t max_score(span<Student> students) {
     size_t max = 0;
 
     for (size_t i = 1; i < students.size(); i++) {
-        if (students[i].id > students[max].id
-            || (students[i].id == students[max].id
-            && students[i].grade > students[max].grade)) {
+        if (students[i].grade > students[max].grade) {
             max = i;
         }
     }
