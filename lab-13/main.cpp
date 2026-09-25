@@ -38,9 +38,7 @@ int main(int argc, const char** argv) {
 
     write_grades(students, sorted_grades_path);
 
-    cout << "--- Summary Statistics ---\n" << flush;
-
-    
+    cout << "--- Summary Statistics ---\n" << flush;   
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {

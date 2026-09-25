@@ -1,4 +1,4 @@
 # YAML
 
 CompileFlags:
-  CompilationDatabase: "dbuild"
+  CompilationDatabase: "./build/"
