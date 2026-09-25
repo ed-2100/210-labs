@@ -87,19 +87,16 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     }
 }
 
-void min(span<Student> students) {
-    // const Student* min = students;
+ min(const span<Student> students) {
+    const Student* min = students.data();
 
-    // for (size_t i = 0; i < n_students; i++) {
-    //     const Student* current = &students[i];
-
-    //     if (current->id < min->id
-    //         || (current->id == min->id
-    //         && current->grade < min->grade)) {
-    //         min = current;
-    //     }
-    // }
-    
+    for (const Student& student : students) {
+        if (student.id < min->id
+            || (student.id == min->id
+            && student.grade < min->grade)) {
+            min = &student;
+        }
+    }
 }
 
 void max() {
