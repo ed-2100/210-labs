@@ -40,10 +40,24 @@ int main(int argc, const char** argv) {
         });
     }
 
-
 }
 
 template <typename T>
-void sort(T* arr, size_t n, ) {
+void sort(T* arr, size_t n_arr) {
+    for (size_t i = 0; i < n_arr; i++) {
+        T* current = &arr[i]
+        T* max = cur;
 
+        for (size_t j = i + 1; j++) {
+            T& tmp = arr[j];
+
+            if (tmp > *max) {
+                max = &tmp;
+            }
+        }
+
+        if (max != current) {
+            swap(*current, *max);
+        }
+    }
 }
