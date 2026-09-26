@@ -163,7 +163,7 @@ int main(int argc, const char** argv) {
          << score_stddev(students)
          << endl;
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
