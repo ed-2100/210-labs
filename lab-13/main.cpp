@@ -4,25 +4,28 @@
 #include <iostream>
 #include <algorithm>
 #include <span>
+#include <cmath>
 
 using namespace std;
 
+// The `Student` struct.
+//
+// Holds information about a student.
 struct Student {
     uint32_t id;
     float grade;
 };
 
+
 void read_grades(vector<Student> &students, filesystem::path file);
 
 void write_grades(const vector<Student> &students, filesystem::path file);
 
-size_t min_score(span<Student> students);
-
-size_t max_score(span<Student> students);
-
 float mean_score(span<Student> students);
 
 float median_score(span<Student> students);
+
+float score_stddev(span<Student> students);
 
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
@@ -52,7 +55,13 @@ int main(int argc, const char** argv) {
 
     cout << "--- Summary Statistics ---\n" << flush; 
     
-    Student& min = students[min_score(students)];
+    Student& min = *min_element(
+        students.begin(),
+        students.end(),
+        [](const Student& a, const Student& b) {
+            return a.grade < b.grade;
+        }
+    );
 
     cout << "Minimum Score: "
          << min.grade
@@ -60,7 +69,13 @@ int main(int argc, const char** argv) {
          << min.id
          << ")\n";
 
-    Student& max = students[max_score(students)];
+    Student& max = *max_element(
+        students.begin(),
+        students.end(),
+        [](const Student& a, const Student& b) {
+            return a.grade < b.grade;
+        }
+    );
 
     cout << "Maximum Score: "
          << max.grade
@@ -78,6 +93,12 @@ int main(int argc, const char** argv) {
 
     cout << "Median Score: "
          << median
+         << '\n';
+
+    float stddev = score_stddev(students);
+
+    cout << "Standard Deviation: "
+         << stddev
          << '\n';
 }
 
@@ -115,30 +136,6 @@ void write_grades(const vector<Student> &students, filesystem::path file) {
     }
 }
 
-size_t min_score(span<Student> students) {
-    size_t min = 0;
-
-    for (size_t i = 1; i < students.size(); i++) {
-        if (students[i].grade < students[min].grade) {
-            min = i;
-        }
-    }
-
-    return min;
-}
-
-size_t max_score(span<Student> students) {
-    size_t max = 0;
-
-    for (size_t i = 1; i < students.size(); i++) {
-        if (students[i].grade > students[max].grade) {
-            max = i;
-        }
-    }
-
-    return max;
-}
-
 float mean_score(span<Student> students) {
     float sum = 0;
 
@@ -174,5 +171,15 @@ float median_score(span<Student> students) {
 float score_stddev(span<Student> students) {
     float mean = mean_score(students);
 
-    float 
+    float variance = 0;
+
+    for (const Student& student : students) {
+        float difference = student.grade - mean;
+
+        variance += difference * difference;
+    }
+
+    variance /= students.size();
+
+    return sqrt(variance);
 }
