@@ -223,15 +223,15 @@ bool write_grades(span<const Student> students, filesystem::path file) {
 }
 
 float mean_score(span<const Student> students) {
-    float sum = 0;
+    float mean = 0;
 
     for (const Student& student : students) {
-        sum += student.grade;
+        mean += student.grade;
     }
 
-    sum /= students.size();
+    mean /= students.size();
 
-    return sum;
+    return mean;
 }
 
 void print_median(span<const Student> students) {
