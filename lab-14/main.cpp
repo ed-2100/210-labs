@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <iostream>
+#include <format>
 
 using namespace std;
 
@@ -11,6 +12,12 @@ private:
     uint8_t m_b;
 
 public:
+    Color(uint8_t r, uint8_t g, uint8_t b) {
+        m_r = r;
+        m_g = g;
+        m_b = b;
+    }
+
     uint8_t get_r();
     uint8_t get_g();
     uint8_t get_b();
@@ -20,15 +27,16 @@ public:
     void set_b(uint8_t value);
 
     void print() {
-        cout << "("  << m_r
-             << ", " << m_g
-             << ", " << m_b
-             << ")";
+        cout << format("({}, {}, {})", m_r, m_g, m_b);
     }
 };
 
 int main() {
-    Color {}
+    cout << "Here is a test color: ";
+
+    Color(1,2,3).print();
+
+    cout << endl;
 
     return EXIT_SUCCESS;
 }
