@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 14 | Edwin Burwell
+//
+// Note: This code may contain features from newer C++ versions, such as C++23.
+
 #include <cstdlib>
 #include <cstdint>
 #include <iostream>
@@ -7,19 +11,16 @@
 
 using namespace std;
 
+// The `Color` class.
+//
+// Holds an 8-bit RGB value.
 class Color {
 private:
-    uint8_t m_r;
-    uint8_t m_g;
-    uint8_t m_b;
+    uint8_t m_r = 0;
+    uint8_t m_g = 0;
+    uint8_t m_b = 0;
 
 public:
-    Color(uint8_t r, uint8_t g, uint8_t b) {
-        m_r = r;
-        m_g = g;
-        m_b = b;
-    }
-
     uint8_t get_r();
     uint8_t get_g();
     uint8_t get_b();
@@ -28,11 +29,18 @@ public:
     void set_g(uint8_t value);
     void set_b(uint8_t value);
 
-    void print() {
-        cout << format("({}, {}, {})", m_r, m_g, m_b);
-    }
+    // Prints the object's color value to `stdout`.
+    void print();
 };
 
+// The main function.
+//
+// Instantiates multiple `Color` objects with random data
+// and calls each object's `print()` method.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     vector<Color> colors;
 
@@ -44,11 +52,13 @@ int main() {
     colors.reserve(colors.size() + n_color);
 
     for (size_t i = 0; i < n_color; i++) {
-        colors.push_back(Color {
-            static_cast<uint8_t>(dist_value(gen)),
-            static_cast<uint8_t>(dist_value(gen)),
-            static_cast<uint8_t>(dist_value(gen)),
-        });
+        Color color;
+
+        color.set_r(static_cast<uint8_t>(dist_value(gen)));
+        color.set_g(static_cast<uint8_t>(dist_value(gen)));
+        color.set_b(static_cast<uint8_t>(dist_value(gen)));
+
+        colors.push_back(move(color));
     }
 
     cout << format("List of {} colors:\n", n_color);
@@ -85,4 +95,8 @@ void Color::set_g(uint8_t value) {
 
 void Color::set_b(uint8_t value) {
     m_b = value;
+}
+
+void Color::print() {
+    cout << format("({}, {}, {})", m_r, m_g, m_b);
 }
