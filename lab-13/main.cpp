@@ -91,13 +91,13 @@ int main(int argc, const char** argv) {
     try {
         read_grades(students, grades_path);
     } catch (const ifstream::failure& e) {
-        cerr << "Failed to read from " << grades_path << "\n" << flush;
+        cerr << "Failed to read from " << grades_path << endl;
         return EXIT_FAILURE;
     }
 
-    cout << "Read " << students.size() << " student records\n" << flush;
+    cout << "Read " << students.size() << " student records" << endl;
 
-    sort(
+    selection_sort(
         students.begin(),
         students.end(),
         [](const Student& a, const Student& b) {
@@ -105,16 +105,16 @@ int main(int argc, const char** argv) {
         }
     );
 
-    cout << "Sorted results written to " << sorted_grades_path.filename().string() << "\n\n" << flush;
+    cout << "Sorted results written to " << sorted_grades_path.filename().string() << '\n' << endl;
 
     try {
         write_grades(students, sorted_grades_path);
     } catch (const ifstream::failure& e) {
-        cerr << "Failed to write to " << sorted_grades_path << "\n" << flush;
+        cerr << "Failed to write to " << sorted_grades_path << endl;
         return EXIT_FAILURE;
     }
 
-    cout << "--- Summary Statistics ---\n" << flush; 
+    cout << "--- Summary Statistics ---" << endl; 
     
     Student& min = *min_element(
         students.begin(),
@@ -128,7 +128,7 @@ int main(int argc, const char** argv) {
          << min.grade
          << " (Student ID: "
          << min.id
-         << ")\n" << flush;
+         << ")" << endl;
 
     Student& max = *max_element(
         students.begin(),
@@ -146,13 +146,13 @@ int main(int argc, const char** argv) {
 
     cout << "Mean Score: "
          << mean_score(students)
-         << '\n' << flush;
+         << endl;
 
     print_median(students);
 
     cout << "Standard Deviation: "
          << score_stddev(students)
-         << '\n' << flush;
+         << endl;
 
     return EXIT_SUCCESS;
 }
@@ -234,7 +234,7 @@ void print_median(span<const Student> students) {
              << temp[middle + 1].id;
     }
 
-    cout << ")\n";
+    cout << ")" << endl;
 }
 
 float score_stddev(span<const Student> students) {
@@ -251,4 +251,21 @@ float score_stddev(span<const Student> students) {
     variance /= students.size();
 
     return sqrt(variance);
+}
+
+template <typename T, typename Comparison>
+void selection_sort(span<T> students, Comparison compare) {
+    for (size_t i = 0; i < students.size() - 1; i++) {
+        size_t x = i;
+
+        for (size_t j = i + 1; j < students.size(); j++) {
+            if (compare(students[j], students[x])) {
+                x = j;
+            }
+        }
+
+        if (x != i) {
+            swap(students[x], students[i])
+        }
+    }
 }
