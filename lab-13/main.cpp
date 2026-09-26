@@ -65,6 +65,16 @@ void print_median(span<const Student> students);
 // The standard deviation of the grades.
 float score_stddev(span<const Student> students);
 
+// Sorts `students` based on `compare` in ascending order,
+// where compare is the less-than operation.
+//
+// ### Arguments
+//
+// - `students`: The student data.
+// - `compare`: The comparison function.
+template <typename Comparison>
+void selection_sort(span<Student> students, Comparison compare);
+
 // The main function.
 //
 // Loads grades from a file, sorts them, writes them to
@@ -98,8 +108,7 @@ int main(int argc, const char** argv) {
     cout << "Read " << students.size() << " student records" << endl;
 
     selection_sort(
-        students.begin(),
-        students.end(),
+        students,
         [](const Student& a, const Student& b) {
             return a.id < b.id;
         }
@@ -253,8 +262,8 @@ float score_stddev(span<const Student> students) {
     return sqrt(variance);
 }
 
-template <typename T, typename Comparison>
-void selection_sort(span<T> students, Comparison compare) {
+template <typename Comparison>
+void selection_sort(span<Student> students, Comparison compare) {
     for (size_t i = 0; i < students.size() - 1; i++) {
         size_t x = i;
 
@@ -265,7 +274,7 @@ void selection_sort(span<T> students, Comparison compare) {
         }
 
         if (x != i) {
-            swap(students[x], students[i])
+            swap(students[x], students[i]);
         }
     }
 }
