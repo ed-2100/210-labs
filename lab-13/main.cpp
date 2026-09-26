@@ -1,6 +1,6 @@
 // COMSC-210 | Lab 13 | Edwin Burwell
 //
-// Note: This code contains features from C++23 and below.
+// Note: This code may contain features from newer C++ versions, such as C++23.
 
 #include <filesystem>
 #include <fstream>
@@ -45,14 +45,14 @@ void write_grades(span<const Student> students, filesystem::path file);
 // ### Returns
 //
 // The mean grade.
-float mean_score(span<Student> students);
+float mean_score(span<const Student> students);
 
 // Calculates the median grade of `students` and prints it to `stdout`.
 //
 // ### Arguments
 //
 // - `students`: The student data.
-void print_median(span<Student> students);
+void print_median(span<const Student> students);
 
 // Calculates the standard deviation of the grades in `students`.
 //
@@ -63,7 +63,7 @@ void print_median(span<Student> students);
 // ### Returns
 //
 // The standard deviation of the grades.
-float score_stddev(span<Student> students);
+float score_stddev(span<const Student> students);
 
 // The main function.
 //
@@ -91,7 +91,7 @@ int main(int argc, const char** argv) {
     try {
         read_grades(students, grades_path);
     } catch (const ifstream::failure& e) {
-        cerr << "Failed to read from " << grades_path << "\n";
+        cerr << "Failed to read from " << grades_path << "\n" << flush;
         return EXIT_FAILURE;
     }
 
@@ -110,7 +110,8 @@ int main(int argc, const char** argv) {
     try {
         write_grades(students, sorted_grades_path);
     } catch (const ifstream::failure& e) {
-        cerr << "Failed to write to " << sorted_grades_path << "\n";
+        cerr << "Failed to write to " << sorted_grades_path << "\n" << flush;
+        return EXIT_FAILURE;
     }
 
     cout << "--- Summary Statistics ---\n" << flush; 
@@ -127,7 +128,7 @@ int main(int argc, const char** argv) {
          << min.grade
          << " (Student ID: "
          << min.id
-         << ")\n";
+         << ")\n" << flush;
 
     Student& max = *max_element(
         students.begin(),
@@ -141,17 +142,17 @@ int main(int argc, const char** argv) {
          << max.grade
          << " (Student ID: "
          << max.id
-         << ")\n";
+         << ")" << endl;
 
     cout << "Mean Score: "
          << mean_score(students)
-         << '\n';
+         << '\n' << flush;
 
     print_median(students);
 
     cout << "Standard Deviation: "
          << score_stddev(students)
-         << '\n';
+         << '\n' << flush;
 
     return EXIT_SUCCESS;
 }
@@ -190,7 +191,7 @@ void write_grades(span<const Student> students, filesystem::path file) {
     }
 }
 
-float mean_score(span<Student> students) {
+float mean_score(span<const Student> students) {
     float sum = 0;
 
     for (const Student& student : students) {
@@ -202,7 +203,7 @@ float mean_score(span<Student> students) {
     return sum;
 }
 
-void print_median(span<Student> students) {
+void print_median(span<const Student> students) {
     vector<Student> temp(students.begin(), students.end());
 
     sort(
@@ -236,7 +237,7 @@ void print_median(span<Student> students) {
     cout << ")\n";
 }
 
-float score_stddev(span<Student> students) {
+float score_stddev(span<const Student> students) {
     float mean = mean_score(students);
 
     float variance = 0;
