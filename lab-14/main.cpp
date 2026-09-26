@@ -21,15 +21,23 @@ private:
     uint8_t m_b = 0;
 
 public:
+    // ===============================
+    // ===== Getters and Setters =====
+    // ===============================
+
     uint8_t get_r();
     uint8_t get_g();
     uint8_t get_b();
 
-    void set_r(uint8_t value);
-    void set_g(uint8_t value);
-    void set_b(uint8_t value);
+    void set_r(uint8_t r);
+    void set_g(uint8_t g);
+    void set_b(uint8_t b);
 
-    // Prints the object's color value to `stdout`.
+    // =========================
+    // ===== Class Methods =====
+    // =========================
+
+    // Prints the object's RGB value to `stdout`.
     void print();
 };
 
@@ -85,16 +93,16 @@ uint8_t Color::get_b() {
     return m_b;
 }
 
-void Color::set_r(uint8_t value) {
-    m_r = value;
+void Color::set_r(uint8_t r) {
+    m_r = r;
 }
 
-void Color::set_g(uint8_t value) {
-    m_g = value;
+void Color::set_g(uint8_t g) {
+    m_g = g;
 }
 
-void Color::set_b(uint8_t value) {
-    m_b = value;
+void Color::set_b(uint8_t b) {
+    m_b = b;
 }
 
 void Color::print() {
