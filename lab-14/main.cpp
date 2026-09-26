@@ -77,7 +77,7 @@ int main() {
         cout << '\n';
     }
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
 
 
