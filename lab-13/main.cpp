@@ -26,7 +26,11 @@ struct Student {
 //
 // - `students`: The student data.
 // - `file`: The path of the file to read from.
-void read_grades(vector<Student> &students, filesystem::path file);
+//
+// ### Returns
+//
+// A boolean, which is true on success.
+bool read_grades(vector<Student> &students, filesystem::path file);
 
 // Writes grades from `students` into a `file`.
 //
@@ -34,7 +38,11 @@ void read_grades(vector<Student> &students, filesystem::path file);
 //
 // - `students`: The student data.
 // - `file`: The path of the file to write to.
-void write_grades(span<const Student> students, filesystem::path file);
+//
+// ### Returns
+//
+// A boolean, which is true on success.
+bool write_grades(span<const Student> students, filesystem::path file);
 
 // Calculates the mean grade of `students`.
 //
@@ -98,10 +106,8 @@ int main(int argc, const char** argv) {
 
     vector<Student> students;
 
-    try {
-        read_grades(students, grades_path);
-    } catch (const ifstream::failure& e) {
-        cerr << "Failed to read from " << grades_path << endl;
+    if (!read_grades(students, grades_path)) {
+        cerr << "Failed to read grades." << endl;
         return EXIT_FAILURE;
     }
 
@@ -116,10 +122,8 @@ int main(int argc, const char** argv) {
 
     cout << "Sorted results written to " << sorted_grades_path.filename().string() << '\n' << endl;
 
-    try {
-        write_grades(students, sorted_grades_path);
-    } catch (const ifstream::failure& e) {
-        cerr << "Failed to write to " << sorted_grades_path << endl;
+    if (!write_grades(students, sorted_grades_path)) {
+        cerr << "Failed to write grades." << endl;
         return EXIT_FAILURE;
     }
 
@@ -166,10 +170,17 @@ int main(int argc, const char** argv) {
     return EXIT_SUCCESS; // :)
 }
 
-void read_grades(vector<Student> &students, filesystem::path file) {
+bool read_grades(vector<Student> &students, filesystem::path file) {
     students.clear();
 
-    ifstream grades_file(file);
+    ifstream grades_file;
+    
+    grades_file.open(file);
+
+    if (grades_file.fail()) {
+        cerr << "Failed to read from " << file << endl;
+        return false;
+    }
 
     string line;
     string segment;
@@ -190,14 +201,25 @@ void read_grades(vector<Student> &students, filesystem::path file) {
             .grade = grade,
         });
     }
+
+    return true;
 }
 
-void write_grades(span<const Student> students, filesystem::path file) {
-    ofstream grades_file(file, _S_out | _S_trunc);
+bool write_grades(span<const Student> students, filesystem::path file) {
+    ofstream grades_file;
+
+    grades_file.open(file, _S_out | _S_trunc);
+
+    if (grades_file.fail()) {
+        cerr << "Failed to write to " << file << endl;
+        return false;
+    }
 
     for (const Student& student : students) {
         grades_file << student.id << ' ' << student.grade << '\n';
     }
+
+    return true;
 }
 
 float mean_score(span<const Student> students) {
