@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <iostream>
 #include <format>
+#include <vector>
+#include <random>
 
 using namespace std;
 
@@ -32,11 +34,30 @@ public:
 };
 
 int main() {
-    cout << "Here is a test color: ";
+    vector<Color> colors;
 
-    Color(1,2,3).print();
+    mt19937 gen(42);
+    uniform_int_distribution<uint32_t> dist_value(0, 255);
 
-    cout << endl;
+    size_t n_color = 10;
+
+    colors.reserve(colors.size() + n_color);
+
+    for (size_t i = 0; i < n_color; i++) {
+        colors.push_back(Color {
+            static_cast<uint8_t>(dist_value(gen)),
+            static_cast<uint8_t>(dist_value(gen)),
+            static_cast<uint8_t>(dist_value(gen)),
+        });
+    }
+
+    cout << format("List of {} colors:\n", n_color);
+
+    for (size_t i = 0; i < colors.size(); i++) {
+        cout << i + 1 << ": ";
+        colors[i].print();
+        cout << '\n';
+    }
 
     return EXIT_SUCCESS;
 }
