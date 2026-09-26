@@ -41,20 +41,28 @@ void write_grades(span<const Student> students, filesystem::path file);
 // ### Arguments
 //
 // - `students`: The student data.
+//
+// ### Returns
+//
+// The mean grade.
 float mean_score(span<Student> students);
 
-// Calculates the median grade of `students`.
+// Calculates the median grade of `students` and prints it to `stdout`.
 //
 // ### Arguments
 //
 // - `students`: The student data.
-float median_score(span<Student> students);
+void print_median(span<Student> students);
 
 // Calculates the standard deviation of the grades in `students`.
 //
 // ### Arguments
 //
 // - `students`: The student data.
+//
+// ### Returns
+//
+// The standard deviation of the grades.
 float score_stddev(span<Student> students);
 
 // The main function.
@@ -132,11 +140,7 @@ int main(int argc, const char** argv) {
          << mean
          << '\n';
 
-    float median = median_score(students);
-
-    cout << "Median Score: "
-         << median
-         << '\n';
+    print_median(students);
 
     float stddev = score_stddev(students);
 
@@ -193,23 +197,36 @@ float mean_score(span<Student> students) {
     return sum;
 }
 
-float median_score(span<Student> students) {
-    vector<float> grades;
+void print_median(span<Student> students) {
+    vector<Student> students_temp(students.begin(), students.end());
 
-    grades.reserve(students.size());
-
-    for (const Student& student : students) {
-        grades.push_back(student.grade);
-    }
-
-    sort(grades.begin(), grades.end());
+    sort(students_temp.begin(),
+         students_temp.end(),
+        [](const Student& a, const Student& b) {
+            return a.grade < b.grade;
+        }
+    );
 
     size_t middle = students.size() >> 1;
 
+    cout << "Median Score: ";
+
     if (students.size() & 0x1) {
-        return grades[middle];
+        float median = grades[middle];
+
+        cout << median
+             << " (Student ID: "
+             << middle
+             << ")\n";
     } else {
-        return (grades[middle] + grades[middle + 1]) / 2;
+        float median = (grades[middle] + grades[middle + 1]) / 2;
+
+        cout << median
+             << " (Lower Student ID: "
+             << middle
+             << " / Higher Student ID: "
+             << middle + 1
+             << ")\n";
     }
 }
 
