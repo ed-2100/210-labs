@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 13 | Edwin Burwell
+//
+// Note: This code contains features from C++23 and below.
+
 #include <filesystem>
 #include <fstream>
 #include <vector>
@@ -16,17 +20,56 @@ struct Student {
     float grade;
 };
 
-
+// Reads grades from a `file` into `students`.
+//
+// ### Arguments
+//
+// - `students`: The student data.
+// - `file`: The path of the file to read from.
 void read_grades(vector<Student> &students, filesystem::path file);
 
-void write_grades(const vector<Student> &students, filesystem::path file);
+// Writes grades from `students` into a `file`.
+//
+// ### Arguments
+//
+// - `students`: The student data.
+// - `file`: The path of the file to write to.
+void write_grades(span<const Student> students, filesystem::path file);
 
+// Calculates the mean grade of `students`.
+//
+// ### Arguments
+//
+// - `students`: The student data.
 float mean_score(span<Student> students);
 
+// Calculates the median grade of `students`.
+//
+// ### Arguments
+//
+// - `students`: The student data.
 float median_score(span<Student> students);
 
+// Calculates the standard deviation of the grades in `students`.
+//
+// ### Arguments
+//
+// - `students`: The student data.
 float score_stddev(span<Student> students);
 
+// The main function.
+//
+// Loads grades from a file, sorts them, writes them to
+// a new file, and displays statistics about them.
+//
+// ### Arguments
+//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
 
@@ -100,6 +143,8 @@ int main(int argc, const char** argv) {
     cout << "Standard Deviation: "
          << stddev
          << '\n';
+
+    return EXIT_SUCCESS;
 }
 
 void read_grades(vector<Student> &students, filesystem::path file) {
@@ -128,7 +173,7 @@ void read_grades(vector<Student> &students, filesystem::path file) {
     }
 }
 
-void write_grades(const vector<Student> &students, filesystem::path file) {
+void write_grades(span<const Student> students, filesystem::path file) {
     ofstream grades_file(file, _S_out | _S_trunc);
 
     for (const Student& student : students) {
