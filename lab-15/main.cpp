@@ -21,7 +21,7 @@ using namespace std;
 
 // The `Movie` class.
 //
-// Holds an 8-bit RGB value.
+// Holds metadata on a movie.
 class Movie {
 private:
     string m_title;
@@ -101,6 +101,7 @@ int main(int argc, const char** argv) {
 
     if (!read_movies(movies, input_file)) {
         cerr << "Failed to read movies." << endl;
+        return EXIT_FAILURE;
     }
 
     if (movies.size() == 0) {
