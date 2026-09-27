@@ -96,7 +96,7 @@ int main(int argc, const char** argv) {
         movies[i].print();
     }
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
 
 inline const string& Movie::get_title() const noexcept {
