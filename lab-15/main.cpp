@@ -33,30 +33,30 @@ public:
     // ===== Getters and Setters =====
     // ===============================
 
-    const string& get_title() const {
+    constexpr const string& get_title() const {
         return m_title;
     }
 
-    const string& get_year_released() const {
+    constexpr const string& get_year_released() const {
         return m_year_released;
     }
 
-    const string& get_screenwriter() const {
+    constexpr const string& get_screenwriter() const {
         return m_screenwriter;
     }
 
     template <typename T>
-    void set_title(T&& title) {
+    constexpr void set_title(T&& title) {
         m_title = forward<T>(title);
     }
 
     template <typename T>
-    void set_year_released(T&& year_released) {
+    constexpr void set_year_released(T&& year_released) {
         m_year_released = forward<T>(year_released);
     }
 
     template <typename T>
-    void set_screenwriter(T&& screenwriter) {
+    constexpr void set_screenwriter(T&& screenwriter) {
         m_screenwriter = forward<T>(screenwriter);
     }
 
@@ -78,7 +78,18 @@ int main(int argc, const char** argv) {
     filesystem::path input_file = exe_dir / "input.txt";
 
     if (!read_movies(movies, input_file)) {
-        
+        cerr << "Failed to read movies." << endl;
+    }
+
+    if (movies.size() == 0) {
+        return EXIT_SUCCESS;
+    }
+
+    movies[0].print();
+
+    for (size_t i = 1; i < movies.size(); i++) {
+        cout << '\n';
+        movies[i].print();
     }
 }
 
@@ -119,4 +130,13 @@ bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
     }
 
     return true;
+}
+
+void Movie::print() const {
+    cout << format(
+        "Movie: {}\n    Year released: {}\n    Screenwriter: {}",
+        m_title,
+        m_year_released,
+        m_screenwriter
+    );
 }
