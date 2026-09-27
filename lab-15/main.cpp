@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 14 | Edwin Burwell
+// COMSC-210 | Lab 15 | Edwin Burwell
 //
 // Notes:
 //
@@ -64,7 +64,7 @@ public:
     // ===== Class Methods =====
     // =========================
 
-    // Prints the object's RGB value to `stdout`.
+    // Prints the object's movie metadata to `stdout`.
     void print() const;
 };
 
@@ -72,7 +72,7 @@ public:
 //
 // ### Arguments
 //
-// - `movies`: The movie .
+// - `movies`: The container holding the metadata entries.
 // - `file`: The path of the file to read from.
 //
 // ### Returns
@@ -80,6 +80,18 @@ public:
 // A boolean, which is true on success.
 bool read_movies(vector<Movie>& movies, const filesystem::path& file);
 
+// The main function.
+//
+// Loads movie metadata entries from a file and prints them to `stdout`.
+//
+// ### Arguments
+//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     vector<Movie> movies;
 
@@ -101,6 +113,8 @@ int main(int argc, const char** argv) {
         cout << '\n';
         movies[i].print();
     }
+
+    return EXIT_SUCCESS;
 }
 
 bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
@@ -122,13 +136,15 @@ bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
     while (getline(movies_file, line)) {
         switch (state) {
             case 0:
-                movie.set_title(move(line));
+                // Not sure why this is backwards, but it's what the
+                // assignment asks for...
+                movie.set_screenwriter(move(line));
                 break;
             case 1:
                 movie.set_year_released(move(line));
                 break;
             case 2:
-                movie.set_screenwriter(move(line));
+                movie.set_title(move(line));
                 movies.push_back(move(movie));
         }
 
