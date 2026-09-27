@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <string>
+#include <utility>
 
 using namespace std;
 
@@ -31,26 +32,43 @@ public:
     // ===== Getters and Setters =====
     // ===============================
 
-    const string& get_title() const;
-    const string& get_year_released() const;
-    const string& get_screenwriter() const;
-
-    void set_title(string&& title) {
-        m_title = title;
+    const string& get_title() const {
+        return m_title;
     }
 
-    void set_year_released(string&& year_released) {
-        m_year_released = year_released;
+    const string& get_year_released() const {
+        return m_year_released;
     }
 
-    void set_screenwriter(string screenwriter);
+    const string& get_screenwriter() const {
+        return m_screenwriter;
+    }
+
+    template <typename T>
+    void set_title(T&& title) {
+        m_title = forward<T>(title);
+    }
+
+    template <typename T>
+    void set_year_released(T&& year_released) {
+        m_year_released = forward<T>(year_released);
+    }
+
+    template <typename T>
+    void set_screenwriter(T&& screenwriter) {
+        m_screenwriter = forward<T>(screenwriter);
+    }
 
     // =========================
     // ===== Class Methods =====
     // =========================
 
     // Prints the object's RGB value to `stdout`.
-    void print();
+    void print() const;
 };
 
-int main()
+bool read_movies
+
+int main(int argc, const char** argv) {
+
+}
