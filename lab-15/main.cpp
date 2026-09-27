@@ -33,32 +33,13 @@ public:
     // ===== Getters and Setters =====
     // ===============================
 
-    constexpr const string& get_title() const noexcept {
-        return m_title;
-    }
+    const string& get_title() const noexcept;
+    const string& get_year_released() const noexcept;
+    const string& get_screenwriter() const noexcept;
 
-    constexpr const string& get_year_released() const noexcept {
-        return m_year_released;
-    }
-
-    constexpr const string& get_screenwriter() const noexcept {
-        return m_screenwriter;
-    }
-
-    template <typename T>
-    constexpr void set_title(T&& title) noexcept {
-        m_title = forward<T>(title);
-    }
-
-    template <typename T>
-    constexpr void set_year_released(T&& year_released) noexcept {
-        m_year_released = forward<T>(year_released);
-    }
-
-    template <typename T>
-    constexpr void set_screenwriter(T&& screenwriter) noexcept {
-        m_screenwriter = forward<T>(screenwriter);
-    }
+    void set_title(string title) noexcept;
+    void set_year_released(string year_released) noexcept;
+    void set_screenwriter(string screenwriter) noexcept;
 
     // =========================
     // ===== Class Methods =====
@@ -116,6 +97,30 @@ int main(int argc, const char** argv) {
     }
 
     return EXIT_SUCCESS;
+}
+
+inline const string& Movie::get_title() const noexcept {
+    return m_title;
+}
+
+inline const string& Movie::get_year_released() const noexcept {
+    return m_year_released;
+}
+
+inline const string& Movie::get_screenwriter() const noexcept {
+    return m_screenwriter;
+}
+
+inline void Movie::set_title(string title) noexcept {
+    m_title = move(title);
+}
+
+inline void Movie::set_year_released(string year_released) noexcept {
+    m_year_released = move(year_released);
+}
+
+inline void Movie::set_screenwriter(string screenwriter) noexcept {
+    m_screenwriter = move(screenwriter);
 }
 
 bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
