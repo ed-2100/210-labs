@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <string>
 #include <utility>
+#include <fstream>
 
 using namespace std;
 
@@ -67,8 +68,55 @@ public:
     void print() const;
 };
 
-bool read_movies
+bool read_movies(vector<Movie>& movies, const filesystem::path& file);
 
 int main(int argc, const char** argv) {
+    vector<Movie> movies;
 
+    filesystem::path exe_file(argv[0]);
+    filesystem::path exe_dir = exe_file.parent_path();
+    filesystem::path input_file = exe_dir / "input.txt";
+
+    if (!read_movies(movies, input_file)) {
+        
+    }
+}
+
+bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
+    movies.clear();
+
+    ifstream movies_file;
+    
+    movies_file.open(file);
+
+    if (movies_file.fail()) {
+        cerr << "Failed to read from " << file << endl;
+        return false;
+    }
+
+    size_t state = 0;
+    string line;
+    Movie movie;
+
+    while (getline(movies_file, line)) {
+        switch (state) {
+            case 0:
+                movie.set_title(move(line));
+                break;
+            case 1:
+                movie.set_year_released(move(line));
+                break;
+            case 2:
+                movie.set_screenwriter(move(line));
+                movies.push_back(move(movie));
+        }
+
+        state += 1;
+
+        if (state > 2) {
+            state = 0;
+        }
+    }
+
+    return true;
 }
