@@ -33,30 +33,30 @@ public:
     // ===== Getters and Setters =====
     // ===============================
 
-    constexpr const string& get_title() const {
+    constexpr const string& get_title() const noexcept {
         return m_title;
     }
 
-    constexpr const string& get_year_released() const {
+    constexpr const string& get_year_released() const noexcept {
         return m_year_released;
     }
 
-    constexpr const string& get_screenwriter() const {
+    constexpr const string& get_screenwriter() const noexcept {
         return m_screenwriter;
     }
 
     template <typename T>
-    constexpr void set_title(T&& title) {
+    constexpr void set_title(T&& title) noexcept {
         m_title = forward<T>(title);
     }
 
     template <typename T>
-    constexpr void set_year_released(T&& year_released) {
+    constexpr void set_year_released(T&& year_released) noexcept {
         m_year_released = forward<T>(year_released);
     }
 
     template <typename T>
-    constexpr void set_screenwriter(T&& screenwriter) {
+    constexpr void set_screenwriter(T&& screenwriter) noexcept {
         m_screenwriter = forward<T>(screenwriter);
     }
 
@@ -68,6 +68,16 @@ public:
     void print() const;
 };
 
+// Reads movie metadata entries from a `file` into `movies`.
+//
+// ### Arguments
+//
+// - `movies`: The movie .
+// - `file`: The path of the file to read from.
+//
+// ### Returns
+//
+// A boolean, which is true on success.
 bool read_movies(vector<Movie>& movies, const filesystem::path& file);
 
 int main(int argc, const char** argv) {
@@ -134,7 +144,7 @@ bool read_movies(vector<Movie>& movies, const filesystem::path& file) {
 
 void Movie::print() const {
     cout << format(
-        "Movie: {}\n    Year released: {}\n    Screenwriter: {}",
+        "Movie: {}\n    Year released: {}\n    Screenwriter: {}\n",
         m_title,
         m_year_released,
         m_screenwriter
