@@ -86,8 +86,6 @@ int main() {
     for (size_t i = 0; i < n_color; i++) {
         Color color;
         
-        size_t idx = dist_idx(gen);
-
         switch (i % 4) {
             case 0:
                 color = Color();
@@ -112,7 +110,7 @@ int main() {
                 break;
         }
 
-        colors.push_back({move(color), MESSAGES[idx]});
+        colors.push_back({move(color), MESSAGES[i % 4]});
     }
 
     cout << format("\nList of {} colors:\n", n_color);
