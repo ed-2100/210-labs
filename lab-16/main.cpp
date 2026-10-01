@@ -65,53 +65,44 @@ public:
 //
 // A signed integer value, where `0` means success.
 int main() {
-    vector<Color> colors;
+    vector<tuple<Color, const char*>> colors;
 
     mt19937 gen(42);
     uniform_int_distribution<uint32_t> dist_value(0, 255);
+    uniform_int_distribution<uint32_t> dist_idx(0, 3);
 
     size_t n_color = 10;
+
+    constexpr const char* MESSAGES[] = {
+        "default\0",
+        "one parameter partial\0",
+        "two parameter partial\0",
+        "full\0"
+    };
 
     colors.reserve(colors.size() + n_color);
 
     for (size_t i = 0; i < n_color; i++) {
         Color color;
-
-        cout << format("Initializing object {} with ", i + 1);
-
-        size_t idx = i % 9;
+        
+        size_t idx = dist_idx(gen);
 
         switch (idx) {
             case 0:
-                break;
-            case 1:
-                break;
-            case 2 ... 8:
-                break;
-        }
-
-        switch (idx) {
-            case 0:
-                cout << "default";
                 color = Color();
                 break;
             case 1:
-                cout << "partial w/ 1";
                 color = Color(
-                    static_cast<uint8_t>(dist_value(gen)),
                     static_cast<uint8_t>(dist_value(gen))
                 );
                 break;
             case 2:
-                cout << "partial w/ 2";
                 color = Color(
                     static_cast<uint8_t>(dist_value(gen)),
                     static_cast<uint8_t>(dist_value(gen))
-
                 );
                 break;
             case 3:
-                cout << "full";
                 color = Color(
                     static_cast<uint8_t>(dist_value(gen)),
                     static_cast<uint8_t>(dist_value(gen)),
@@ -120,20 +111,14 @@ int main() {
                 break;
         }
 
-        cout << " constructor...\n";
-
-        // color.set_r(static_cast<uint8_t>(dist_value(gen)));
-        // color.set_g(static_cast<uint8_t>(dist_value(gen)));
-        // color.set_b(static_cast<uint8_t>(dist_value(gen)));
-
-        colors.push_back(move(color));
+        colors.emplace_back(move(color), &MESSAGES[idx]);
     }
 
-    cout << format("List of {} colors:\n", n_color);
+    cout << format("\nList of {} colors:\n", n_color);
 
     for (size_t i = 0; i < colors.size(); i++) {
         cout << i + 1 << ": ";
-        colors[i].print();
+        colors[i][1].print();
         cout << '\n';
     }
 
