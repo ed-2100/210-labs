@@ -83,29 +83,40 @@ int main() {
 
         switch (idx) {
             case 0:
-                cout << "default";
                 break;
             case 1:
-                cout << "full";
                 break;
             case 2 ... 8:
-                cout << "partial";
                 break;
         }
 
         switch (idx) {
             case 0:
+                cout << "default";
                 color = Color();
                 break;
             case 1:
+                cout << "partial w/ 1";
                 color = Color(
-                    static_cast<uint8_t>(dist_value(gen)),
                     static_cast<uint8_t>(dist_value(gen)),
                     static_cast<uint8_t>(dist_value(gen))
                 );
                 break;
             case 2:
-                color = Color(1,b=3);
+                cout << "partial w/ 2";
+                color = Color(
+                    static_cast<uint8_t>(dist_value(gen)),
+                    static_cast<uint8_t>(dist_value(gen))
+
+                );
+                break;
+            case 3:
+                cout << "full";
+                color = Color(
+                    static_cast<uint8_t>(dist_value(gen)),
+                    static_cast<uint8_t>(dist_value(gen)),
+                    static_cast<uint8_t>(dist_value(gen))
+                );
                 break;
         }
 
