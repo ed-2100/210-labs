@@ -8,6 +8,7 @@
 #include <format>
 #include <vector>
 #include <random>
+#include <iomanip>
 
 using namespace std;
 
@@ -53,7 +54,7 @@ public:
     // =========================
 
     // Prints the object's RGB value to `stdout`.
-    void print();
+    void print() const;
 };
 
 // The main function.
@@ -111,15 +112,25 @@ int main() {
                 break;
         }
 
-        colors.emplace_back(move(color), &MESSAGES[idx]);
+        colors.push_back({move(color), MESSAGES[idx]});
     }
 
     cout << format("\nList of {} colors:\n", n_color);
 
     for (size_t i = 0; i < colors.size(); i++) {
-        cout << i + 1 << ": ";
-        colors[i][1].print();
-        cout << '\n';
+        const auto& [color, msg] = colors[i];
+
+        cout << left
+             << "| "
+             << setw(2) << i + 1
+             << " | "
+             << setw(15);
+
+        color.print();
+
+        cout << " | "
+             << msg
+             << " |\";
     }
 
     return EXIT_SUCCESS; // :)
@@ -150,6 +161,6 @@ void Color::set_b(uint8_t b) {
     m_b = b;
 }
 
-void Color::print() {
+void Color::print() const {
     cout << format("({}, {}, {})", m_r, m_g, m_b);
 }
