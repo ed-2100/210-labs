@@ -76,8 +76,8 @@ int main() {
 
     constexpr const char* MESSAGES[] = {
         "default\0",
-        "one parameter partial\0",
-        "two parameter partial\0",
+        "1 param\0",
+        "2 params\0",
         "full\0"
     };
 
@@ -88,7 +88,7 @@ int main() {
         
         size_t idx = dist_idx(gen);
 
-        switch (idx) {
+        switch (i % 4) {
             case 0:
                 color = Color();
                 break;
@@ -121,16 +121,13 @@ int main() {
         const auto& [color, msg] = colors[i];
 
         cout << left
-             << "| "
-             << setw(2) << i + 1
-             << " | "
+             << setw(4) << format("{}: ", i + 1)
+             << setw(9) << msg
              << setw(15);
 
         color.print();
 
-        cout << " | "
-             << msg
-             << " |\";
+        cout << '\n';
     }
 
     return EXIT_SUCCESS; // :)
