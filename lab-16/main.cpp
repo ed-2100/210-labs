@@ -22,7 +22,7 @@ private:
     uint8_t m_b;
 
 public:
-    // Default, full, and partial constructor.
+    // Default, partial, and full constructor.
     //
     // ### Arguments
     //
@@ -59,8 +59,9 @@ public:
 
 // The main function.
 //
-// Instantiates multiple `Color` objects with random data
-// and calls each object's `print()` method.
+// Instantiates multiple `Color` objects with random
+// data using various constructors and calls each
+// object's `print()` method.
 //
 // ### Returns
 //
@@ -70,7 +71,6 @@ int main() {
 
     mt19937 gen(42);
     uniform_int_distribution<uint32_t> dist_value(0, 255);
-    uniform_int_distribution<uint32_t> dist_idx(0, 3);
 
     size_t n_color = 10;
 
@@ -157,5 +157,5 @@ void Color::set_b(uint8_t b) {
 }
 
 void Color::print() const {
-    cout << format("({}, {}, {})", m_r, m_g, m_b);
+    cout << format("({:>3}, {:>3}, {:>3})", m_r, m_g, m_b);
 }
