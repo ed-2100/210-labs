@@ -21,14 +21,18 @@ private:
     uint8_t m_b;
 
 public:
-    Color() {
-        m_r = 0;
-        m_g = 0;
-        m_b = 0;
-    }
-
-    Color(uint8_t r, uint8_t g, uint8_t b)
-      : m_r(r),
+    // Default, full, and partial constructor.
+    //
+    // ### Arguments
+    //
+    // - `r`: The red color channel.
+    // - `g`: The green color channel.
+    // - `b`: The blue color channel.
+    Color(
+        uint8_t r = 0,
+        uint8_t g = 0,
+        uint8_t b = 0
+    ) : m_r(r),
         m_g(g),
         m_b(b) {}
 
@@ -73,9 +77,28 @@ int main() {
     for (size_t i = 0; i < n_color; i++) {
         Color color;
 
-        color.set_r(static_cast<uint8_t>(dist_value(gen)));
-        color.set_g(static_cast<uint8_t>(dist_value(gen)));
-        color.set_b(static_cast<uint8_t>(dist_value(gen)));
+        cout << format("Initializing object {} with ")
+        switch (i % 3) {
+            case 0:
+                cout << format(
+                    "default constructor...\n",
+                    i + 1
+                );
+                color = Color();
+                break;
+            case 1:
+                cout << format(
+                    "Initializing object {} with full constructor...\n",
+                    i + 1
+                );
+                break;
+            case 2:
+                break;
+        }
+
+        // color.set_r(static_cast<uint8_t>(dist_value(gen)));
+        // color.set_g(static_cast<uint8_t>(dist_value(gen)));
+        // color.set_b(static_cast<uint8_t>(dist_value(gen)));
 
         colors.push_back(move(color));
     }
@@ -118,9 +141,4 @@ void Color::set_b(uint8_t b) {
 
 void Color::print() {
     cout << format("({}, {}, {})", m_r, m_g, m_b);
-}
-
-
-int main() {
-
 }
