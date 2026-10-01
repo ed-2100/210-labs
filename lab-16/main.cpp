@@ -77,24 +77,39 @@ int main() {
     for (size_t i = 0; i < n_color; i++) {
         Color color;
 
-        cout << format("Initializing object {} with ")
-        switch (i % 3) {
+        cout << format("Initializing object {} with ", i + 1);
+
+        size_t idx = i % 9;
+
+        switch (idx) {
             case 0:
-                cout << format(
-                    "default constructor...\n",
-                    i + 1
-                );
+                cout << "default";
+                break;
+            case 1:
+                cout << "full";
+                break;
+            case 2 ... 8:
+                cout << "partial";
+                break;
+        }
+
+        switch (idx) {
+            case 0:
                 color = Color();
                 break;
             case 1:
-                cout << format(
-                    "Initializing object {} with full constructor...\n",
-                    i + 1
+                color = Color(
+                    static_cast<uint8_t>(dist_value(gen)),
+                    static_cast<uint8_t>(dist_value(gen)),
+                    static_cast<uint8_t>(dist_value(gen))
                 );
                 break;
             case 2:
+                color = Color(1,b=3);
                 break;
         }
+
+        cout << " constructor...\n";
 
         // color.set_r(static_cast<uint8_t>(dist_value(gen)));
         // color.set_g(static_cast<uint8_t>(dist_value(gen)));
