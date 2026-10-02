@@ -83,6 +83,7 @@ const array<tuple<const char*, MenuState>, 5> options = {
     {"Exit", MenuState::EXIT}
 };
 
+bool parse_int(int& num, const string& input);
 
 int main() {
     List<float> list;
@@ -121,6 +122,42 @@ int main() {
                 break;
             }
             case INSERT: {
+                cout << "Index to insert at: ";
+
+                string buf;
+                getline(cin, buf);
+
+                int choice;
+                if (!parse_int(choice, buf)) {
+                    state = MAIN_MENU;
+                    break;
+                }
+
+                if (choice < 0 || choice > list.size()) {
+                    cout << "Out of range!\n";
+                    state = MAIN_MENU;
+                    break;
+                }
+
+                cout << "Value to insert (float): ";
+
+                getline(cin, buf);
+
+                float choice;
+                try {
+                    choice = stof(buf);
+                } catch (const invalid_argument &e) {
+                    cout << "Not a number!\n";
+                    state = MAIN_MENU;
+                    break;
+                } catch (const out_of_range &e) {
+                    cout << "floats cannot represent that large of a number.\n";
+                    state = MAIN_MENU;
+                    break;
+                }
+                
+                cout << "Value inser"
+
                 break;
             }
             case REMOVE: {
@@ -147,7 +184,7 @@ int main() {
                     break;
                 }
 
-                list.remove(choice);
+                cout << "Removed value: list.remove(choice)\n";
                 break;
             }
             case EXIT: {
