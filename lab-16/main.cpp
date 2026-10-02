@@ -113,7 +113,7 @@ int main() {
         colors.push_back({move(color), MESSAGES[i % 4]});
     }
 
-    cout << format("\nList of {} colors:\n", n_color);
+    cout << format("List of {} colors:\n", n_color);
 
     for (size_t i = 0; i < colors.size(); i++) {
         const auto& [color, msg] = colors[i];
