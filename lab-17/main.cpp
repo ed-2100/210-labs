@@ -11,6 +11,9 @@ template <typename T>
 struct Node;
 
 template <typename T>
+struct ListIterator;
+
+template <typename T>
 struct List {
 private:
     Node<T>* head;
@@ -19,7 +22,7 @@ public:
     List() : head(nullptr) {}
 
     ~List() { // Should be noexcept later on...
-        throw logic_error("Unimplmented!");
+        
     }
 
     template <typename Data>
@@ -31,9 +34,12 @@ public:
     void insert(Data&& data, size_t idx);
 
     T remove(size_t idx);
+
+    ListIterator<T> begin() {}
+    ListIterator<T> end() {}
 };
 
-string float_list_to_string();
+string float_list_to_string() {}
 
 template<typename T>
 struct ListIterator {
@@ -44,7 +50,7 @@ public:
     using value_type = T;
     using reference = T&;
 
-    reference operator*() const;
+    reference operator*();
 
     ListIterator<T>& operator++();
 
@@ -58,7 +64,7 @@ public:
 };
 
 template <typename T>
-ListIterator<T>::reference ListIterator<T>::operator*() const {
+ListIterator<T>::reference ListIterator<T>::operator*() {
     return current->data;
 }
 
@@ -73,9 +79,9 @@ template <typename T>
 template <typename Data>
 void List<T>::push_front(Data&& data) {
     Node<T>* node = new Node<T> {
-        .data = forward<Data>(data);
-        .next = head;
-    }
+        .data = forward<Data>(data),
+        .next = head,
+    };
 
     head = node;
 }
@@ -108,8 +114,8 @@ void List<T>::insert(Data&& data, size_t idx) {
     }
 
     Node<T>* node = new Node<T> {
-        .data = forward<Data>(data);
-        .next = current->next;
+        .data = forward<Data>(data),
+        .next = current->next,
     };
 
     current->next = node;
@@ -138,14 +144,18 @@ T List<T>::remove(size_t idx) {
     return move(data);
 }
 
-string float_list_to_string() {}
-
 // const int SIZE = 7;
 
 // void output(Node *);
 
 int main() {
     vector<float> test;
+    List<float> list;
+
+    for (const float& item : list) {
+
+    }
+    
     *test.begin();
 
     // Node *head = nullptr;
