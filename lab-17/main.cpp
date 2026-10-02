@@ -13,6 +13,7 @@ template <typename T>
 struct List {
 private:
     Node<T>* head;
+    Node<T>* tail; // TODO: Update this in the functions.
 public:
     List() : head(nullptr) {}
 
@@ -38,22 +39,23 @@ struct ListIterator {
 private:
     Node<T>* current;
 public:
-    using difference_type = std::ptrdiff_t;
+    using difference_type = std::ptrdiff_t; // Not sure if I need to change this yet.
     using value_type = T;
 
-    int operator*() const;
+    value_type operator*() const;
 
-    SimpleForwardIterator& operator++();
+    ListIterator<T>& operator++();
 
-    SimpleForwardIterator operator++(int)
-    {
+    ListIterator<T> operator++(int) {
         auto tmp = *this;
         ++*this;
         return tmp;
     }
 
-    bool operator==(const SimpleForwardIterator&) const;
+    bool operator==(const ListIterator<T>&) const;
 };
+
+
 
 template <typename T>
 struct Node {
