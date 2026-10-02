@@ -2,18 +2,23 @@
 //
 // Note: This may contain features from newer C++ versions, such as C++23.
 //
-// Initially, I started by modularizing the list class. I initially decided
-// to write an iterator implementation, because it would simplify for loops.
-// In the end, I didn't end up using a for loop, but the iterator came in
-// handy in the display function anyways. It allowed me to leave all member
-// variables of `List` private, while still getting keeping the display
-// function outside of the `List` code, so that it remained generic. After
-// modularizing the list function, I went about writing the menu. I decided
-// on a state machine architecture, because it would allow me to expand it
-// if it turned out that I needed to, which I did. After a while, I realized
-// that my main function was becoming far too big and the switch statement
-// was exceeding best-practice cognitive complexity standards. That's when
-// I decided to make the `Application` class. 
+// I'm documenting my modularization choices here, because it doesn't really
+// fit well anywhere in the rest of the codebase.
+//
+// Initially, I started by modularizing the list implementation into a class,
+// because it would allow me to create a unified user-facing API. I decided
+// to write an iterator implementation, because I thought it would simplify
+// my for loops. In the end, I didn't end up using a for loop, but the
+// iterator came in handy in the `display` function anyway. It allowed me to
+// leave all member variables of `List` private, while still getting keeping
+// all the display logic outside of the `List` code. After modularizing the
+// list function, I went about writing the menu. I decided on a state machine
+// architecture, because it would allow me to expand it if it turned out that
+// I needed to, which I did. After a while, I realized that my main function was becoming far too big and the
+// switch statement was already well over past best-practice cognitive
+// complexity standards. That's when I decided to make the `Application`
+// class. It allowed me to pull the rest of the goofiness out of main and
+// properly modularize it.
 
 #include <iostream>
 #include <iterator>
