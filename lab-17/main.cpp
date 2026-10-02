@@ -85,42 +85,25 @@ const array<tuple<const char*, MenuState>, 5> options = {
 
 bool parse_int(int& num, const string& input);
 
+MenuState state_main_menu(MenuState state, List<float>& list);
+MenuState state_main_menu_decision(MenuState state, List<float>& list);
+MenuState state_insert(MenuState state, List<float>& list);
+MenuState state_remove(MenuState state, List<float>& list);
+MenuState state_clear(MenuState state, List<float>& list);
+MenuState state_display(MenuState state, List<float>& list);
+
 int main() {
     List<float> list;
     MenuState state = MAIN_MENU;
 
     while (true) {
         switch (state) {
-            case MAIN_MENU: {
-                cout << "Main Menu:\n";
-
-                for (size_t i = 0; i < options.size(); i++) {
-                    cout << format("({}) {}\n", i + 1, get<0>(options[i]));
-                }
-
-                state = MAIN_MENU_DECISION;
+            case MAIN_MENU:
+                state = state_main_menu(state, list);
                 break;
-            }
-            case MAIN_MENU_DECISION: {
-                cout << "Your decision: ";
-                
-                string buf;
-                getline(cin, buf);
-
-                int choice;
-                if (!parse_int(choice, buf)) {
-                    break;
-                }
-
-                if (choice < 1 || choice > options.size()) {
-                    cout << "Out of range!\n";
-                    break;
-                }
-
-                state = get<1>(options[choice - 1]);
-
+            case MAIN_MENU_DECISION:
+                state_main_menu_decision(state, list);
                 break;
-            }
             case INSERT: {
                 cout << "Index to insert at: ";
 
@@ -195,6 +178,14 @@ int main() {
             case EXIT: {
                 cout << "Exiting...\n";
                 return EXIT_SUCCESS;
+            }
+            case CLEAR: {
+                cout << "Clearing list...";
+                list.clear();
+                cout << " Cleared.\n";
+
+                state = MAIN_MENU;
+                break;
             }
             case DISPLAY: {
                 cout << "Current list contents:\n"
@@ -360,3 +351,40 @@ string output(List<float>& list) {
 
     return buf;
 }
+
+
+MenuState state_main_menu(MenuState state, List<float>& list) {
+    cout << "Main Menu:\n";
+
+    for (size_t i = 0; i < options.size(); i++) {
+        cout << format("({}) {}\n", i + 1, get<0>(options[i]));
+    }
+
+    return MAIN_MENU_DECISION;
+}
+
+MenuState state_main_menu_decision(MenuState state, List<float>& list) {
+    cout << "Your decision: ";
+    
+    string buf;
+    getline(cin, buf);
+
+    int choice;
+    if (!parse_int(choice, buf)) {
+        return state;
+    }
+
+    if (choice < 1 || choice > options.size()) {
+        cout << "Out of range!\n";
+        break;
+    }
+
+    state = get<1>(options[choice - 1]);
+
+    break;
+}
+MenuState state_insert(MenuState state, List<float>& list);
+MenuState state_remove(MenuState state, List<float>& list);
+MenuState state_clear(MenuState state, List<float>& list);
+MenuState state_display(MenuState state, List<float>& list);
+
