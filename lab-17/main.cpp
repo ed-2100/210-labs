@@ -52,9 +52,14 @@ bool parse_int(int& num, const string& input);
 
 
 int main() {
-    Application app;
+    List<float> list;
 
-    return app.run();
+    List<float> list1 = list;
+    List<float> list2 = list;
+
+    // Application app;
+
+    // return app.run();
 }
 
 int Application::run() {
@@ -138,7 +143,7 @@ string output(List<float>& list) {
     return buf;
 }
 
-void state_main_menu(MenuState& state, List<float>& list) {
+void Application::main_menu() {
     cout << "Main Menu:\n";
 
     for (size_t i = 0; i < options.size(); i++) {
@@ -148,7 +153,7 @@ void state_main_menu(MenuState& state, List<float>& list) {
     state = MAIN_MENU_DECISION;
 }
 
-void state_main_menu_decision(MenuState& state, List<float>& list) {
+void Application::main_menu_decision() {
     cout << "Your decision: ";
     
     string buf;
@@ -167,7 +172,7 @@ void state_main_menu_decision(MenuState& state, List<float>& list) {
     state = get<1>(options[choice - 1]);
 }
 
-void state_insert(MenuState& state, List<float>& list){
+void Astate_insert(MenuState& state, List<float>& list){
     cout << "Index to insert at: ";
 
     string buf;
