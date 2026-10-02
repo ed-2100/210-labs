@@ -110,7 +110,7 @@ int main() {
                 break;
         }
 
-        colors.push_back({move(color), MESSAGES[i % 4]});
+        colors.emplace_back(move(color), MESSAGES[i % 4]);
     }
 
     cout << format("List of {} colors:\n", n_color);
