@@ -28,9 +28,9 @@ public:
     void insert(Data&& data, size_t idx);
 
     T remove(size_t idx);
-
-    string to_string() const;
 };
+
+string float_list_to_string();
 
 template <typename T>
 struct Node {
@@ -51,13 +51,13 @@ void List<T>::push_front(Data&& data) {
 
 template <typename T>
 T List<T>::pop_front() {
-    Node<T>* current = head;
+    Node<T>* popped = head;
 
-    head = current->next;
+    head = popped->next;
 
-    T data = move(current->data);
+    T data = move(popped->data);
 
-    delete current;
+    delete popped;
 
     return move(data);
 }
@@ -96,10 +96,18 @@ T List<T>::remove(size_t idx) {
         current = current->next;
     }
 
-    
+    Node<T>* removed = current->next;
+
+    current->next = removed->next;
+
+    T data = move(removed->data);
+
+    delete removed;
+
+    return move(data);
 }
 
-// string List::to_string() const {}
+string float_list_to_string() {}
 
 // const int SIZE = 7;
 
