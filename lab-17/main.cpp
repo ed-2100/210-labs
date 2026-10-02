@@ -22,7 +22,7 @@ enum MenuState {
 
 class Application {
 private:
-    List<float>& list;
+    List<float> list{};
     MenuState state = MAIN_MENU;
 
 public:
@@ -50,16 +50,10 @@ string output(List<float>& list);
 bool parse_int(int& num, const string& input);
 
 
-
 int main() {
-    List<float> list;
+    Application app;
 
-    List<float> list1 = list;
-    List<float> list2 = list;
-
-    // Application app;
-
-    // return app.run();
+    return app.run();
 }
 
 int Application::run() {
@@ -97,6 +91,123 @@ int Application::run() {
 
         cout << '\n';
     }
+}
+
+void Application::main_menu() {
+    cout << "Main Menu:\n";
+
+    for (size_t i = 0; i < options.size(); i++) {
+        cout << format("({}) {}\n", i + 1, get<0>(options[i]));
+    }
+
+    state = MAIN_MENU_DECISION;
+}
+
+void Application::main_menu_decision() {
+    cout << "Your decision: ";
+    
+    string buf;
+    getline(cin, buf);
+
+    int choice;
+    if (!parse_int(choice, buf)) {
+        return;
+    }
+
+    if (choice < 1 || choice > options.size()) {
+        cout << "Out of range!\n";
+        return;
+    }
+
+    state = get<1>(options[choice - 1]);
+}
+
+void Application::insert() {
+    cout << "Index to insert at: ";
+
+    string buf;
+    getline(cin, buf);
+
+    int index;
+    if (!parse_int(index, buf)) {
+        state = MAIN_MENU;
+        return;
+    }
+
+    if (index < 0 || index > list.size()) {
+        cout << "Out of range!\n";
+        state = MAIN_MENU;
+        return;
+    }
+
+    cout << "Value to insert (float): ";
+
+    getline(cin, buf);
+
+    float number;
+    try {
+        number = stof(buf);
+    } catch (const invalid_argument &e) {
+        cout << "Not a number!\n";
+        state = MAIN_MENU;
+        return;
+    } catch (const out_of_range &e) {
+        cout << "floats cannot represent that large of a number.\n";
+        state = MAIN_MENU;
+        return;
+    }
+
+    list.insert(number, index);
+    
+    cout << format("\nInserted value: {}\n", number);
+
+    state = MAIN_MENU;
+}
+
+void Application::remove()  {
+    if (list.size() == 0) {
+        cout << "No elements to remove.\n";
+        state = MAIN_MENU;
+        return;
+    }
+
+    cout << "Index to remove: ";
+
+    string buf;
+    getline(cin, buf);
+
+    int choice;
+    if (!parse_int(choice, buf)) {
+        state = MAIN_MENU;
+        return;
+    }
+
+    if (choice < 0 || choice >= list.size()) {
+        cout << "Out of range!\n";
+        state = MAIN_MENU;
+        return;
+    }
+
+    cout << format("\nRemoved value: {}\n", list.remove(choice));
+
+    state = MAIN_MENU;
+}
+
+void Application::clear() {
+    cout << "Clearing list...";
+
+    list.clear();
+
+    cout << " Cleared.\n";
+
+    state = MAIN_MENU;
+}
+
+void Application::display() {
+    cout << "Current list contents:\n"
+         << output(list) << '\n';
+
+    state = MAIN_MENU;
 }
 
 bool parse_int(int& num, const string& input) {
@@ -141,121 +252,4 @@ string output(List<float>& list) {
     buf.append_range(" ]");
 
     return buf;
-}
-
-void Application::main_menu() {
-    cout << "Main Menu:\n";
-
-    for (size_t i = 0; i < options.size(); i++) {
-        cout << format("({}) {}\n", i + 1, get<0>(options[i]));
-    }
-
-    state = MAIN_MENU_DECISION;
-}
-
-void Application::main_menu_decision() {
-    cout << "Your decision: ";
-    
-    string buf;
-    getline(cin, buf);
-
-    int choice;
-    if (!parse_int(choice, buf)) {
-        return;
-    }
-
-    if (choice < 1 || choice > options.size()) {
-        cout << "Out of range!\n";
-        return;
-    }
-
-    state = get<1>(options[choice - 1]);
-}
-
-void Astate_insert(MenuState& state, List<float>& list){
-    cout << "Index to insert at: ";
-
-    string buf;
-    getline(cin, buf);
-
-    int index;
-    if (!parse_int(index, buf)) {
-        state = MAIN_MENU;
-        return;
-    }
-
-    if (index < 0 || index > list.size()) {
-        cout << "Out of range!\n";
-        state = MAIN_MENU;
-        return;
-    }
-
-    cout << "Value to insert (float): ";
-
-    getline(cin, buf);
-
-    float number;
-    try {
-        number = stof(buf);
-    } catch (const invalid_argument &e) {
-        cout << "Not a number!\n";
-        state = MAIN_MENU;
-        return;
-    } catch (const out_of_range &e) {
-        cout << "floats cannot represent that large of a number.\n";
-        state = MAIN_MENU;
-        return;
-    }
-
-    list.insert(number, index);
-    
-    cout << format("\nInserted value: {}\n", number);
-
-    state = MAIN_MENU;
-}
-
-void state_remove(MenuState& state, List<float>& list)  {
-    if (list.size() == 0) {
-        cout << "No elements to remove.\n";
-        state = MAIN_MENU;
-        return;
-    }
-
-    cout << "Index to remove: ";
-
-    string buf;
-    getline(cin, buf);
-
-    int choice;
-    if (!parse_int(choice, buf)) {
-        state = MAIN_MENU;
-        return;
-    }
-
-    if (choice < 0 || choice >= list.size()) {
-        cout << "Out of range!\n";
-        state = MAIN_MENU;
-        return;
-    }
-
-    cout << format("\nRemoved value: {}\n", list.remove(choice));
-
-    state = MAIN_MENU;
-}
-
-void state_clear(MenuState& state, List<float>& list) {
-    cout << "Clearing list...";
-
-    list.clear();
-
-    cout << " Cleared.\n";
-
-    state = MAIN_MENU;
-}
-
-void state_display(MenuState& state, List<float>& list) {
-    cout << "Current list contents:\n"
-         << output(list) << '\n';
-
-    state = MAIN_MENU;
 }
