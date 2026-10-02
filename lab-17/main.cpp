@@ -36,7 +36,13 @@ public:
     ListIterator<T> end();
 };
 
-template<typename T>
+template <typename T>
+struct Node {
+    T data;
+    Node<T>* next;
+};
+
+template <typename T>
 struct ListIterator {
 private:
     Node<T>* current;
@@ -62,68 +68,31 @@ public:
 
 string float_list_to_string();
 
-// const int SIZE = 7;
+const int SIZE = 7;
 
 // void output(Node *);
 
 int main() {
     vector<float> test;
+
+    // create a linked list of size SIZE with random numbers 0-99
     List<float> list;
 
-    for (const float& item : list) {
-
+    for (int i = 0; i < SIZE; i++) {
+        list.push_front(rand() % 100);
     }
-    
 
-    // Node *head = nullptr;
-    // int count = 0;
-
-    // // create a linked list of size SIZE with random numbers 0-99
-    // for (int i = 0; i < SIZE; i++) {
-    //     int tmp_val = rand() % 100;
-    //     Node *newVal = new Node;
-
-    //     // adds node at head
-    //     if (!head) {
-    //         head = newVal;
-    //         newVal->next = nullptr;
-    //         newVal->value = tmp_val;
-    //     }
-    //     else {
-    //         newVal->next = head;
-    //         newVal->value = tmp_val;
-    //         head = newVal;
-    //     }
-    // }
     // output(head);
 
-    // // deleting a node
-    // cout << "Which node to delete? " << endl;
+    // deleting a node
+    cout << "Which node to delete? " << endl;
     // output(head);
-    // int entry;
-    // cout << "Choice --> ";
-    // cin >> entry;
+    int entry;
+    cout << "Choice --> ";
+    cin >> entry;
 
-    // // traverse that many times and delete that node
-    // Node *current = head;
-    // Node *prev = nullptr;  // start prev as nullptr to detect head deletion
-
-    // for (int i = 0; i < (entry - 1); i++) {
-    //     prev = current;
-    //     current = current->next;
-    // }
-
-    // // at this point, delete current and reroute pointers
-    // if (current) {
-    //     if (prev == nullptr) {
-    //         // deleting the head node
-    //         head = current->next;
-    //     } else {
-    //         prev->next = current->next;
-    //     }
-    //     delete current;
-    //     current = nullptr;
-    // }
+    // traverse that many times and delete that node
+    list.remove(entry);
     // output(head);
 
     // // insert a node
@@ -184,7 +153,15 @@ int main() {
 //     }
 //     cout << endl;
 // }
+
 template <typename T>
+List<T>::~List() {
+    while (head) {
+        Node<T>* current = head;
+        head = current->next;
+        delete current;
+    }
+}
 
 template <typename T>
 template <typename Data>
@@ -280,11 +257,5 @@ template <typename T>
 bool ListIterator<T>::operator==(const ListIterator<T>& rhs) const {
     return current == rhs.current;
 }
-
-template <typename T>
-struct Node {
-    T data;
-    Node<T> *next;
-};
 
 string float_list_to_string() {}
