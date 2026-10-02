@@ -22,6 +22,8 @@ public:
     template <typename Data>
     void push_front(Data&& data);
 
+    T pop_front();
+
     template <typename Data>
     void insert(Data&& data, size_t idx);
 
@@ -48,10 +50,24 @@ void List<T>::push_front(Data&& data) {
 }
 
 template <typename T>
+T List<T>::pop_front() {
+    Node<T>* current = head;
+
+    head = current->next;
+
+    T data = move(current->data);
+
+    delete current;
+
+    return move(data);
+}
+
+template <typename T>
 template <typename Data>
 void List<T>::insert(Data&& data, size_t idx) {
     if (idx == 0) {
         push_front(forward<Data>(data));
+        return;
     }
 
     Node<T>* current = head;
@@ -60,9 +76,29 @@ void List<T>::insert(Data&& data, size_t idx) {
         current = current->next;
     }
 
+    Node<T>* node = new Node<T> {
+        .data = forward<Data>(data);
+        .next = current->next;
+    };
 
+    current->next = node;
 }
-// void List::remove(size_t idx) {}
+
+template <typename T>
+T List<T>::remove(size_t idx) {
+    if (idx == 0) {
+        return pop_front();
+    }
+
+    Node<T>* current = head;
+
+    for (size_t i = 1; i < idx; i++) {
+        current = current->next;
+    }
+
+    
+}
+
 // string List::to_string() const {}
 
 // const int SIZE = 7;
