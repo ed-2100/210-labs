@@ -127,13 +127,13 @@ int main() {
                 string buf;
                 getline(cin, buf);
 
-                int choice;
-                if (!parse_int(choice, buf)) {
+                int index;
+                if (!parse_int(index, buf)) {
                     state = MAIN_MENU;
                     break;
                 }
 
-                if (choice < 0 || choice > list.size()) {
+                if (index < 0 || index > list.size()) {
                     cout << "Out of range!\n";
                     state = MAIN_MENU;
                     break;
@@ -143,9 +143,9 @@ int main() {
 
                 getline(cin, buf);
 
-                float choice;
+                float number;
                 try {
-                    choice = stof(buf);
+                    number = stof(buf);
                 } catch (const invalid_argument &e) {
                     cout << "Not a number!\n";
                     state = MAIN_MENU;
@@ -155,9 +155,12 @@ int main() {
                     state = MAIN_MENU;
                     break;
                 }
-                
-                cout << "Value inser"
 
+                list.insert(number, index);
+                
+                cout << format("\nInserted value: {}\n", number);
+
+                state = MAIN_MENU;
                 break;
             }
             case REMOVE: {
@@ -184,12 +187,20 @@ int main() {
                     break;
                 }
 
-                cout << "Removed value: list.remove(choice)\n";
+                cout << format("\nRemoved value: {}\n", list.remove(choice));
+
+                state = MAIN_MENU;
                 break;
             }
             case EXIT: {
                 cout << "Exiting...\n";
                 return EXIT_SUCCESS;
+            }
+            case DISPLAY: {
+                cout << "Current list contents:\n"
+                     << output(list) << '\n';
+                state = MAIN_MENU;
+                break;
             }
             default:
                 // Invalid Menu
@@ -211,6 +222,8 @@ bool parse_int(int& num, const string& input) {
         cout << "Definitely out of range.\n";
         return false;
     }
+
+    return true;
 }
 
 template <typename T>
