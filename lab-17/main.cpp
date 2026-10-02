@@ -48,22 +48,15 @@ struct ListIterator {
 private:
     Node<T>* current;
 public:
-    using difference_type = std::ptrdiff_t; // Not sure if I need to change this yet.
+    using difference_type = std::ptrdiff_t;
     using value_type = T;
     using reference = T&;
 
     ListIterator(Node<T>* current) : current(current) {}
 
     reference operator*();
-
     ListIterator<T>& operator++();
-
-    ListIterator<T> operator++(int) {
-        auto tmp = *this;
-        ++*this;
-        return tmp;
-    }
-
+    ListIterator<T> operator++(int);
     bool operator==(const ListIterator<T>&) const;
 };
 
@@ -74,40 +67,11 @@ const int SIZE = 7;
 int main() {
     vector<float> test;
 
-    // create a linked list of size SIZE with random numbers 0-99
-    List<float> list;
+    size_t state = 0;
 
-    for (int i = 0; i < SIZE; i++) {
-        list.push_front(float(rand() % 100));
+    while (true) {
+        sw
     }
-
-    cout << output(list) << endl;
-
-    // deleting a node
-    cout << "Which node to delete?" << endl;
-    cout << output(list) << endl;
-    int entry;
-    cout << "Choice --> ";
-    cin >> entry;
-
-    // traverse that many times and delete that node
-    list.remove(entry);
-    cout << output(list) << endl;
-
-    // insert a node
-    cout << "After which node to insert 10000? " << endl;
-    cout << output(list) << endl;
-    cout << "Choice --> ";
-    cin >> entry;
-
-    list.insert(10000.0f, entry);
-    cout << output(list) << endl;
-
-    // deleting the linked list
-    list.clear();
-    cout << output(list) << endl;
-
-    return EXIT_SUCCESS;
 }
 
 template <typename T>
@@ -212,6 +176,13 @@ template <typename T>
 ListIterator<T>& ListIterator<T>::operator++() {
     current = current->next;
     return *this;
+}
+
+template <typename T>
+ListIterator<T> ListIterator<T>::operator++(int) {
+    auto tmp = *this;
+    ++*this;
+    return tmp;
 }
 
 template <typename T>
