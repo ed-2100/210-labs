@@ -148,50 +148,48 @@ template <typename T>
 template <typename Data>
 void List<T>::insert(Data&& data, size_t idx) {
     if (idx == 0) {
-        auto old_head = head;
-
         head = new Node<T> {
             .data = forward<Data>(data),
             .next = head,
         };
 
-        if (old_head) {
-            old_head->next = 
+        return;
+    } else {
+        Node<T>* current = head;
+
+        for (size_t i = 1; i < idx; i++) {
+            current = current->next;
         }
 
-        return;
+        Node<T>* node = new Node<T> {
+            .data = forward<Data>(data),
+            .next = current->next,
+        };
+
+        current->next = node;
+
     }
 
-    Node<T>* current = head;
-
-    for (size_t i = 1; i < idx; i++) {
-        current = current->next;
-    }
-
-    Node<T>* node = new Node<T> {
-        .data = forward<Data>(data),
-        .next = current->next,
-    };
-
-    current->next = node;
 }
 
 template <typename T>
 T List<T>::remove(size_t idx) {
+    Node<T>* removed;
+
     if (idx == 0) {
-        return pop_front();
+        removed = head;
+        head = removed->next;
+    } else {
+        Node<T>* current = head;
+
+        for (size_t i = 1; i < idx; i++) {
+            current = current->next;
+        }
+
+        removed = current->next;
+        current->next = removed->next;
     }
-
-    Node<T>* current = head;
-
-    for (size_t i = 1; i < idx; i++) {
-        current = current->next;
-    }
-
-    Node<T>* removed = current->next;
-
-    current->next = removed->next;
-
+    
     T data = move(removed->data);
 
     delete removed;
