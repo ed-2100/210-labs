@@ -34,6 +34,8 @@ public:
 
     ListIterator<T> begin();
     ListIterator<T> end();
+
+    void clear();
 };
 
 template <typename T>
@@ -79,13 +81,13 @@ int main() {
     List<float> list;
 
     for (int i = 0; i < SIZE; i++) {
-        list.push_front(rand() % 100);
+        list.push_front(float(rand() % 100));
     }
 
     // output(head);
 
     // deleting a node
-    cout << "Which node to delete? " << endl;
+    cout << "Which node to delete?" << endl;
     // output(head);
     int entry;
     cout << "Choice --> ";
@@ -95,46 +97,17 @@ int main() {
     list.remove(entry);
     // output(head);
 
-    // // insert a node
-    // cout << "After which node to insert 10000? " << endl;
-    // count = 1;
-    // current = head;
-    // while (current) {
-    //     cout << "[" << count++ << "] " << current->value << endl;
-    //     current = current->next;
-    // }
-    // cout << "Choice --> ";
-    // cin >> entry;
+    // insert a node
+    cout << "After which node to insert 10000? " << endl;
+    // output(head);
+    cout << "Choice --> ";
+    cin >> entry;
 
-    // current = head;
-    // prev = nullptr;  // reset prev to nullptr for same reason
-
-    // for (int i = 0; i < entry; i++) {
-    //     prev = current;
-    //     current = current->next;
-    // }
-
-    // // at this point, insert a node between prev and current
-    // Node *newnode = new Node;
-    // newnode->value = 10000;
-    // newnode->next = current;
-
-    // if (prev == nullptr) {
-    //     // inserting before the head
-    //     head = newnode;
-    // } else {
-    //     prev->next = newnode;
-    // }
+    list.insert(10000.0f, entry);
     // output(head);
 
-    // // deleting the linked list
-    // current = head;
-    // while (current) {
-    //     head = current->next;
-    //     delete current;
-    //     current = head;
-    // }
-    // head = nullptr;
+    // deleting the linked list
+    list.clear();
     // output(head);
 
     return EXIT_SUCCESS;
@@ -156,11 +129,7 @@ int main() {
 
 template <typename T>
 List<T>::~List() {
-    while (head) {
-        Node<T>* current = head;
-        head = current->next;
-        delete current;
-    }
+    clear();
 }
 
 template <typename T>
@@ -240,6 +209,15 @@ ListIterator<T> List<T>::begin() {
 template <typename T>
 ListIterator<T> List<T>::end() {
     return ListIterator<T>(tail);
+}
+
+template <typename T>
+void List<T>::clear() {
+    while (head) {
+        Node<T>* current = head;
+        head = current->next;
+        delete current;
+    }
 }
 
 template <typename T>
