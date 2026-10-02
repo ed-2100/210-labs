@@ -64,13 +64,37 @@ string output(List<float>& list);
 
 const int SIZE = 7;
 
+enum MenuState {
+    MAIN_MENU,
+    PUSH_FRONT,
+    POP_FRONT,
+    INSERT,
+    REMOVE,
+    CLEAR,
+    DISPLAY,
+};
+
 int main() {
     vector<float> test;
 
-    size_t state = 0;
+    MenuState state = MenuState::MAIN_MENU;
 
     while (true) {
-        sw
+        switch (state) {
+            case MenuState::MAIN_MENU:
+                cout << "Main Menu:\n"
+                     << "(1) Push Front\n"
+                     << "(2) Pop Front\n"
+                     << "(3) Insert\n"
+                     << "(4) Remove\n"
+                     << "(5) Clear\n"
+                     << "(6) Display\n";
+            case 1:
+
+            default:
+                // Invalid Menu
+                state = MenuState::MAIN_MENU;
+        }
     }
 }
 
