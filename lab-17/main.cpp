@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <set>
+#include <tuple>
 
 using namespace std;
 
@@ -74,6 +76,7 @@ enum MenuState {
     DISPLAY,
 };
 
+
 int main() {
     vector<float> test;
 
@@ -81,16 +84,38 @@ int main() {
 
     while (true) {
         switch (state) {
-            case MenuState::MAIN_MENU:
+            case MenuState::MAIN_MENU: {
+                set<tuple<const char*, MenuState>> {
+                    {"Push Front", MenuState::PUSH_FRONT}
+                }
+
                 cout << "Main Menu:\n"
                      << "(1) Push Front\n"
                      << "(2) Pop Front\n"
                      << "(3) Insert\n"
                      << "(4) Remove\n"
                      << "(5) Clear\n"
-                     << "(6) Display\n";
-            case 1:
+                     << "(6) Display\n"
+                     << "\n"
+                     << "Your decision: ";
+                
+                string buf;
 
+                getline(cin, buf);
+
+                int choice;
+
+                try {
+                    choice = stoi(buf);
+                } catch (const invalid_argument &e) {
+                } catch (const out_of_range &e) {
+                }
+
+
+            }
+                break;
+            case 1:
+                break;
             default:
                 // Invalid Menu
                 state = MenuState::MAIN_MENU;
