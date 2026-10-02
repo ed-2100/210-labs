@@ -68,7 +68,7 @@ public:
     bool operator==(const ListIterator<T>&) const;
 };
 
-string float_list_to_string();
+// void output(List<float>& list);
 
 const int SIZE = 7;
 
@@ -112,20 +112,6 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-
-// void output(Node *hd) {
-//     if (!hd) {
-//         cout << "Empty list.\n";
-//         return;
-//     }
-//     int count = 1;
-//     Node *current = hd;
-//     while (current) {
-//         cout << "[" << count++ << "] " << current->value << endl;
-//         current = current->next;
-//     }
-//     cout << endl;
-// }
 
 template <typename T>
 List<T>::~List() {
@@ -236,4 +222,42 @@ bool ListIterator<T>::operator==(const ListIterator<T>& rhs) const {
     return current == rhs.current;
 }
 
-string float_list_to_string() {}
+string output(List<float>& list) {
+    auto front = list.begin();
+    auto back = list.end();
+
+    string buf;
+
+    buf.append("[ ");
+
+    if (front == back) {
+        buf.append("]");
+        return move(buf);
+    }
+
+    while (true) {
+
+        buf.append(to_string(*front));
+
+        front++;
+
+        if (front != back)
+        buf.append(", ");
+    }
+
+}
+
+
+// void output(Node *hd) {
+//     if (!hd) {
+//         cout << "Empty list.\n";
+//         return;
+//     }
+//     int count = 1;
+//     Node *current = hd;
+//     while (current) {
+//         cout << "[" << count++ << "] " << current->value << endl;
+//         current = current->next;
+//     }
+//     cout << endl;
+// }
