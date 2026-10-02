@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iterator>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ struct Node;
 
 template <typename T>
 struct List {
-protected:
+private:
     Node<T>* head;
 public:
     List() : head(nullptr) {}
@@ -31,6 +32,28 @@ public:
 };
 
 string float_list_to_string();
+
+template<typename T>
+struct ListIterator {
+private:
+    Node<T>* current;
+public:
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+
+    int operator*() const;
+
+    SimpleForwardIterator& operator++();
+
+    SimpleForwardIterator operator++(int)
+    {
+        auto tmp = *this;
+        ++*this;
+        return tmp;
+    }
+
+    bool operator==(const SimpleForwardIterator&) const;
+};
 
 template <typename T>
 struct Node {
