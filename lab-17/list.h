@@ -4,7 +4,7 @@
 #include <utility>
 #include <algorithm>
 
-namespace list {
+namespace mylist {
 
 template <typename T>
 struct List;
@@ -169,4 +169,4 @@ bool ListIterator<T>::operator==(const ListIterator<T>& rhs) const {
     return current == rhs.current;
 }
 
-}; // namespace list
+}; // namespace mylist

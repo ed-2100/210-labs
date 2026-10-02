@@ -8,7 +8,7 @@
 #include "list.h"
 
 using namespace std;
-using namespace list;
+using namespace mylist;
 
 enum MenuState {
     MAIN_MENU,
@@ -22,18 +22,44 @@ enum MenuState {
 
 class Application {
 private:
-    List<float> list{};
+    List<float> list;
     MenuState state = MAIN_MENU;
 
 public:
     int run();
 
 private:
+    // The `main_menu` state function.
+    //
+    // Displays a list of list operations.
     void main_menu();
+
+    // The `main_menu_decision` state function.
+    //
+    // Selects the state based on user input.
     void main_menu_decision();
+
+    // The `insert` state function.
+    //
+    // Inserts a node at a position in the list
+    // based on user input.
     void insert();
+
+    // The `remove` state function.
+    //
+    // Removes a node at a position in the list
+    // based on user input.
     void remove();
+
+    // The `clear` state function.
+    //
+    // Clears the list and returns to the main
+    // menu.
     void clear();
+
+    // The `display` state function.
+    //
+    // Displays the current contents of the list.
     void display();
 };
 
@@ -48,7 +74,6 @@ const array<tuple<const char*, MenuState>, 5> options = {
 string output(List<float>& list);
 
 bool parse_int(int& num, const string& input);
-
 
 int main() {
     Application app;
@@ -204,27 +229,8 @@ void Application::clear() {
 }
 
 void Application::display() {
-    cout << "Current list contents:\n"
-         << output(list) << '\n';
-
-    state = MAIN_MENU;
-}
-
-bool parse_int(int& num, const string& input) {
-    try {
-        num = stoi(input);
-    } catch (const invalid_argument &e) {
-        cout << "Not a number!\n";
-        return false;
-    } catch (const out_of_range &e) {
-        cout << "Definitely out of range.\n";
-        return false;
-    }
-
-    return true;
-}
-
-string output(List<float>& list) {
+    cout << "Current list contents:\n";
+    
     auto front = list.begin();
     auto back = list.end();
 
@@ -249,7 +255,23 @@ string output(List<float>& list) {
         buf.append_range(", ");
     }
 
-    buf.append_range(" ]");
+    buf.append_range(" ]\n");
 
     return buf;
+
+    state = MAIN_MENU;
+}
+
+bool parse_int(int& num, const string& input) {
+    try {
+        num = stoi(input);
+    } catch (const invalid_argument &e) {
+        cout << "Not a number!\n";
+        return false;
+    } catch (const out_of_range &e) {
+        cout << "Definitely out of range.\n";
+        return false;
+    }
+
+    return true;
 }
