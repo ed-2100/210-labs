@@ -2,12 +2,16 @@
 
 using namespace std;
 
+template <typename T>
 struct List;
+
+template <typename T>
 struct Node;
 
+template <typename T>
 struct List {
 protected:
-    Node* head;
+    Node<T>* head;
 public:
     List() : head(nullptr) {}
 
@@ -15,27 +19,41 @@ public:
         throw logic_error("Unimplmented!");
     }
 
-    void push_front();
+    template <typename Data>
+    void push_front(Data&& data);
+
     void pop_front();
     void insert(size_t idx);
     void remove(size_t idx);
     string to_string() const;
 };
 
+template <typename T>
 struct Node {
-    float data;
-    Node *next;
+    T data;
+    Node<T> *next;
 };
 
-void Listpush_front() {
-    if (!head) {
+template <typename T>
+template <typename Data>
+void List<T>::push_front(Data&& data) {
+    Node<T>* node = new Node<T>;
 
+    if (!head) {
+        head = node;
+        return;
     }
+
+    node->next = head;
+    node->data = forward<Data>(data);
 }
-void pop_front() {}
-void insert(size_t idx) {}
-void remove(size_t idx) {}
-string to_string() const {}
+
+// void List::pop_front() {
+
+// }
+// void List::insert(size_t idx) {}
+// void List::remove(size_t idx) {}
+// string List::to_string() const {}
 
 // const int SIZE = 7;
 
