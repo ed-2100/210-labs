@@ -20,18 +20,30 @@ enum MenuState {
     EXIT,
 };
 
+// The `Application` class.
+//
+// Encloses the state-machine logic into a
+// unified structure for this assignment.
 class Application {
 private:
     List<float> list;
     MenuState state = MAIN_MENU;
 
 public:
+    // The `run` function.
+    //
+    // Runs the `Application`.
+    //
+    // ### Returns:
+    //
+    // A signed integer value, where `0` means success.
     int run();
 
 private:
     // The `main_menu` state function.
     //
-    // Displays a list of list operations.
+    // Displays a list of list operations to the user.
+    // and sets the `state` to `
     void main_menu();
 
     // The `main_menu_decision` state function.
@@ -61,19 +73,23 @@ private:
     //
     // Displays the current contents of the list.
     void display();
+
+    // Small helper to parse integer inputs.
+    //
+    // ### Arguments
+    //
+    //  - `num`: Location to store the integer.
+    //  - `input`: The input string to parse.
+    //
+    // ### Returns
+    //
+    // A bool, where true means the parse was
+    // successful.
+    static bool parse_int(
+        int& num,
+        const string& input
+    );
 };
-
-const array<tuple<const char*, MenuState>, 5> options = {
-    tuple{"Insert", MenuState::INSERT},
-    {"Remove", MenuState::REMOVE},
-    {"Clear", MenuState::CLEAR},
-    {"Display", MenuState::DISPLAY},
-    {"Exit", MenuState::EXIT}
-};
-
-string output(List<float>& list);
-
-bool parse_int(int& num, const string& input);
 
 int main() {
     Application app;
@@ -117,6 +133,14 @@ int Application::run() {
         cout << '\n';
     }
 }
+
+const array<tuple<const char*, MenuState>, 5> options = {
+    tuple{"Insert", MenuState::INSERT},
+    {"Remove", MenuState::REMOVE},
+    {"Clear", MenuState::CLEAR},
+    {"Display", MenuState::DISPLAY},
+    {"Exit", MenuState::EXIT}
+};
 
 void Application::main_menu() {
     cout << "Main Menu:\n";
@@ -234,35 +258,32 @@ void Application::display() {
     auto front = list.begin();
     auto back = list.end();
 
-    string buf;
-
-    buf.append_range("[ ");
+    cout << "[ ";
 
     if (front == back) {
-        buf.append_range("]");
-        return move(buf);
-    }
+        cout << ']';
+    } else {
+        while (true) {
+            cout << format("{}", *front);
 
-    while (true) {
-        buf.append_range(format("{}", *front));
+            front++;
 
-        front++;
+            if (front == back) {
+                break;
+            }
 
-        if (front == back) {
-            break;
+            cout << ", ";
         }
 
-        buf.append_range(", ");
+        cout << " ]";
     }
 
-    buf.append_range(" ]\n");
-
-    return buf;
+    cout << '\n';
 
     state = MAIN_MENU;
 }
 
-bool parse_int(int& num, const string& input) {
+bool Application::parse_int(int& num, const string& input) {
     try {
         num = stoi(input);
     } catch (const invalid_argument &e) {
