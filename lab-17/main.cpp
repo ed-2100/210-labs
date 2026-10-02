@@ -20,8 +20,9 @@ template <typename T>
 struct List {
 private:
     Node<T>* head;
+    size_t count;
 public:
-    List() : head(nullptr) {}
+    List() : count(0), head(nullptr) {}
     ~List();
 
     template <typename Data>
@@ -74,13 +75,15 @@ enum MenuState {
     EXIT,
 };
 
-const array<tuple<const char*, MenuState>, 7> options = {
+const array<tuple<const char*, MenuState>, 5> options = {
     tuple{"Insert", MenuState::INSERT},
     {"Remove", MenuState::REMOVE},
     {"Clear", MenuState::CLEAR},
     {"Display", MenuState::DISPLAY},
     {"Exit", MenuState::EXIT}
 };
+
+bool get_int(int& num);
 
 int main() {
     vector<float> test;
@@ -102,19 +105,9 @@ int main() {
             case MAIN_MENU_DECISION: {
                 cout << "\nYour decision: ";
                 
-                string buf;
-
-                getline(cin, buf);
-
                 int choice;
 
-                try {
-                    choice = stoi(buf);
-                } catch (const invalid_argument &e) {
-                    cout << "Not a number!";
-                    break;
-                } catch (const out_of_range &e) {
-                    cout << "Definitely out of range.";
+                if (!get_int(choice)) {
                     break;
                 }
 
@@ -126,6 +119,19 @@ int main() {
                 state = get<1>(options[choice - 1]);
 
                 break;
+            }
+            case REMOVE: {
+                cout << "Remove index: ";
+
+                int choice;
+
+                if (!get_int(choice)) {
+                    break;
+                }
+
+                if (choice < 0 || choice > ) {
+
+                }
             }
             case EXIT: {
                 cout << "Exiting...\n";
@@ -147,13 +153,13 @@ List<T>::~List() {
 template <typename T>
 template <typename Data>
 void List<T>::insert(Data&& data, size_t idx) {
+    Node<T>* node = new Node<T> {
+        .data = forward<Data>(data),
+    };
+    
     if (idx == 0) {
-        head = new Node<T> {
-            .data = forward<Data>(data),
-            .next = head,
-        };
-
-        return;
+        node->next = head;
+        head = node;
     } else {
         Node<T>* current = head;
 
@@ -161,15 +167,11 @@ void List<T>::insert(Data&& data, size_t idx) {
             current = current->next;
         }
 
-        Node<T>* node = new Node<T> {
-            .data = forward<Data>(data),
-            .next = current->next,
-        };
-
+        node->next = current->next;
         current->next = node;
-
     }
 
+    count += 1;
 }
 
 template <typename T>
@@ -193,6 +195,8 @@ T List<T>::remove(size_t idx) {
     T data = move(removed->data);
 
     delete removed;
+
+    count -= 1;
 
     return move(data);
 }
@@ -267,4 +271,24 @@ string output(List<float>& list) {
     buf.append_range(" ]");
 
     return buf;
+}
+
+bool get_int(int& num) {
+    string buf;
+
+    getline(cin, buf);
+
+    int choice;
+
+    try {
+        choice = stoi(buf);
+    } catch (const invalid_argument &e) {
+        cout << "Not a number!";
+        return false;
+    } catch (const out_of_range &e) {
+        cout << "Definitely out of range.";
+        return false;
+    }
+
+    return true;
 }
