@@ -14,11 +14,11 @@
 // all the display logic outside of the `List` code. After modularizing the
 // list function, I went about writing the menu. I decided on a state machine
 // architecture, because it would allow me to expand it if it turned out that
-// I needed to, which I did. After a while, I realized that my main function was becoming far too big and the
-// switch statement was already well over past best-practice cognitive
-// complexity standards. That's when I decided to make the `Application`
-// class. It allowed me to pull the rest of the goofiness out of main and
-// properly modularize it.
+// I needed to, which I did. After a while, I realized that my main function
+// was becoming far too big and the switch statement was already well over
+// past best-practice cognitive complexity standards. That's when I decided
+// to make the `Application` class. It allowed me to pull the rest of the
+// goofiness out of `main` and properly modularize it.
 
 #include <iostream>
 #include <iterator>
