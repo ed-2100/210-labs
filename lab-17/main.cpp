@@ -1,3 +1,20 @@
+// COMSC-210 | Lab 14 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+//
+// Initially, I started by modularizing the list class. I initially decided
+// to write an iterator implementation, because it would simplify for loops.
+// In the end, I didn't end up using a for loop, but the iterator came in
+// handy in the display function anyways. It allowed me to leave all member
+// variables of `List` private, while still getting keeping the display
+// function outside of the `List` code, so that it remained generic. After
+// modularizing the list function, I went about writing the menu. I decided
+// on a state machine architecture, because it would allow me to expand it
+// if it turned out that I needed to, which I did. After a while, I realized
+// that my main function was becoming far too big and the switch statement
+// was exceeding best-practice cognitive complexity standards. That's when
+// I decided to make the `Application` class. 
+
 #include <iostream>
 #include <iterator>
 #include <vector>
