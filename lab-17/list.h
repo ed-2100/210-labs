@@ -16,6 +16,8 @@ template <typename T>
 class ListIterator;
 
 // The `List` class.
+//
+// Acts as a container for items.
 template <typename T>
 class List {
 private:
@@ -29,25 +31,57 @@ public:
     // unintentional shallow copy never happens.
     List(const List<T>& rhs) = delete;
 
+    // =========================
+    // ===== Class Methods =====
+    // =========================
+
+    // Inserts a value at an arbitrary index.
+    //
+    // ### Arguments
+    //
+    //  - `data`: The data to insert.
+    //  - `idx`: The index to insert the data at.
     template <typename Data>
     void insert(Data&& data, size_t idx);
 
+    // Removes a value at an arbitrary index.
+    //
+    // ### Arguments
+    //
+    //  - `idx`: The index to remove.
+    //
+    // ### Returns
+    //
+    // The data contained at the removed index.
     T remove(size_t idx);
+
+    // Clears the list, freeing all allocations.
+    void clear();
+
+    // Returns the current size of the list.
+    size_t size() const;
+
+    // =========================
+    // ===== Range Methods =====
+    // =========================
 
     ListIterator<T> begin();
     ListIterator<T> end();
-
-    void clear();
-
-    size_t size() const;
 };
 
+// The `Node` struct.
+//
+// The core datatype behind the `List` class.
 template <typename T>
 struct Node {
     T data;
     Node<T>* next;
 };
 
+// The `ListIterator` class.
+//
+// A simple forward_iterator implementation
+// for the `List` class.
 template <typename T>
 class ListIterator {
 private:
@@ -57,6 +91,8 @@ public:
     using value_type = T;
     using reference = T&;
 
+    // No default constuctor necessary; just
+    // serves as a footgun at the moment.
     ListIterator() = delete;
     ListIterator(Node<T>* current) : current(current) {}
 
@@ -123,16 +159,6 @@ T List<T>::remove(size_t idx) {
 }
 
 template <typename T>
-ListIterator<T> List<T>::begin() {
-    return ListIterator<T>(head);
-}
-
-template <typename T>
-ListIterator<T> List<T>::end() {
-    return ListIterator<T>(nullptr);
-}
-
-template <typename T>
 void List<T>::clear() {
     while (head) {
         Node<T>* current = head;
@@ -146,6 +172,16 @@ void List<T>::clear() {
 template <typename T>
 size_t List<T>::size() const {
     return count;
+}
+
+template <typename T>
+ListIterator<T> List<T>::begin() {
+    return ListIterator<T>(head);
+}
+
+template <typename T>
+ListIterator<T> List<T>::end() {
+    return ListIterator<T>(nullptr);
 }
 
 template <typename T>
