@@ -26,6 +26,8 @@ public:
     List() : count(0), head(nullptr) {}
     ~List();
 
+    List(const List<const T>& rhs);
+
     template <typename Data>
     void insert(Data&& data, size_t idx);
 
@@ -61,6 +63,22 @@ public:
     ListIterator<T> operator++(int);
     bool operator==(const ListIterator<T>&) const;
 };
+
+template <typename T>
+List<T>::List(const List<const T>& rhs) {
+    count = rhs.count;
+
+    if (!rhs.head) {
+        head = nullptr;
+        return;
+    }
+
+    Node<float>* current = rhs.head;
+
+    Node<float>* node = new Node<float> {
+        .data = current->data
+    };
+}
 
 template <typename T>
 List<T>::~List() {
