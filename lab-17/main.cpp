@@ -2,17 +2,24 @@
 
 using namespace std;
 
+struct List;
+struct Node;
+
 struct List {
 protected:
     Node* head;
 public:
-    List() {
-        head = nullptr;
+    List() : head(nullptr) {}
+
+    ~List() { // Should be noexcept later on...
+        throw logic_error("Unimplmented!");
     }
 
     void push_front();
     void pop_front();
-    void delete_
+    void insert(size_t idx);
+    void remove(size_t idx);
+    string to_string() const;
 };
 
 struct Node {
@@ -20,8 +27,17 @@ struct Node {
     Node *next;
 };
 
-const int SIZE = 7;  
+void Listpush_front() {
+    if (!head) {
 
+    }
+}
+void pop_front() {}
+void insert(size_t idx) {}
+void remove(size_t idx) {}
+string to_string() const {}
+
+// const int SIZE = 7;
 
 // void output(Node *);
 
@@ -33,7 +49,7 @@ int main() {
     // for (int i = 0; i < SIZE; i++) {
     //     int tmp_val = rand() % 100;
     //     Node *newVal = new Node;
-        
+
     //     // adds node at head
     //     if (!head) {
     //         head = newVal;
