@@ -22,9 +22,11 @@ public:
     template <typename Data>
     void push_front(Data&& data);
 
-    void pop_front();
-    void insert(size_t idx);
-    void remove(size_t idx);
+    template <typename Data>
+    void insert(Data&& data, size_t idx);
+
+    T remove(size_t idx);
+
     string to_string() const;
 };
 
@@ -37,21 +39,29 @@ struct Node {
 template <typename T>
 template <typename Data>
 void List<T>::push_front(Data&& data) {
-    Node<T>* node = new Node<T>;
-
-    if (!head) {
-        head = node;
-        return;
+    Node<T>* node = new Node<T> {
+        .data = forward<Data>(data);
+        .next = head;
     }
 
-    node->next = head;
-    node->data = forward<Data>(data);
+    head = node;
 }
 
-// void List::pop_front() {
+template <typename T>
+template <typename Data>
+void List<T>::insert(Data&& data, size_t idx) {
+    if (idx == 0) {
+        push_front(forward<Data>(data));
+    }
 
-// }
-// void List::insert(size_t idx) {}
+    Node<T>* current = head;
+
+    for (size_t i = 1; i < idx; i++) {
+        current = current->next;
+    }
+
+
+}
 // void List::remove(size_t idx) {}
 // string List::to_string() const {}
 
