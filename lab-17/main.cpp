@@ -34,6 +34,8 @@ public:
     ListIterator<T> end();
 
     void clear();
+
+    size_t size() const;
 };
 
 template <typename T>
@@ -66,8 +68,6 @@ const int SIZE = 7;
 enum MenuState {
     MAIN_MENU,
     MAIN_MENU_DECISION,
-    PUSH_FRONT,
-    POP_FRONT,
     INSERT,
     REMOVE,
     CLEAR,
@@ -86,8 +86,7 @@ const array<tuple<const char*, MenuState>, 5> options = {
 bool get_int(int& num);
 
 int main() {
-    vector<float> test;
-
+    List<float> list;
     MenuState state = MAIN_MENU;
 
     while (true) {
@@ -103,7 +102,7 @@ int main() {
                 break;
             }
             case MAIN_MENU_DECISION: {
-                cout << "\nYour decision: ";
+                cout << "Your decision: ";
                 
                 int choice;
 
@@ -112,7 +111,7 @@ int main() {
                 }
 
                 if (choice < 1 || choice > options.size()) {
-                    cout << "Out of range!";
+                    cout << "Out of range!\n";
                     break;
                 }
 
@@ -121,6 +120,12 @@ int main() {
                 break;
             }
             case REMOVE: {
+                if (list.size() == 0) {
+                    cout << "No elements to remove.\n";
+                    state = MAIN_MENU;
+                    break;
+                }
+
                 cout << "Remove index: ";
 
                 int choice;
@@ -129,9 +134,12 @@ int main() {
                     break;
                 }
 
-                if (choice < 0 || choice > ) {
-
+                if (choice < 0 || choice >= list.size()) {
+                    cout << "Out of range!\n";
+                    break;
                 }
+
+                
             }
             case EXIT: {
                 cout << "Exiting...\n";
@@ -139,9 +147,11 @@ int main() {
             }
             default:
                 // Invalid Menu
-                cout << "Menu not found.\n\n";
+                cout << "Menu not found.\n";
                 state = MenuState::MAIN_MENU;
         }
+
+        cout << '\n';
     }
 }
 
@@ -218,6 +228,13 @@ void List<T>::clear() {
         head = current->next;
         delete current;
     }
+
+    count = 0;
+}
+
+template <typename T>
+size_t List<T>::size() const {
+    return count;
 }
 
 template <typename T>
@@ -271,24 +288,4 @@ string output(List<float>& list) {
     buf.append_range(" ]");
 
     return buf;
-}
-
-bool get_int(int& num) {
-    string buf;
-
-    getline(cin, buf);
-
-    int choice;
-
-    try {
-        choice = stoi(buf);
-    } catch (const invalid_argument &e) {
-        cout << "Not a number!";
-        return false;
-    } catch (const out_of_range &e) {
-        cout << "Definitely out of range.";
-        return false;
-    }
-
-    return true;
 }
