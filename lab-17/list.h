@@ -6,8 +6,6 @@
 
 namespace list {
 
-using namespace std;
-
 template <typename T>
 struct List;
 
@@ -26,7 +24,9 @@ public:
     List() : count(0), head(nullptr) {}
     ~List();
 
-    List(const List<const T>& rhs);
+    // Delete the copy constructor so that an
+    // unintentional shallow copy never happens.
+    List(const List<T>& rhs) = delete;
 
     template <typename Data>
     void insert(Data&& data, size_t idx);
@@ -65,22 +65,6 @@ public:
 };
 
 template <typename T>
-List<T>::List(const List<const T>& rhs) {
-    count = rhs.count;
-
-    if (!rhs.head) {
-        head = nullptr;
-        return;
-    }
-
-    Node<float>* current = rhs.head;
-
-    Node<float>* node = new Node<float> {
-        .data = current->data
-    };
-}
-
-template <typename T>
 List<T>::~List() {
     clear();
 }
@@ -89,7 +73,7 @@ template <typename T>
 template <typename Data>
 void List<T>::insert(Data&& data, size_t idx) {
     Node<T>* node = new Node<T> {
-        .data = forward<Data>(data),
+        .data = std::forward<Data>(data),
     };
     
     if (idx == 0) {
@@ -127,13 +111,13 @@ T List<T>::remove(size_t idx) {
         current->next = removed->next;
     }
     
-    T data = move(removed->data);
+    T data = std::move(removed->data);
 
     delete removed;
 
     count -= 1;
 
-    return move(data);
+    return std::move(data);
 }
 
 template <typename T>
