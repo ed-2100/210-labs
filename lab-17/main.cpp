@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iterator>
+#include <vector>
 
 using namespace std;
 
@@ -41,8 +42,9 @@ private:
 public:
     using difference_type = std::ptrdiff_t; // Not sure if I need to change this yet.
     using value_type = T;
+    using reference = T&;
 
-    value_type operator*() const;
+    reference operator*() const;
 
     ListIterator<T>& operator++();
 
@@ -55,6 +57,10 @@ public:
     bool operator==(const ListIterator<T>&) const;
 };
 
+template <typename T>
+ListIterator<T>::reference ListIterator<T>::operator*() const {
+    return current->data;
+}
 
 
 template <typename T>
@@ -139,6 +145,9 @@ string float_list_to_string() {}
 // void output(Node *);
 
 int main() {
+    vector<float> test;
+    *test.begin();
+
     // Node *head = nullptr;
     // int count = 0;
 
