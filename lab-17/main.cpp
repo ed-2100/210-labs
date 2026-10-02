@@ -83,7 +83,6 @@ const array<tuple<const char*, MenuState>, 5> options = {
     {"Exit", MenuState::EXIT}
 };
 
-bool get_int(int& num);
 
 int main() {
     List<float> list;
@@ -104,9 +103,11 @@ int main() {
             case MAIN_MENU_DECISION: {
                 cout << "Your decision: ";
                 
-                int choice;
+                string buf;
+                getline(cin, buf);
 
-                if (!get_int(choice)) {
+                int choice;
+                if (!parse_int(choice, buf)) {
                     break;
                 }
 
@@ -119,6 +120,9 @@ int main() {
 
                 break;
             }
+            case INSERT: {
+                break;
+            }
             case REMOVE: {
                 if (list.size() == 0) {
                     cout << "No elements to remove.\n";
@@ -126,20 +130,25 @@ int main() {
                     break;
                 }
 
-                cout << "Remove index: ";
+                cout << "Index to remove: ";
+
+                string buf;
+                getline(cin, buf);
 
                 int choice;
-
-                if (!get_int(choice)) {
+                if (!parse_int(choice, buf)) {
+                    state = MAIN_MENU;
                     break;
                 }
 
                 if (choice < 0 || choice >= list.size()) {
                     cout << "Out of range!\n";
+                    state = MAIN_MENU;
                     break;
                 }
 
-                
+                list.remove(choice);
+                break;
             }
             case EXIT: {
                 cout << "Exiting...\n";
@@ -152,6 +161,18 @@ int main() {
         }
 
         cout << '\n';
+    }
+}
+
+bool parse_int(int& num, const string& input) {
+    try {
+        num = stoi(input);
+    } catch (const invalid_argument &e) {
+        cout << "Not a number!\n";
+        return false;
+    } catch (const out_of_range &e) {
+        cout << "Definitely out of range.\n";
+        return false;
     }
 }
 
