@@ -7,16 +7,17 @@
 namespace mylist {
 
 template <typename T>
-struct List;
+class List;
 
 template <typename T>
 struct Node;
 
 template <typename T>
-struct ListIterator;
+class ListIterator;
 
+// The `List` class.
 template <typename T>
-struct List {
+class List {
 private:
     Node<T>* head;
     size_t count;
@@ -48,7 +49,7 @@ struct Node {
 };
 
 template <typename T>
-struct ListIterator {
+class ListIterator {
 private:
     Node<T>* current;
 public:
@@ -56,6 +57,7 @@ public:
     using value_type = T;
     using reference = T&;
 
+    ListIterator() = delete;
     ListIterator(Node<T>* current) : current(current) {}
 
     reference operator*();
