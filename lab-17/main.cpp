@@ -17,7 +17,6 @@ template <typename T>
 struct List {
 private:
     Node<T>* head;
-    Node<T>* tail; // TODO: Update this in the functions.
 public:
     List() : head(nullptr) {}
     ~List();
@@ -68,11 +67,9 @@ public:
     bool operator==(const ListIterator<T>&) const;
 };
 
-// void output(List<float>& list);
+string output(List<float>& list);
 
 const int SIZE = 7;
-
-// void output(Node *);
 
 int main() {
     vector<float> test;
@@ -84,31 +81,31 @@ int main() {
         list.push_front(float(rand() % 100));
     }
 
-    // output(head);
+    cout << output(list) << endl;
 
     // deleting a node
     cout << "Which node to delete?" << endl;
-    // output(head);
+    cout << output(list) << endl;
     int entry;
     cout << "Choice --> ";
     cin >> entry;
 
     // traverse that many times and delete that node
     list.remove(entry);
-    // output(head);
+    cout << output(list) << endl;
 
     // insert a node
     cout << "After which node to insert 10000? " << endl;
-    // output(head);
+    cout << output(list) << endl;
     cout << "Choice --> ";
     cin >> entry;
 
     list.insert(10000.0f, entry);
-    // output(head);
+    cout << output(list) << endl;
 
     // deleting the linked list
     list.clear();
-    // output(head);
+    cout << output(list) << endl;
 
     return EXIT_SUCCESS;
 }
@@ -194,7 +191,7 @@ ListIterator<T> List<T>::begin() {
 
 template <typename T>
 ListIterator<T> List<T>::end() {
-    return ListIterator<T>(tail);
+    return ListIterator<T>(nullptr);
 }
 
 template <typename T>
@@ -228,36 +225,26 @@ string output(List<float>& list) {
 
     string buf;
 
-    buf.append("[ ");
+    buf.append_range("[ ");
 
     if (front == back) {
-        buf.append("]");
+        buf.append_range("]");
         return move(buf);
     }
 
     while (true) {
-
-        buf.append(to_string(*front));
+        buf.append_range(format("{}", *front));
 
         front++;
 
-        if (front != back)
-        buf.append(", ");
+        if (front == back) {
+            break;
+        }
+
+        buf.append_range(", ");
     }
 
+    buf.append_range(" ]");
+
+    return buf;
 }
-
-
-// void output(Node *hd) {
-//     if (!hd) {
-//         cout << "Empty list.\n";
-//         return;
-//     }
-//     int count = 1;
-//     Node *current = hd;
-//     while (current) {
-//         cout << "[" << count++ << "] " << current->value << endl;
-//         current = current->next;
-//     }
-//     cout << endl;
-// }
