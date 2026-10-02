@@ -69,38 +69,44 @@ const int SIZE = 7;
 
 enum MenuState {
     MAIN_MENU,
+    MAIN_MENU_DECISION,
     PUSH_FRONT,
     POP_FRONT,
     INSERT,
     REMOVE,
     CLEAR,
     DISPLAY,
+    EXIT,
 };
 
+const array<tuple<const char*, MenuState>, 7> options = {
+    tuple{"Push Front", MenuState::PUSH_FRONT},
+    {"Pop Front", MenuState::POP_FRONT},
+    {"Insert", MenuState::INSERT},
+    {"Remove", MenuState::REMOVE},
+    {"Clear", MenuState::CLEAR},
+    {"Display", MenuState::DISPLAY},
+    {"Exit", MenuState::EXIT}
+};
 
 int main() {
     vector<float> test;
 
-    MenuState state = MenuState::MAIN_MENU;
+    MenuState state = MAIN_MENU;
 
     while (true) {
         switch (state) {
-            case MenuState::MAIN_MENU: {
-                array<tuple<const char*, MenuState>, 6> options = {
-                    tuple{"Push Front", MenuState::PUSH_FRONT},
-                    {"Pop Front", MenuState::POP_FRONT},
-                    {"Insert", MenuState::INSERT},
-                    {"Remove", MenuState::REMOVE},
-                    {"Clear", MenuState::CLEAR},
-                    {"Display", MenuState::DISPLAY}
-                };
-
+            case MAIN_MENU: {
                 cout << "Main Menu:\n";
 
                 for (size_t i = 0; i < options.size(); i++) {
                     cout << format("({}) {}\n", i + 1, get<0>(options[i]));
                 }
 
+                state = MAIN_MENU_DECISION;
+                break;
+            }
+            case MAIN_MENU_DECISION: {
                 cout << "\nYour decision: ";
                 
                 string buf;
@@ -112,18 +118,28 @@ int main() {
                 try {
                     choice = stoi(buf);
                 } catch (const invalid_argument &e) {
+                    cout << "Not a number!";
+                    break;
                 } catch (const out_of_range &e) {
-                }
-
-                if (choice < 1 && choice > options.size()) {
+                    cout << "Definitely out of range.";
                     break;
                 }
+
+                if (choice < 1 || choice > options.size()) {
+                    cout << "Out of range!";
+                    break;
+                }
+
+                state = get<1>(options[choice - 1]);
+
+                break;
             }
-                break;
-            case 1:
-                break;
+            case EXIT: {
+                
+            }
             default:
                 // Invalid Menu
+                cout << "Menu not found.\n\n";
                 state = MenuState::MAIN_MENU;
         }
     }
