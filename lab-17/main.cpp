@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <tuple>
+#include <array>
 
 using namespace std;
 
@@ -85,19 +86,22 @@ int main() {
     while (true) {
         switch (state) {
             case MenuState::MAIN_MENU: {
-                set<tuple<const char*, MenuState>> {
-                    {"Push Front", MenuState::PUSH_FRONT}
+                array<tuple<const char*, MenuState>, 6> options = {
+                    tuple{"Push Front", MenuState::PUSH_FRONT},
+                    {"Pop Front", MenuState::POP_FRONT},
+                    {"Insert", MenuState::INSERT},
+                    {"Remove", MenuState::REMOVE},
+                    {"Clear", MenuState::CLEAR},
+                    {"Display", MenuState::DISPLAY}
+                };
+
+                cout << "Main Menu:\n";
+
+                for (size_t i = 0; i < options.size(); i++) {
+                    cout << format("({}) {}\n", i + 1, get<0>(options[i]));
                 }
 
-                cout << "Main Menu:\n"
-                     << "(1) Push Front\n"
-                     << "(2) Pop Front\n"
-                     << "(3) Insert\n"
-                     << "(4) Remove\n"
-                     << "(5) Clear\n"
-                     << "(6) Display\n"
-                     << "\n"
-                     << "Your decision: ";
+                cout << "\nYour decision: ";
                 
                 string buf;
 
@@ -111,7 +115,9 @@ int main() {
                 } catch (const out_of_range &e) {
                 }
 
-
+                if (choice < 1 && choice > options.size()) {
+                    break;
+                }
             }
                 break;
             case 1:
