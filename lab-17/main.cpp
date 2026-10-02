@@ -20,6 +20,22 @@ enum MenuState {
     EXIT,
 };
 
+class Application {
+private:
+    List<float>& list;
+    MenuState state = MAIN_MENU;
+
+public:
+    int run();
+
+private:
+    void main_menu();
+    void main_menu_decision();
+    void insert();
+    void remove();
+    void clear();
+    void display();
+};
 
 const array<tuple<const char*, MenuState>, 5> options = {
     tuple{"Insert", MenuState::INSERT},
@@ -34,36 +50,36 @@ string output(List<float>& list);
 bool parse_int(int& num, const string& input);
 
 
-void state_main_menu(MenuState& state, List<float>& list);
-void state_main_menu_decision(MenuState& state, List<float>& list);
-void state_insert(MenuState& state, List<float>& list);
-void state_remove(MenuState& state, List<float>& list);
-void state_clear(MenuState& state, List<float>& list);
-void state_display(MenuState& state, List<float>& list);
 
 int main() {
-    List<float> list;
-    MenuState state = MAIN_MENU;
+    Application app;
+
+    return app.run();
+}
+
+int Application::run() {
+    list = List<float>();
+    state = MAIN_MENU;
 
     while (true) {
         switch (state) {
             case MAIN_MENU:
-                state_main_menu(state, list);
+                main_menu();
                 break;
             case MAIN_MENU_DECISION:
-                state_main_menu_decision(state, list);
+                main_menu_decision();
                 break;
             case INSERT:
-                state_insert(state, list);
+                insert();
                 break;
             case REMOVE:
-                state_remove(state, list);
+                remove();
                 break;
             case CLEAR:
-                state_clear(state, list);
+                clear();
                 break;
             case DISPLAY:
-                state_display(state, list);
+                display();
                 break;
             case EXIT:
                 cout << "Exiting...\n";
