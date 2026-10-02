@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 14 | Edwin Burwell
+// COMSC-210 | Lab 16 | Edwin Burwell
 //
 // Note: This code may contain features from newer C++ versions, such as C++23.
 
@@ -128,7 +128,7 @@ int main() {
         cout << '\n';
     }
 
-    return EXIT_SUCCESS; // :)
+    return EXIT_SUCCESS;
 }
 
 
