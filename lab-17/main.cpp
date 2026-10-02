@@ -25,11 +25,6 @@ public:
     ~List();
 
     template <typename Data>
-    void push_front(Data&& data);
-
-    T pop_front();
-
-    template <typename Data>
     void insert(Data&& data, size_t idx);
 
     T remove(size_t idx);
@@ -80,9 +75,7 @@ enum MenuState {
 };
 
 const array<tuple<const char*, MenuState>, 7> options = {
-    tuple{"Push Front", MenuState::PUSH_FRONT},
-    {"Pop Front", MenuState::POP_FRONT},
-    {"Insert", MenuState::INSERT},
+    tuple{"Insert", MenuState::INSERT},
     {"Remove", MenuState::REMOVE},
     {"Clear", MenuState::CLEAR},
     {"Display", MenuState::DISPLAY},
@@ -135,7 +128,8 @@ int main() {
                 break;
             }
             case EXIT: {
-                
+                cout << "Exiting...\n";
+                return EXIT_SUCCESS;
             }
             default:
                 // Invalid Menu
@@ -152,33 +146,19 @@ List<T>::~List() {
 
 template <typename T>
 template <typename Data>
-void List<T>::push_front(Data&& data) {
-    Node<T>* node = new Node<T> {
-        .data = forward<Data>(data),
-        .next = head,
-    };
-
-    head = node;
-}
-
-template <typename T>
-T List<T>::pop_front() {
-    Node<T>* popped = head;
-
-    head = popped->next;
-
-    T data = move(popped->data);
-
-    delete popped;
-
-    return move(data);
-}
-
-template <typename T>
-template <typename Data>
 void List<T>::insert(Data&& data, size_t idx) {
     if (idx == 0) {
-        push_front(forward<Data>(data));
+        auto old_head = head;
+
+        head = new Node<T> {
+            .data = forward<Data>(data),
+            .next = head,
+        };
+
+        if (old_head) {
+            old_head->next = 
+        }
+
         return;
     }
 
