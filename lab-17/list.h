@@ -1,6 +1,12 @@
 #pragma once
 
 #include <cstddef>
+#include <utility>
+#include <algorithm>
+
+namespace list {
+
+using namespace std;
 
 template <typename T>
 struct List;
@@ -161,3 +167,4 @@ bool ListIterator<T>::operator==(const ListIterator<T>& rhs) const {
     return current == rhs.current;
 }
 
+}; // namespace list

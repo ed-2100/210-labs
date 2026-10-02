@@ -8,6 +8,7 @@
 #include "list.h"
 
 using namespace std;
+using namespace list;
 
 enum MenuState {
     MAIN_MENU,
@@ -19,6 +20,7 @@ enum MenuState {
     EXIT,
 };
 
+
 const array<tuple<const char*, MenuState>, 5> options = {
     tuple{"Insert", MenuState::INSERT},
     {"Remove", MenuState::REMOVE},
@@ -28,7 +30,9 @@ const array<tuple<const char*, MenuState>, 5> options = {
 };
 
 string output(List<float>& list);
+
 bool parse_int(int& num, const string& input);
+
 
 void state_main_menu(MenuState& state, List<float>& list);
 void state_main_menu_decision(MenuState& state, List<float>& list);
