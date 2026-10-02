@@ -10,6 +10,11 @@
 using namespace std;
 using namespace mylist;
 
+// The `MenuState` enum.
+//
+// Describes the different states in 
+// the `Application` class's internal
+// state machine.
 enum MenuState {
     MAIN_MENU,
     MAIN_MENU_DECISION,
@@ -43,7 +48,7 @@ private:
     // The `main_menu` state function.
     //
     // Displays a list of list operations to the user.
-    // and sets the `state` to `
+    // and sets `state` to `MAIN_MENU_DECISION`.
     void main_menu();
 
     // The `main_menu_decision` state function.
@@ -74,7 +79,7 @@ private:
     // Displays the current contents of the list.
     void display();
 
-    // Small helper to parse integer inputs.
+    // A small helper to parse integer inputs.
     //
     // ### Arguments
     //
@@ -91,6 +96,15 @@ private:
     );
 };
 
+// The `main` function.
+//
+// Showcases a minimal list implementation, allowing
+// the user to perform arbitrary operations to test
+// its functionality.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     Application app;
 
