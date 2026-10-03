@@ -96,7 +96,7 @@ private:
     Node<T>* current;
 public:
     ListIterator() = default;
-    ListIterator(Node<T>* current) : current(current) {}
+    explicit ListIterator(Node<T>* current) : current(current) {}
 
     T& operator*() const;
     ListIterator<T>& operator++();
@@ -204,7 +204,9 @@ T& ListIterator<T>::operator*() const {
 
 template <typename T>
 ListIterator<T>& ListIterator<T>::operator++() {
-    current = current->next;
+    if (current) {
+        current = current->next;
+    }
     return *this;
 }
 
