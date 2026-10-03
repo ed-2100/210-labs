@@ -27,9 +27,17 @@ public:
     List() : count(0), head(nullptr) {}
     ~List();
 
-    // Delete the copy constructor so that an
-    // unintentional shallow copy never happens.
+    // Delete the copy constructor and copy assignment
+    // operator so that an unintentional shallow copy
+    // never happens.
     List(const List<T>& rhs) = delete;
+    List<T>& operator=(const List<T>&) = delete;
+
+    // Explicitly define move semantics.
+    List(List<T>&& rhs) noexcept
+      : head(std::exchange(rhs.head, nullptr)),
+        count(std::exchange(rhs.count, 0)) {}
+    List<T>& operator=(List<T>&& other) noexcept;
 
     // =========================
     // ===== Class Methods =====
@@ -105,6 +113,17 @@ public:
 template <typename T>
 List<T>::~List() {
     clear();
+}
+
+template <typename T>
+List<T>& List<T>::operator=(List<T>&& other) noexcept {
+    if (this != &other) {
+        this->~List();
+
+        head = std::exchange(other.head, nullptr);
+        count = std::exchange(other.count, 0);
+    }
+    return *this;
 }
 
 template <typename T>
