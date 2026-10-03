@@ -95,16 +95,10 @@ class ListIterator {
 private:
     Node<T>* current;
 public:
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using reference = T&;
-
-    // No default constuctor necessary; just
-    // serves as a footgun at the moment.
-    ListIterator() = delete;
+    ListIterator() = default;
     ListIterator(Node<T>* current) : current(current) {}
 
-    reference operator*();
+    T& operator*() const;
     ListIterator<T>& operator++();
     ListIterator<T> operator++(int);
     bool operator==(const ListIterator<T>&) const;
@@ -204,7 +198,7 @@ ListIterator<T> List<T>::end() {
 }
 
 template <typename T>
-ListIterator<T>::reference ListIterator<T>::operator*() {
+T& ListIterator<T>::operator*() const {
     return current->data;
 }
 
