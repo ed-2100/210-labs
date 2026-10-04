@@ -68,8 +68,6 @@ public:
     ListIterator<T> end() const;
 };
 
-static_assert(std::ranges::range<List<float>>);
-
 // The `Node` struct.
 //
 // The core datatype behind the `List` class.
@@ -107,6 +105,7 @@ static_assert(std::input_or_output_iterator<ListIterator<float>>);
 static_assert(std::indirectly_readable<ListIterator<float>>);
 static_assert(std::input_iterator<ListIterator<float>>);
 static_assert(std::forward_iterator<ListIterator<float>>);
+static_assert(std::ranges::range<List<float>>);
 
 template <typename T>
 List<T>::~List() noexcept {
@@ -158,7 +157,7 @@ template <typename T>
 List<T>& List<T>::operator=(List<T>&& rhs) noexcept {
     if (this != &rhs) {
         this->~List();
-        new (this) List<T>(rhs);
+        new (this) List<T>(move(rhs));
     }
     return *this;
 }
