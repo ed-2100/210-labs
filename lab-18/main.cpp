@@ -114,7 +114,7 @@ int main(int argc, const char** argv) {
         cout << '\n';
     }
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
 
 void Movie::set_title(string title) {
