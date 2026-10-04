@@ -6,7 +6,7 @@ using namespace std;
 
 class Movie {
 
-}
+};
 
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);

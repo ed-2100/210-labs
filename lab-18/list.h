@@ -109,7 +109,18 @@ List<T>& List<T>::operator=(List<T>&& other) noexcept {
 template <typename T>
 template <typename Item>
 void List<T>::push_back(Item&& item) {
+    Node<T>* node = new Node<T> {
+        .data = std::forward<Item>(item),
+        .next = nullptr
+    };
 
+    if (!tail) {
+        head = node;
+    } else {
+        tail->next = node;
+    }
+
+    tail = node;
 }
 
 template <typename T>
