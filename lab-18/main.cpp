@@ -13,18 +13,39 @@
 using namespace std;
 using namespace mylist;
 
+// The `Review` struct.
+//
+// Holds information pertaining to a
+// user's review on a movie.
 struct Review {
     float rating;
     string comment;
 };
 
+// The `Movie` class.
+//
+// Stores movie metadata, including
+// reviews.
 class Movie {
 private:
     string m_title;
     List<Review> m_reviews;
 public:
+    // Sets the title of the movie.
+    //
+    // ### Arguments
+    //
+    //  - `title`: The new title for the movie.
     void set_title(string title);
+
+    // Adds a review to the movie data.
+    //
+    // ### Arguments
+    //
+    // - `review`: The review to add to the movie.
     void add_review(Review review);
+
+    // Displays the stored movie data to `stdout`.
     void display() const;
 };
 
@@ -100,5 +121,5 @@ void Movie::display() const {
 
     average /= m_reviews.size();
 
-    cout << format("  > Average: {:.1}\n", average);
+    cout << format("  > Average: {:.1f}\n", average);
 }

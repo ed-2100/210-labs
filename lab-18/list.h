@@ -45,6 +45,11 @@ public:
     // ===== Class Methods =====
     // =========================
 
+    // Appends an element to the end of the list.
+    //
+    // ### Arguments
+    //
+    //  - `item`: The item to append to the list.
     template <typename Item>
     void push_back(Item&& item);
 
@@ -61,6 +66,8 @@ public:
     ListIterator<T> begin() const;
     ListIterator<T> end() const;
 };
+
+static_assert(std::ranges::range<List<float>>);
 
 // The `Node` struct.
 //
