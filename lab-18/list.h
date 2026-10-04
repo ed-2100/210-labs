@@ -48,6 +48,8 @@ public:
     template <typename Item>
     void push_back(Item&& item);
 
+    List<T> clone();
+
     // Clears the list, freeing all allocations.
     void clear();
 
@@ -121,6 +123,13 @@ void List<T>::push_back(Item&& item) {
     }
 
     tail = node;
+}
+
+template <typename T>
+List<T> List<T>::clone() {
+    for (const T& item : item) {
+        
+    }
 }
 
 template <typename T>
