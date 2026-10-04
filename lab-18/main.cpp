@@ -52,7 +52,7 @@ int main(int argc, const char** argv) {
 
     mt19937 gen(42);
 
-    uniform_real_distribution<float> dist_value(0.0, nextafter(5.0, FLT_MAX));
+    uniform_real_distribution<float> dist_value(1.0, nextafter(5.0, FLT_MAX));
 
     for (const char* title : titles) {
         Movie movie;
@@ -62,11 +62,9 @@ int main(int argc, const char** argv) {
         for (size_t i = 0; i < 3; i++) {
             Review review;
 
-            review.rating = dist_value(gen);
+            review.rating = round(dist_value(gen) * 10) / 10;
 
             getline(reviews_file, review.comment);
-
-            cout << "Adding review\n";
 
             movie.add_review(move(review));
         }
@@ -76,6 +74,7 @@ int main(int argc, const char** argv) {
 
     for (const Movie& movie : movies) {
         movie.display();
+        cout << '\n';
     }
 
     return EXIT_SUCCESS;
@@ -94,19 +93,12 @@ void Movie::display() const {
     
     float average = 0;
 
-    cout << m_reviews.size() << '\n';
-
     for (const auto& [i, review] : views::enumerate(m_reviews)) {
-        cout << format("  > Review #{}: {}: {}\n", i, review.rating, review.comment);
+        cout << format("  > Review #{}: {:.1f}: {}\n", i, review.rating, review.comment);
         average += review.rating;
     }
 
     average /= m_reviews.size();
 
-    cout << format("  > Average: {:.1}\n\n", average);
-
-    //   > Review #1: 2.0: The best fantasy film ever made.
-    //   > Review #2: 2.3: Too long, but the battles are incredible.
-    //   > Review #3: 3.3: An epic journey with stunning visuals.
-    //   > Average: 2.5
+    cout << format("  > Average: {:.1}\n", average);
 }

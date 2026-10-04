@@ -84,7 +84,7 @@ public:
     using difference_type = std::ptrdiff_t;
     using value_type = T;
 
-    ListIterator() = default;
+    ListIterator() : current(nullptr) {}
     explicit ListIterator(Node<T>* current) : current(current) {}
 
     T& operator*() const;
