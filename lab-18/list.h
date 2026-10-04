@@ -100,7 +100,7 @@ template <typename T>
 List<T>::List(const List<T>& rhs)
   : head(nullptr),
     tail(nullptr),
-    count = 0 {
+    count(rhs.count) {
     auto front = rhs.begin();
     auto back = rhs.end();
     
@@ -110,13 +110,15 @@ List<T>::List(const List<T>& rhs)
 
     head = new Node<T> {
         .data = *front,
-    }
+    };
 
     tail = head;
 
+    front++;
+
     for (; front != back; front++) {
         Node<T>* node = new Node<T> {
-            .data = std::forward<Item>(item),
+            .data = *front
         };
 
         tail->next = node;
@@ -130,7 +132,7 @@ template <typename T>
 List<T>& List<T>::operator=(const List<T>& rhs) {
     if (this != &rhs) {
         this->~List();
-        this->List(rhs);
+        new this List(rhs);
     }
     return *this;
 }
@@ -139,7 +141,7 @@ template <typename T>
 List<T>& List<T>::operator=(List<T>&& rhs) noexcept {
     if (this != &rhs) {
         this->~List();
-        this->List(rhs);
+        new this List(rhs);
     }
     return *this;
 }
