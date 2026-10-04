@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <cmath>
+#include <cfloat>
 
 #include "list.h"
 
@@ -21,7 +23,7 @@ private:
 public:
     void set_title(string title);
     void add_review(Review review);
-    void display();
+    void display() const;
 };
 
 const char* titles[] = {
@@ -43,7 +45,7 @@ int main(int argc, const char** argv) {
 
     mt19937 gen(42);
 
-    uniform_int_distribution<uint32_t> dist_value(0, 255);
+    uniform_int_distribution<uint32_t> dist_value(0.0, nextafter(5.0, FLT_MAX));
 
     for (const char* title : titles) {
         Movie movie;
@@ -51,12 +53,20 @@ int main(int argc, const char** argv) {
         movie.set_title(title);
 
         for (size_t i = 0; i < 3; i++) {
-            string buf;
+            Review review;
 
-            getline(reviews_file, buf);
+            review.rating = dist_value(gen);
 
-            
+            getline(reviews_file, review.review);
+
+            movie.add_review(move(review));
         }
+
+        movies.push_back(move(movie));
+    }
+
+    for (const Movie& movie : movies) {
+        movie.display();
     }
 }
 
@@ -65,9 +75,9 @@ void Movie::set_title(string title) {
 }
 
 void Movie::add_review(Review review) {
-
+    m_reviews.push_back(move(review));
 }
 
-void Movie::display() {
+void Movie::display() const {
 
 }
