@@ -22,6 +22,7 @@ template <typename T>
 class List {
 private:
     Node<T>* head;
+    Node<T>* tail;
     size_t count;
 public:
     List() : count(0), head(nullptr) {}
@@ -36,6 +37,7 @@ public:
     // Explicitly define move semantics.
     List(List<T>&& rhs) noexcept
       : head(std::exchange(rhs.head, nullptr)),
+        tail(std::exchange(rhs.head, nullptr)),
         count(std::exchange(rhs.count, 0)) {}
     List<T>& operator=(List<T>&& other) noexcept;
 
@@ -43,25 +45,8 @@ public:
     // ===== Class Methods =====
     // =========================
 
-    // Inserts a value at an arbitrary index.
-    //
-    // ### Arguments
-    //
-    //  - `data`: The data to insert.
-    //  - `idx`: The index to insert the data at.
-    template <typename Data>
-    void insert(Data&& data, size_t idx);
-
-    // Removes a value at an arbitrary index.
-    //
-    // ### Arguments
-    //
-    //  - `idx`: The index to remove.
-    //
-    // ### Returns
-    //
-    // The data contained at the removed index.
-    T remove(size_t idx);
+    template <typename Item>
+    void push_back(Item&& item);
 
     // Clears the list, freeing all allocations.
     void clear();
@@ -115,60 +100,16 @@ List<T>& List<T>::operator=(List<T>&& other) noexcept {
         this->~List();
 
         head = std::exchange(other.head, nullptr);
+        tail = std::exchange(other.tail, nullptr);
         count = std::exchange(other.count, 0);
     }
     return *this;
 }
 
 template <typename T>
-template <typename Data>
-void List<T>::insert(Data&& data, size_t idx) {
-    Node<T>* node = new Node<T> {
-        .data = std::forward<Data>(data),
-    };
-    
-    if (idx == 0) {
-        node->next = head;
-        head = node;
-    } else {
-        Node<T>* current = head;
+template <typename Item>
+void List<T>::push_back(Item&& item) {
 
-        for (size_t i = 1; i < idx; i++) {
-            current = current->next;
-        }
-
-        node->next = current->next;
-        current->next = node;
-    }
-
-    count += 1;
-}
-
-template <typename T>
-T List<T>::remove(size_t idx) {
-    Node<T>* removed;
-
-    if (idx == 0) {
-        removed = head;
-        head = removed->next;
-    } else {
-        Node<T>* current = head;
-
-        for (size_t i = 1; i < idx; i++) {
-            current = current->next;
-        }
-
-        removed = current->next;
-        current->next = removed->next;
-    }
-    
-    T data = std::move(removed->data);
-
-    delete removed;
-
-    count -= 1;
-
-    return std::move(data);
 }
 
 template <typename T>
@@ -179,6 +120,7 @@ void List<T>::clear() {
         delete current;
     }
 
+    tail = nullptr;
     count = 0;
 }
 

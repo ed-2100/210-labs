@@ -1,5 +1,5 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_executable(lab-17 main.cpp)
+add_executable(lab-18 main.cpp)
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/input.txt
