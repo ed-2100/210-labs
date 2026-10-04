@@ -25,7 +25,7 @@ private:
     Node<T>* tail;
     size_t count;
 public:
-    List() : count(0), head(nullptr) {}
+    List() : head(nullptr), tail(nullptr), count(0) {}
     ~List();
 
     // Delete the copy constructor and copy assignment
@@ -37,7 +37,7 @@ public:
     // Explicitly define move semantics.
     List(List<T>&& rhs) noexcept
       : head(std::exchange(rhs.head, nullptr)),
-        tail(std::exchange(rhs.head, nullptr)),
+        tail(std::exchange(rhs.tail, nullptr)),
         count(std::exchange(rhs.count, 0)) {}
     List<T>& operator=(List<T>&& other) noexcept;
 
@@ -97,8 +97,33 @@ List<T>::~List() {
 }
 
 template <typename T>
-List<T>::List(const List<T>& rhs) {
+List<T>::List(const List<T>& rhs)
+  : head(nullptr),
+    tail(nullptr),
+    count = 0 {
+    auto front = rhs.begin();
+    auto back = rhs.end();
     
+    if (front == back) {
+        return;
+    }
+
+    head = new Node<T> {
+        .data = *front,
+    }
+
+    tail = head;
+
+    for (; front != back; front++) {
+        Node<T>* node = new Node<T> {
+            .data = std::forward<Item>(item),
+        };
+
+        tail->next = node;
+        tail = node;
+    }
+
+    tail->next = nullptr;
 }
 
 template <typename T>
