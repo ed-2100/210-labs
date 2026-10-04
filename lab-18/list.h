@@ -27,7 +27,7 @@ private:
     size_t count;
 public:
     List() : head(nullptr), tail(nullptr), count(0) {}
-    ~List();
+    ~List() noexcept;
 
     // Delete the copy constructor and copy assignment
     // operator so that an unintentional shallow copy
@@ -109,7 +109,7 @@ static_assert(std::input_iterator<ListIterator<float>>);
 static_assert(std::forward_iterator<ListIterator<float>>);
 
 template <typename T>
-List<T>::~List() {
+List<T>::~List() noexcept {
     clear();
 }
 
