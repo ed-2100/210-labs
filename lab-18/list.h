@@ -31,8 +31,8 @@ public:
     // Delete the copy constructor and copy assignment
     // operator so that an unintentional shallow copy
     // never happens.
-    List(const List<T>& rhs) = delete;
-    List<T>& operator=(const List<T>&) = delete;
+    List(const List<T>& rhs);
+    List<T>& operator=(const List<T>& rhs);
 
     // Explicitly define move semantics.
     List(List<T>&& rhs) noexcept
@@ -97,13 +97,24 @@ List<T>::~List() {
 }
 
 template <typename T>
-List<T>& List<T>::operator=(List<T>&& other) noexcept {
-    if (this != &other) {
-        this->~List();
+List<T>::List(const List<T>& rhs) {
+    
+}
 
-        head = std::exchange(other.head, nullptr);
-        tail = std::exchange(other.tail, nullptr);
-        count = std::exchange(other.count, 0);
+template <typename T>
+List<T>& List<T>::operator=(const List<T>& rhs) {
+    if (this != &rhs) {
+        this->~List();
+        this->List(rhs);
+    }
+    return *this;
+}
+
+template <typename T>
+List<T>& List<T>::operator=(List<T>&& rhs) noexcept {
+    if (this != &rhs) {
+        this->~List();
+        this->List(rhs);
     }
     return *this;
 }
@@ -123,13 +134,6 @@ void List<T>::push_back(Item&& item) {
     }
 
     tail = node;
-}
-
-template <typename T>
-List<T> List<T>::clone() {
-    for (const T& item : item) {
-        
-    }
 }
 
 template <typename T>
