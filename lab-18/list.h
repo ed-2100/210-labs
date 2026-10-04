@@ -48,8 +48,6 @@ public:
     template <typename Item>
     void push_back(Item&& item);
 
-    List<T> clone();
-
     // Clears the list, freeing all allocations.
     void clear();
 
@@ -132,7 +130,7 @@ template <typename T>
 List<T>& List<T>::operator=(const List<T>& rhs) {
     if (this != &rhs) {
         this->~List();
-        new this List(rhs);
+        new (this) List<T>(rhs);
     }
     return *this;
 }
@@ -141,7 +139,12 @@ template <typename T>
 List<T>& List<T>::operator=(List<T>&& rhs) noexcept {
     if (this != &rhs) {
         this->~List();
-        new this List(rhs);
+
+        // Not sure if it's a good idea to use placement
+        // new here... Not changing this, just to be safe.
+        head = std::exchange(rhs.head, nullptr);
+        tail = std::exchange(rhs.tail, nullptr);
+        count = std::exchange(rhs.count, 0);
     }
     return *this;
 }
