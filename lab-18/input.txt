@@ -1,0 +1,12 @@
+The best fantasy film ever made.
+Too long, but the battles are incredible.
+An epic journey with stunning visuals.
+Slow start, but worth every minute.
+Brando's performance is unforgettable.
+A masterpiece of storytelling and acting.
+Some effects look dated today.
+Great characters and a legendary score.
+Classic space adventure that still holds up.
+The science is shaky but who cares.
+Tense, fun, and perfectly paced.
+The dinosaurs still look amazing.
