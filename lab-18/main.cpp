@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cfloat>
 #include <ranges>
+#include <format>
 
 #include "list.h"
 
@@ -83,8 +84,8 @@ void Movie::display() const {
     cout << "Movie Title: " << m_title;
     
     for (const auto& [review, i] : views::enumerate(m_reviews)) {
-        cout << "  > Review#" << 
-    }
+        cout << format("Review #{}: {}: {}", i, review.rating, review.review);
+    
     //   > Review #1: 2.0: The best fantasy film ever made.
     //   > Review #2: 2.3: Too long, but the battles are incredible.
     //   > Review #3: 3.3: An epic journey with stunning visuals.

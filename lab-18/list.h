@@ -81,7 +81,7 @@ private:
     Node<T>* current;
 public:
     using iterator_concept = forward_iterator_tag;
-    using difference_type = std::ptrdiff_t;
+    using value_type = T;
 
     ListIterator() = default;
     explicit ListIterator(Node<T>* current) : current(current) {}
@@ -95,6 +95,7 @@ public:
 
 static_assert(std::weakly_incrementable<ListIterator<float>>);
 static_assert(std::input_or_output_iterator<ListIterator<float>>);
+static_assert(std::indirectly_readable<ListIterator<float>>);
 static_assert(std::input_iterator<ListIterator<float>>);
 static_assert(std::forward_iterator<ListIterator<float>>);
 
