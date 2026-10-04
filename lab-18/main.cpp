@@ -1,3 +1,5 @@
+
+
 #include <filesystem>
 #include <string>
 #include <fstream>
@@ -56,6 +58,18 @@ const char* titles[] = {
     "Jurassic Park"
 };
 
+// The main function.
+//
+// Loads movie metadata entries from a file and prints them to `stdout`.
+//
+// ### Arguments
+//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     filesystem::path exe_path(argv[0]);
 
@@ -115,7 +129,7 @@ void Movie::display() const {
     float average = 0;
 
     for (const auto& [i, review] : views::enumerate(m_reviews)) {
-        cout << format("  > Review #{}: {:.1f}: {}\n", i, review.rating, review.comment);
+        cout << format("  > Review #{}: {:.1f}: {}\n", i + 1, review.rating, review.comment);
         average += review.rating;
     }
 

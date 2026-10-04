@@ -29,13 +29,9 @@ public:
     List() : head(nullptr), tail(nullptr), count(0) {}
     ~List() noexcept;
 
-    // Delete the copy constructor and copy assignment
-    // operator so that an unintentional shallow copy
-    // never happens.
     List(const List<T>& rhs);
     List<T>& operator=(const List<T>& rhs);
-
-    // Explicitly define move semantics.
+    
     List(List<T>&& rhs) noexcept
       : head(std::exchange(rhs.head, nullptr)),
         tail(std::exchange(rhs.tail, nullptr)),
