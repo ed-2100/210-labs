@@ -1,6 +1,8 @@
 #include <filesystem>
 #include <string>
 #include <fstream>
+#include <iostream>
+#include <random>
 
 #include "list.h"
 
@@ -13,9 +15,11 @@ struct Review {
 };
 
 class Movie {
-    string title;
-    List<Review> reviews;
-
+private:
+    string m_title;
+    List<Review> m_reviews;
+public:
+    void set_title(string title);
     void add_review(Review review);
     void display();
 };
@@ -35,15 +39,30 @@ int main(int argc, const char** argv) {
     
     List<Movie> movies;
 
-    ifstream reviews_file;
+    ifstream reviews_file(input_path);
+
+    mt19937 gen(42);
+
+    uniform_int_distribution<uint32_t> dist_value(0, 255);
 
     for (const char* title : titles) {
         Movie movie;
 
-        
+        movie.set_title(title);
+
+        for (size_t i = 0; i < 3; i++) {
+            string buf;
+
+            getline(reviews_file, buf);
+
+            
+        }
     }
 }
 
+void Movie::set_title(string title) {
+    m_title = move(title);
+}
 
 void Movie::add_review(Review review) {
 
