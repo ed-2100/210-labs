@@ -1,11 +1,19 @@
 #include <filesystem>
+#
 
 #include "list.h"
 
 using namespace std;
+using namespace mylist;
+
+struct Review {
+    float rating;
+    string review;
+};
 
 class Movie {
-
+    string title;
+    List<Review> reviews;
 };
 
 int main(int argc, const char** argv) {
@@ -14,6 +22,6 @@ int main(int argc, const char** argv) {
     auto exe_dir = exe_path.parent_path();
     auto input_path = exe_dir / "input.txt";
     
-
+    List<Movie> movies;
 
 }
