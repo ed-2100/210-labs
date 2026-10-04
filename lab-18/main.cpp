@@ -15,7 +15,7 @@ using namespace mylist;
 
 struct Review {
     float rating;
-    string review;
+    string comment;
 };
 
 class Movie {
@@ -45,9 +45,14 @@ int main(int argc, const char** argv) {
 
     ifstream reviews_file(input_path);
 
+    if (reviews_file.bad()) {
+        cout << "Failed to open file " << input_path << '\n';
+        return EXIT_FAILURE;
+    }
+
     mt19937 gen(42);
 
-    uniform_int_distribution<uint32_t> dist_value(0.0, nextafter(5.0, FLT_MAX));
+    uniform_real_distribution<float> dist_value(0.0, nextafter(5.0, FLT_MAX));
 
     for (const char* title : titles) {
         Movie movie;
@@ -59,7 +64,9 @@ int main(int argc, const char** argv) {
 
             review.rating = dist_value(gen);
 
-            getline(reviews_file, review.review);
+            getline(reviews_file, review.comment);
+
+            cout << "Adding review\n";
 
             movie.add_review(move(review));
         }
@@ -70,6 +77,8 @@ int main(int argc, const char** argv) {
     for (const Movie& movie : movies) {
         movie.display();
     }
+
+    return EXIT_SUCCESS;
 }
 
 void Movie::set_title(string title) {
@@ -81,11 +90,21 @@ void Movie::add_review(Review review) {
 }
 
 void Movie::display() const {
-    cout << "Movie Title: " << m_title;
+    cout << "Movie Title: " << m_title << '\n';
     
-    for (const auto& [review, i] : views::enumerate(m_reviews)) {
-        cout << format("Review #{}: {}: {}", i, review.rating, review.review);
-    
+    float average = 0;
+
+    cout << m_reviews.size() << '\n';
+
+    for (const auto& [i, review] : views::enumerate(m_reviews)) {
+        cout << format("  > Review #{}: {}: {}\n", i, review.rating, review.comment);
+        average += review.rating;
+    }
+
+    average /= m_reviews.size();
+
+    cout << format("  > Average: {:.1}\n\n", average);
+
     //   > Review #1: 2.0: The best fantasy film ever made.
     //   > Review #2: 2.3: Too long, but the battles are incredible.
     //   > Review #3: 3.3: An epic journey with stunning visuals.

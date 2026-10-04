@@ -80,7 +80,8 @@ class ListIterator {
 private:
     Node<T>* current;
 public:
-    using iterator_concept = forward_iterator_tag;
+    using iterator_concept = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
     using value_type = T;
 
     ListIterator() = default;
@@ -169,6 +170,7 @@ void List<T>::push_back(Item&& item) {
     }
 
     tail = node;
+    count += 1;
 }
 
 template <typename T>
