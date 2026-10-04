@@ -58,8 +58,8 @@ public:
     // ===== Range Methods =====
     // =========================
 
-    ListIterator<T> begin();
-    ListIterator<T> end();
+    ListIterator<T> begin() const;
+    ListIterator<T> end() const;
 };
 
 // The `Node` struct.
@@ -179,12 +179,12 @@ size_t List<T>::size() const {
 }
 
 template <typename T>
-ListIterator<T> List<T>::begin() {
+ListIterator<T> List<T>::begin() const {
     return ListIterator<T>(head);
 }
 
 template <typename T>
-ListIterator<T> List<T>::end() {
+ListIterator<T> List<T>::end() const {
     return ListIterator<T>(nullptr);
 }
 

@@ -5,6 +5,7 @@
 #include <random>
 #include <cmath>
 #include <cfloat>
+#include <ranges>
 
 #include "list.h"
 
@@ -79,5 +80,13 @@ void Movie::add_review(Review review) {
 }
 
 void Movie::display() const {
-
+    cout << "Movie Title: " << m_title;
+    
+    for (const auto& [review, i] : views::enumerate(m_reviews)) {
+        cout << "  > Review#" << 
+    }
+    //   > Review #1: 2.0: The best fantasy film ever made.
+    //   > Review #2: 2.3: Too long, but the battles are incredible.
+    //   > Review #3: 3.3: An epic journey with stunning visuals.
+    //   > Average: 2.5
 }
