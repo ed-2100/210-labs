@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 20 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <iomanip>
 #include <random>
@@ -77,5 +81,5 @@ int main() {
     for (int i = 0; i < SIZE; i++)
         collection[i].print();
     
-    return 0;
+    return 0; // :)
 }
