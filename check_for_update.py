@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(
     epilog='Hello and Goodbye :)'
 )
 
-parser.add_argument('-p', '--period')
+parser.add_argument('-p', '--period', default="10")
 
 args = parser.parse_args()
 
@@ -30,4 +30,4 @@ while True:
     else:
         print("Skipping commit: no changes")
 
-    time.sleep(int(args.period or 10) * 60)
+    time.sleep(int(args.period) * 60)
