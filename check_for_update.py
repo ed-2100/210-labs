@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(
     epilog='Hello and Goodbye :)'
 )
 
-parser.add_argument('-p', '--period', default="10")
+parser.add_argument('-p', '--period', default="10", help="Number of minutes between each commit")
 
 args = parser.parse_args()
 
