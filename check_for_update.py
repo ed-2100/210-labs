@@ -3,6 +3,17 @@
 import subprocess
 import datetime
 import time
+import argparse
+
+parser = argparse.ArgumentParser(
+    prog='check_for_update',
+    description='Automatically commits code every [10] minutes',
+    epilog='Hello and Goodbye :)'
+)
+
+parser.add_argument('-p', '--period')
+
+args = parser.parse_args()
 
 while True:
     if subprocess.check_output(["git", "status", "--porcelain"]):
@@ -19,4 +30,4 @@ while True:
     else:
         print("Skipping commit: no changes")
 
-    time.sleep(10 * 60)
+    time.sleep(int(args.period or 10) * 60)
