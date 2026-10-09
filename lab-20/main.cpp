@@ -15,17 +15,18 @@ public:
         mt19937 gen(time(nullptr));
 
         uniform_int_distribution<uint32_t> dist_legs(3, 4);
+        uniform_int_distribution<uint32_t> dist_price(10000, 99999);
 
         prices = new double[SIZE];
-        legs = 0;
+        legs = dist_legs(gen);
         for (int i = 0; i < SIZE; i++)
-            prices[i] = 0;
+            prices[i] = static_cast<double>(dist_price(gen)) * 0.01;
     }
-    Chair(int l) {
+    Chair(int l, double p[SIZE]) {
         prices = new double[SIZE];
         legs = l;
         for (int i = 0; i < SIZE; i++)
-            prices[i] = 0;
+            prices[i] = p[i];
     }
 
     // setters and getters
@@ -63,8 +64,8 @@ int main() {
     chairPtr->print();
 
     //creating dynamic chair object with constructor
-    Chair *livingChair = new Chair(3);
-    livingChair->setPrices(525.25, 434.34, 252.52);
+    Chair *livingChair = new Chair(3, {525.25, 434.34, 252.52});
+    livingChair->setPrices();
     livingChair->print();
     delete livingChair;
     livingChair = nullptr;
