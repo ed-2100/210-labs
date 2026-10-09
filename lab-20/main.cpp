@@ -25,7 +25,7 @@ public:
         for (int i = 0; i < SIZE; i++)
             prices[i] = static_cast<double>(dist_price(gen)) * 0.01;
     }
-    Chair(int l, double p[SIZE]) {
+    Chair(int l, array<double, SIZE> p) {
         prices = new double[SIZE];
         legs = l;
         for (int i = 0; i < SIZE; i++)
@@ -67,7 +67,7 @@ int main() {
     chairPtr->print();
 
     //creating dynamic chair object with constructor
-    double tempPrices[SIZE] = {525.25, 434.34, 252.52};
+    a tempPrices[SIZE] = {525.25, 434.34, 252.52};
     Chair *livingChair = new Chair(3, tempPrices);
     livingChair->print();
     delete livingChair;
