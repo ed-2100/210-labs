@@ -64,8 +64,8 @@ int main() {
     chairPtr->print();
 
     //creating dynamic chair object with constructor
-    Chair *livingChair = new Chair(3, {525.25, 434.34, 252.52});
-    livingChair->setPrices();
+    double tempPrices[SIZE] = {525.25, 434.34, 252.52};
+    Chair *livingChair = new Chair(3, tempPrices);
     livingChair->print();
     delete livingChair;
     livingChair = nullptr;
