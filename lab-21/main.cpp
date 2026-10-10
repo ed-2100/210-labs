@@ -11,11 +11,15 @@ using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
-
 // Driver program
 int main() {
     DoublyLinkedList list;
-    int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
+
+    auto current_time = chrono::steady_clock::now();
+    mt19937 gen(current_time.time_since_epoch().count());
+    uniform_int_distribution<uint32_t> dist_size(MIN_LS, MAX_LS);
+
+    int size = dist_size(gen);
 
     for (int i = 0; i < size; ++i)
         list.push_back(move(Goat()));

@@ -61,7 +61,6 @@ Goat::Goat(uint32_t age, string name, string color) {
     this->color = move(color);
 }
 
-
 Goat& Goat::operator=(const Goat& rhs) {
     if (this != &rhs) {
         age = rhs.age;
@@ -84,6 +83,6 @@ bool Goat::operator!=(const Goat& rhs) {
     return age != rhs.age || name != rhs.name || color != rhs.color;
 }
 
-std::ostream& operator<<(std::ostream& os, const Goat& value) {
+ostream& operator<<(ostream& os, const Goat& value) {
     return os << format("{} ({}, {})", value.name, value.color, value.age);
 }

@@ -1,3 +1,5 @@
+#pragma
+
 #include "goat.h"
 
 class DoublyLinkedList {
