@@ -101,6 +101,7 @@ void DoublyLinkedList::print() {
         cout << "List is empty\n";
         return;
     };
+    cout << "List forward:\n";
     while (current) {
         cout << "    " << current->data << '\n';
         current = current->next;
@@ -114,6 +115,7 @@ void DoublyLinkedList::print_reverse() {
         cout << "List is empty\n";
         return;
     };
+    cout << "List backward:\n";
     while (current) {
         cout << "    " << current->data << '\n';
         current = current->prev;

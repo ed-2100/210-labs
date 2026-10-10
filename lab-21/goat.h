@@ -9,6 +9,7 @@
 //
 // Holds information on a goat.
 class Goat {
+private:
     uint32_t age;
     std::string name;
     std::string color;

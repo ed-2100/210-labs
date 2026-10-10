@@ -9,7 +9,13 @@
 
 using namespace std;
 
-// Driver program
+// The main function.
+//
+// Prints random lists of goats in various orderings.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     DoublyLinkedList list;
 
@@ -21,15 +27,12 @@ int main() {
 
     for (int i = 0; i < size; ++i)
         list.push_back(move(Goat()));
-    cout << "List forward:\n";
     list.print();
 
-    cout << "List backward:\n";
     list.print_reverse();
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
-    cout << "List forward:\n";
     list.print();
 
     return 0;
