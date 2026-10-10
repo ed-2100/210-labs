@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <random>
 
 using namespace std;
 
@@ -135,7 +137,7 @@ class Goat {
     uint32_t age;
     string name;
     string color;
-    const char* names[15] = {
+    const char* const names[15] = {
         "William",
         "John",
         "Thomas",
@@ -152,6 +154,40 @@ class Goat {
         "Jane",
         "Emma"
     };
+    const char* const colors[15] = {
+        "Black",
+        "White",
+        "Red",
+        "Blue",
+        "Green",
+        "Yellow",
+        "Brown",
+        "Gray",
+        "Silver",
+        "Maroon",
+        "Green",
+        "Olive",
+        "Navy",
+        "Teal",
+        "Orange"
+    };
+
+    Goat() {
+        auto current_time = chrono::steady_clock::now();
+
+        mt19937 gen(current_time.time_since_epoch().count());
+
+        uniform_int_distribution<uint32_t> dist_age(1, 20);
+        uniform_int_distribution<uint32_t> dist_idx(0, 14);
+
+        age = dist_age(gen);
+        name = names[dist_idx(gen)];
+        color = colors[dist_idx(gen)];
+    }
+
+    Goat(uint32_t age, string name, string color) {
+        
+    }
 };
 
 // Driver program
