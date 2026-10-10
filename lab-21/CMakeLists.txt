@@ -1,1 +1,1 @@
-add_executable(lab-21 main.cpp)
+add_executable(lab-21 main.cpp goat.cpp list.cpp)

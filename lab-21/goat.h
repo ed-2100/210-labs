@@ -3,11 +3,12 @@
 #include <iostream>
 #include <cstdint>
 #include <utility>
+#include <string>
 
 class Goat {
     uint32_t age;
-    string name;
-    string color;
+    std::string name;
+    std::string color;
 
     const char* const names[15] = {
         "William",
@@ -48,13 +49,13 @@ class Goat {
 public:
     Goat();
 
-    Goat(uint32_t age, string name, string color);
+    Goat(uint32_t age, std::string name, std::string color);
 
     Goat(const Goat& rhs) : age(rhs.age), name(rhs.name), color(rhs.color) {}
     Goat(Goat&& rhs) :
         age(std::exchange(rhs.age, 0)),
-        name(std::exchange(rhs.name, string{})),
-        color(std::exchange(rhs.color, string{})) {}
+        name(std::exchange(rhs.name, std::string{})),
+        color(std::exchange(rhs.color, std::string{})) {}
 
     Goat& operator=(const Goat& rhs);
     Goat& operator=(Goat&& rhs);
