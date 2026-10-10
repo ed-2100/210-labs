@@ -29,7 +29,7 @@ public:
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
     void push_back(Goat value) {
-        Node* newNode = new Node(value);
+        Node* newNode = new Node(move(value));
         if (!tail)  // if there's no tail, the list is empty
             head = tail = newNode;
         else {
@@ -40,7 +40,7 @@ public:
     }
 
     void push_front(Goat value) {
-        Node* newNode = new Node(value);
+        Node* newNode = new Node(move(value));
         if (!head)  // if there's no head, the list is empty
             head = tail = newNode;
         else {
@@ -50,13 +50,13 @@ public:
         }
     }
 
-    void insert_after(int value, int position) {
+    void insert_after(Goat value, int position) {
         if (position < 0) {
             cout << "Position must be >= 0." << endl;
             return;
         }
 
-        Node* newNode = new Node(value);
+        Node* newNode = new Node(move(value));
         if (!head) {
             head = tail = newNode;
             return;
@@ -81,7 +81,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_node(Goat value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
@@ -138,6 +138,7 @@ class Goat {
     uint32_t age;
     string name;
     string color;
+
     const char* const names[15] = {
         "William",
         "John",
@@ -155,6 +156,7 @@ class Goat {
         "Jane",
         "Emma"
     };
+
     const char* const colors[15] = {
         "Black",
         "White",
@@ -199,7 +201,7 @@ public:
         name(exchange(rhs.name, string{})),
         color(exchange(rhs.color, string{})) {}
 
-    const Goat& operator=(const Goat& rhs) {
+    Goat& operator=(const Goat& rhs) {
         if (this != &rhs) {
             age = rhs.age;
             name = rhs.name;
@@ -208,8 +210,23 @@ public:
         return *this;
     }
     
-    Goat&& operator= (Goat&& rhs) 
+    Goat& operator=(Goat&& rhs) {
+        if (this != &rhs) {
+            age = exchange(rhs.age, 0);
+            name = exchange(rhs.name, string{});
+            color = exchange(rhs.color, string{});
+        }
+        return *this;
+    }
+
+    bool operator!=(const Goat& rhs) {
+        return age != rhs.age || name != rhs.name || color != rhs.color;
+    }
 };
+
+std::ostream& operator<<(std::ostream& os, const Goat& student) {
+    os 
+}
 
 // Driver program
 int main() {
