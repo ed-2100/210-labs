@@ -3,10 +3,108 @@
 #include <chrono>
 #include <random>
 #include <utility>
+#include <format>
 
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+
+class Goat {
+    uint32_t age;
+    string name;
+    string color;
+
+    const char* const names[15] = {
+        "William",
+        "John",
+        "Thomas",
+        "George",
+        "Henry",
+        "Charles",
+        "James",
+        "Edward",
+        "Frederick",
+        "Arthur",
+        "Mary",
+        "Elizabeth",
+        "Sarah",
+        "Jane",
+        "Emma"
+    };
+
+    const char* const colors[15] = {
+        "Black",
+        "White",
+        "Red",
+        "Blue",
+        "Green",
+        "Yellow",
+        "Brown",
+        "Gray",
+        "Silver",
+        "Maroon",
+        "Green",
+        "Olive",
+        "Navy",
+        "Teal",
+        "Orange"
+    };
+
+public:
+    Goat() {
+        auto current_time = chrono::steady_clock::now();
+
+        mt19937 gen(current_time.time_since_epoch().count());
+
+        uniform_int_distribution<uint32_t> dist_age(1, 20);
+        uniform_int_distribution<uint32_t> dist_idx(0, 14);
+
+        age = dist_age(gen);
+        name = names[dist_idx(gen)];
+        color = colors[dist_idx(gen)];
+    }
+
+    Goat(uint32_t age, string name, string color) {
+        this->age = age;
+        this->name = move(name);
+        this->color = move(color);
+    }
+
+    Goat(const Goat& rhs) : age(rhs.age), name(rhs.name), color(rhs.color) {}
+    Goat(Goat&& rhs) :
+        age(exchange(rhs.age, 0)),
+        name(exchange(rhs.name, string{})),
+        color(exchange(rhs.color, string{})) {}
+
+    Goat& operator=(const Goat& rhs) {
+        if (this != &rhs) {
+            age = rhs.age;
+            name = rhs.name;
+            color = rhs.color;
+        }
+        return *this;
+    }
+    
+    Goat& operator=(Goat&& rhs) {
+        if (this != &rhs) {
+            age = exchange(rhs.age, 0);
+            name = exchange(rhs.name, string{});
+            color = exchange(rhs.color, string{});
+        }
+        return *this;
+    }
+
+    bool operator!=(const Goat& rhs) {
+        return age != rhs.age || name != rhs.name || color != rhs.color;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Goat& value);
+};
+
+std::ostream& operator<<(std::ostream& os, const Goat& value) {
+    os << format("{} ({}, {})", value.name, value.color, value.age);
+    
+}
 
 class DoublyLinkedList {
 private:
@@ -109,7 +207,7 @@ public:
         Node* current = head;
         if (!current) return;
         while (current) {
-            cout << current->data << " ";
+            cout << "    " << current->data << "\n";
             current = current->next;
         }
         cout << endl;
@@ -119,7 +217,7 @@ public:
         Node* current = tail;
         if (!current) return;
         while (current) {
-            cout << current->data << " ";
+            cout << "    " << current->data << "\n";
             current = current->prev;
         }
         cout << endl;
@@ -134,107 +232,13 @@ public:
     }
 };
 
-class Goat {
-    uint32_t age;
-    string name;
-    string color;
-
-    const char* const names[15] = {
-        "William",
-        "John",
-        "Thomas",
-        "George",
-        "Henry",
-        "Charles",
-        "James",
-        "Edward",
-        "Frederick",
-        "Arthur",
-        "Mary",
-        "Elizabeth",
-        "Sarah",
-        "Jane",
-        "Emma"
-    };
-
-    const char* const colors[15] = {
-        "Black",
-        "White",
-        "Red",
-        "Blue",
-        "Green",
-        "Yellow",
-        "Brown",
-        "Gray",
-        "Silver",
-        "Maroon",
-        "Green",
-        "Olive",
-        "Navy",
-        "Teal",
-        "Orange"
-    };
-
-public:
-    Goat() {
-        auto current_time = chrono::steady_clock::now();
-
-        mt19937 gen(current_time.time_since_epoch().count());
-
-        uniform_int_distribution<uint32_t> dist_age(1, 20);
-        uniform_int_distribution<uint32_t> dist_idx(0, 14);
-
-        age = dist_age(gen);
-        name = names[dist_idx(gen)];
-        color = colors[dist_idx(gen)];
-    }
-
-    Goat(uint32_t age, string name, string color) {
-        this->age = age;
-        this->name = move(name);
-        this->color = move(color);
-    }
-
-    Goat(const Goat& rhs) : age(rhs.age), name(rhs.name), color(rhs.color) {}
-    Goat(Goat&& rhs) :
-        age(exchange(rhs.age, 0)),
-        name(exchange(rhs.name, string{})),
-        color(exchange(rhs.color, string{})) {}
-
-    Goat& operator=(const Goat& rhs) {
-        if (this != &rhs) {
-            age = rhs.age;
-            name = rhs.name;
-            color = rhs.color;
-        }
-        return *this;
-    }
-    
-    Goat& operator=(Goat&& rhs) {
-        if (this != &rhs) {
-            age = exchange(rhs.age, 0);
-            name = exchange(rhs.name, string{});
-            color = exchange(rhs.color, string{});
-        }
-        return *this;
-    }
-
-    bool operator!=(const Goat& rhs) {
-        return age != rhs.age || name != rhs.name || color != rhs.color;
-    }
-};
-
-std::ostream& operator<<(std::ostream& os, const Goat& student) {
-    os 
-}
-
 // Driver program
 int main() {
     DoublyLinkedList list;
     int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
 
     for (int i = 0; i < size; ++i)
-        list.push_back(rand() % (MAX_NR-MIN_NR+1) + MIN_NR);
+        list.push_back(move(Goat()));
     cout << "List forward: ";
     list.print();
 
