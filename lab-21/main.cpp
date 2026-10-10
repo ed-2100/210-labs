@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <random>
+#include <utility>
 
 using namespace std;
 
@@ -13,8 +14,8 @@ private:
         Goat data;
         Node* prev;
         Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) {
-            data = val; 
+        Node(Goat val, Node* p = nullptr, Node* n = nullptr) {
+            data = move(val); 
             prev = p;
             next = n;
         }
@@ -172,6 +173,7 @@ class Goat {
         "Orange"
     };
 
+public:
     Goat() {
         auto current_time = chrono::steady_clock::now();
 
@@ -191,6 +193,22 @@ class Goat {
         this->color = move(color);
     }
 
+    Goat(const Goat& rhs) : age(rhs.age), name(rhs.name), color(rhs.color) {}
+    Goat(Goat&& rhs) :
+        age(exchange(rhs.age, 0)),
+        name(exchange(rhs.name, string{})),
+        color(exchange(rhs.color, string{})) {}
+
+    const Goat& operator=(const Goat& rhs) {
+        if (this != &rhs) {
+            age = rhs.age;
+            name = rhs.name;
+            color = rhs.color;
+        }
+        return *this;
+    }
+    
+    Goat&& operator= (Goat&& rhs) 
 };
 
 // Driver program
