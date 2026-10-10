@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include "goat.h"
 
@@ -18,6 +18,9 @@ public:
     DoublyLinkedList() : head(nullptr), tail(nullptr) {}
     ~DoublyLinkedList();
 
+    // Appends an item to the end of the list.
+    //
+    // ### Ar
     void push_back(Goat value);
     void push_front(Goat value);
     void insert_after(Goat value, int position);

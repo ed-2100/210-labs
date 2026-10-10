@@ -5,6 +5,9 @@
 #include <utility>
 #include <string>
 
+// The `Goat` class.
+//
+// Holds information on a goat.
 class Goat {
     uint32_t age;
     std::string name;

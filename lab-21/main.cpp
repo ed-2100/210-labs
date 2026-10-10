@@ -9,15 +9,13 @@
 
 using namespace std;
 
-const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
-
 // Driver program
 int main() {
     DoublyLinkedList list;
 
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
-    uniform_int_distribution<uint32_t> dist_size(MIN_LS, MAX_LS);
+    uniform_int_distribution<uint32_t> dist_size(5, 20);
 
     int size = dist_size(gen);
 
