@@ -9,46 +9,11 @@ class Goat {
     uint32_t age;
     std::string name;
     std::string color;
-
-    const char* const names[15] = {
-        "William",
-        "John",
-        "Thomas",
-        "George",
-        "Henry",
-        "Charles",
-        "James",
-        "Edward",
-        "Frederick",
-        "Arthur",
-        "Mary",
-        "Elizabeth",
-        "Sarah",
-        "Jane",
-        "Emma"
-    };
-
-    const char* const colors[15] = {
-        "Black",
-        "White",
-        "Red",
-        "Blue",
-        "Green",
-        "Yellow",
-        "Brown",
-        "Gray",
-        "Silver",
-        "Maroon",
-        "Green",
-        "Olive",
-        "Navy",
-        "Teal",
-        "Orange"
-    };
+    static const char* const names[15];
+    static const char* const colors[15];
 
 public:
     Goat();
-
     Goat(uint32_t age, std::string name, std::string color);
 
     Goat(const Goat& rhs) : age(rhs.age), name(rhs.name), color(rhs.color) {}

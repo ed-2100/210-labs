@@ -1,7 +1,22 @@
 #include "list.h"
 
-// constructor
-DoublyLinkedList::DoublyLinkedList() { head = nullptr; tail = nullptr; }
+#include <utility>
+
+using namespace std;
+
+DoublyLinkedList::Node::Node(Goat val, Node* p, Node* n) {
+    data = move(val); 
+    prev = p;
+    next = n;
+}
+
+DoublyLinkedList::~DoublyLinkedList() {
+    while (head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
 
 void DoublyLinkedList::push_back(Goat value) {
     Node* newNode = new Node(move(value));
@@ -84,6 +99,7 @@ void DoublyLinkedList::print() {
     Node* current = head;
     if (!current) {
         cout << "List is empty\n";
+        return;
     };
     while (current) {
         cout << "    " << current->data << '\n';
@@ -96,18 +112,11 @@ void DoublyLinkedList::print_reverse() {
     Node* current = tail;
     if (!current) {
         cout << "List is empty\n";
+        return;
     };
     while (current) {
         cout << "    " << current->data << '\n';
         current = current->prev;
     }
     cout << endl;
-}
-
-DoublyLinkedList::~DoublyLinkedList() {
-    while (head) {
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-    }
 }

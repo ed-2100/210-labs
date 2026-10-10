@@ -6,6 +6,42 @@
 
 using namespace std;
 
+const char* const Goat::names[15] = {
+    "William",
+    "John",
+    "Thomas",
+    "George",
+    "Henry",
+    "Charles",
+    "James",
+    "Edward",
+    "Frederick",
+    "Arthur",
+    "Mary",
+    "Elizabeth",
+    "Sarah",
+    "Jane",
+    "Emma"
+};
+
+const char* const Goat::colors[15] = {
+    "Black",
+    "White",
+    "Red",
+    "Blue",
+    "Green",
+    "Yellow",
+    "Brown",
+    "Gray",
+    "Silver",
+    "Maroon",
+    "Green",
+    "Olive",
+    "Navy",
+    "Teal",
+    "Orange"
+};
+
 Goat::Goat() {
     auto current_time = chrono::steady_clock::now();
 
