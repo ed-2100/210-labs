@@ -106,7 +106,6 @@ void DoublyLinkedList::print() {
         cout << "    " << current->data << '\n';
         current = current->next;
     }
-    cout << endl;
 }
 
 void DoublyLinkedList::print_reverse() {
@@ -120,5 +119,4 @@ void DoublyLinkedList::print_reverse() {
         cout << "    " << current->data << '\n';
         current = current->prev;
     }
-    cout << endl;
 }

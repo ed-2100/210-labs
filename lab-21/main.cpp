@@ -25,11 +25,15 @@ int main() {
 
     int size = dist_size(gen);
 
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < size; ++i) {
         list.push_back(move(Goat()));
-    list.print();
+    }
 
+    list.print();
+    cout << '\n';
+    
     list.print_reverse();
+    cout << '\n';
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
