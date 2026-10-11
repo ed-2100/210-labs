@@ -17,17 +17,16 @@ private:
     Node* tail;
 
 public:
-    // constructor
     DoublyLinkedList();
     ~DoublyLinkedList();
 
     void push_back(int value);
     void push_front(int value);
     void insert_after(int value, int position);
-    int delete_val(int value);
-    int delete_pos(size_t pos);
-    int pop_front();
-    int pop_back();
+    void delete_val(int value);
+    void delete_pos(size_t pos);
+    void pop_front();
+    void pop_back();
 
     void print();
     void print_reverse();

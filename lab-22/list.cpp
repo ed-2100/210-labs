@@ -67,90 +67,90 @@ void DoublyLinkedList::insert_after(int value, int position) {
     temp->next = newNode;
 }
 
-int DoublyLinkedList::delete_val(int value) {
+void DoublyLinkedList::delete_val(int value) {
     Node* temp = head;
     while (temp && temp->data != value) {
         temp = temp->next;
     }
 
+    if (!temp) return;
+
+    // Head logic
     if (temp->prev) {
         temp->prev->next = temp->next;
     } else {
-        head = temp->next; // Deleting the head
+        head = temp->next;
     }
 
+    // Tail logic
     if (temp->next) {
         temp->next->prev = temp->prev;
     } else {
-        tail = temp->prev; // Deleting the tail
+        tail = temp->prev;
     }
 
-    int data = move(temp->data);
-
     delete temp;
-
-    return move(data);
 }
 
-int DoublyLinkedList::delete_pos(size_t pos) {
+void DoublyLinkedList::delete_pos(size_t pos) {
     Node* temp = head;
     for (size_t i = 0; temp && i < pos; i++) {
         temp = temp->next;
     }
 
+    if (!temp) return;
+
+    // Head logic
     if (temp->prev) {
         temp->prev->next = temp->next;
     } else {
-        head = temp->next; // Deleting the head
+        head = temp->next;
     }
 
+    // Tail logic
     if (temp->next) {
         temp->next->prev = temp->prev;
     } else {
-        tail = temp->prev; // Deleting the tail
+        tail = temp->prev;
     }
 
-    int data = move(temp->data);
-
     delete temp;
-
-    return move(data);
 }
 
-int DoublyLinkedList::pop_front() {
+void DoublyLinkedList::pop_front() {
     Node* temp = head;
 
+    if (!temp) return;
+
+    // Head logic
     head = temp->next;
 
+    // Tail logic
     if (temp->next) {
         temp->next->prev = nullptr;
     } else {
         tail = nullptr;
     }
 
-    int data = move(temp->data);
-
     delete temp;
-
-    return move(data);
 }
 
-int DoublyLinkedList::pop_back() {
+void DoublyLinkedList::pop_back() {
     Node* temp = tail;
 
+    if (!temp) return;
+
+    // Head logic
     if (temp->prev) {
         temp->prev->next = nullptr;
     } else {
         head = nullptr;
     }
 
+    // Tail logic
     tail = temp->prev;
 
-    int data = move(temp->data);
-
     delete temp;
-
-    return move(data);
 }
 
 void DoublyLinkedList::print() {
