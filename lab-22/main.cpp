@@ -8,7 +8,13 @@
 
 using namespace std;
 
-// Driver program
+// The main function.
+//
+// Demonstrates the `DoublyLinkedList` class various ways.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     DoublyLinkedList list;
     
