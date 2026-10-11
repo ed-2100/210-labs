@@ -17,7 +17,7 @@ int main() {
     list.print();
     
     cout << "\nClearing and calling `push_back(2)`:\n";
-    list.~DoublyLinkedList();
+    list.clear();
     list.push_back(2);
     list.print();
 
@@ -29,8 +29,50 @@ int main() {
     list.push_back(3);
     list.print();
 
-    cout << "\nCalling `insert_after(3)`:\n";
-    list.push_back(3);
+    cout << "\nCalling `insert(0, 0)`:\n";
+    list.insert(0, 0);
+    list.print();
+
+    cout << "\nCalling `insert(4, 4)`:\n";
+    list.insert(4, 4);
+    list.print();
+
+    cout << "\nCalling `pop_front()`:\n";
+    list.pop_front();
+    list.print();
+
+    cout << "\nCalling `pop_back()`:\n";
+    list.pop_back();
+    list.print();
+
+    cout << "\nCalling `delete_pos(0)`:\n";
+    list.delete_pos(0);
+    list.print();
+
+    cout << "\nCalling `delete_pos(1)`:\n";
+    list.delete_pos(1);
+    list.print();
+
+    cout << "\nCalling `delete_pos(0)`:\n";
+    list.delete_pos(0);
+    list.print();
+
+    cout << "\nCalling `insert(1, 0)\n";
+    list.clear();
+    list.insert(1, 0);
+    list.print();
+
+    cout << "\nCalling `pop_front()`:\n";
+    list.pop_front();
+    list.print();
+
+    cout << "\nClearing and calling `insert(1, 0)\n";
+    list.clear();
+    list.insert(1, 0);
+    list.print();
+
+    cout << "\nCalling `pop_back()`:\n";
+    list.pop_back();
     list.print();
 
     list.print_reverse();
