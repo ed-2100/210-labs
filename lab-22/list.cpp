@@ -21,25 +21,33 @@ void DoublyLinkedList::clear() {
 }
 
 void DoublyLinkedList::push_back(int value) {
-    Node* newNode = new Node(value);
-    if (!tail)  // if there's no tail, the list is empty
-        head = tail = newNode;
-    else {
-        tail->next = newNode;
-        newNode->prev = tail;
-        tail = newNode;
+    Node* node = new Node(value);
+
+    // Head logic
+    if (tail) {
+        node->prev = tail;
+        tail->next = node;
+    } else {
+        head = node;
     }
+
+    // Tail logic
+    tail = node;
 }
 
 void DoublyLinkedList::push_front(int value) {
-    Node* newNode = new Node(value);
-    if (!head)  // if there's no head, the list is empty
-        head = tail = newNode;
-    else {
-        newNode->next = head;
-        head->prev = newNode;
-        head = newNode;
+    Node* node = new Node(value);
+
+    // Tail logic
+    if (head) {
+        node->next = head;
+        head->prev = node;
+    } else {
+        tail = node;
     }
+
+    // Head logic
+    head = node;
 }
  
 void DoublyLinkedList::insert(int value, size_t position) {
@@ -50,14 +58,16 @@ void DoublyLinkedList::insert(int value, size_t position) {
     if (position == 0) {
         node->next = temp;
         node->prev = nullptr;
-
-        head = node;
         
-        if (!temp) {
-            tail = node;
-        } else {
+        // Tail logic
+        if (temp) {
             temp->prev = node;
+        } else {
+            tail = node;
         }
+
+        // Head logic
+        head = node;
     } else {
         for (size_t i = 1; temp && i < position; i++) {
             temp = temp->next;
@@ -70,14 +80,16 @@ void DoublyLinkedList::insert(int value, size_t position) {
 
         node->next = temp->next;
         node->prev = temp;
-
-        temp->next = node;
         
+        // Tail logic
         if (temp->next) {
             temp->next->prev = node;
         } else {
             tail = node;
         }
+
+        // Head logic
+        temp->next = node;
     }
 }
 
@@ -136,15 +148,15 @@ void DoublyLinkedList::pop_front() {
 
     if (!temp) return;
 
-    // Head logic
-    head = temp->next;
-
     // Tail logic
     if (temp->next) {
         temp->next->prev = nullptr;
     } else {
         tail = nullptr;
     }
+
+    // Head logic
+    head = temp->next;
 
     delete temp;
 }
