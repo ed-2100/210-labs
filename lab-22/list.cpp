@@ -1,3 +1,5 @@
+// COMSC-210 | Lab 22 | Edwin Burwell
+
 #include <iostream>
 
 #include "list.h"
@@ -11,12 +13,14 @@ DoublyLinkedList::~DoublyLinkedList() {
 }
 
 void DoublyLinkedList::clear() {
+    // Head logic
     while (head) {
         Node* temp = head;
         head = head->next;
         delete temp;
     }
 
+    // Tail logic
     tail = nullptr;
 }
 

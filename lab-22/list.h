@@ -1,3 +1,5 @@
+// COMSC-210 | Lab 22 | Edwin Burwell
+
 #include <cstddef>
 
 class DoublyLinkedList {

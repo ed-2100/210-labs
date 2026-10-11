@@ -1,11 +1,12 @@
+// COMSC-210 | Lab 22 | Edwin Burwell
+
 #include <iostream>
 #include <array>
+#include <cstdlib>
 
 #include "list.h"
 
 using namespace std;
-
-const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
 // Driver program
 int main() {
@@ -69,8 +70,8 @@ int main() {
     list.insert(2, 2);
     list.print();
 
-    cout << "\nCalling `pop_back()`:\n";
-    list.pop_back();
+    cout << "\nCalling `delete_pos(2)`:\n";
+    list.delete_pos(2);
     list.print();
 
     cout << "\nCalling `delete_pos(0)`:\n";
@@ -85,29 +86,34 @@ int main() {
     list.delete_pos(0);
     list.print();
 
-
-    // cout << "\nCalling `insert(4, 4)`:\n";
-    // list.insert(4, 4);
-    // list.print();
-
-    // cout << "\nCalling `insert(1, 0)\n";
-    // list.clear();
-    // list.insert(1, 0);
-    // list.print();
-
-    // cout << "\nClearing and calling `insert(1, 0)\n";
-    // list.clear();
-    // list.insert(1, 0);
-    // list.print();
-
-    // cout << "\nCalling `pop_back()`:\n";
-    // list.pop_back();
-    // list.print();
-
-    list.print_reverse();
-
-    list.~DoublyLinkedList();
+    cout << "\nFilling the list with `0 1 2 3`:\n";
+    list.push_front(3);
+    list.push_front(2);
+    list.push_front(1);
+    list.push_front(0);
     list.print();
 
-    return 0;
+    cout << "\nCalling `print()`:\n";
+    list.print();
+
+    cout << "\nCalling `print_reverse()`:\n";
+    list.print_reverse();
+
+    cout << "\nCalling `delete_val(2)`:\n";
+    list.delete_val(2);
+    list.print();
+
+    cout << "\nCalling `delete_val(0)`:\n";
+    list.delete_val(0);
+    list.print();
+
+    cout << "\nCalling `delete_val(3)`:\n";
+    list.delete_val(3);
+    list.print();
+
+    cout << "\nCalling `delete_val(1)`:\n";
+    list.delete_val(1);
+    list.print();
+
+    return EXIT_SUCCESS;
 }
