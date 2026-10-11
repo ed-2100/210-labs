@@ -43,43 +43,42 @@ void DoublyLinkedList::push_front(int value) {
 }
  
 void DoublyLinkedList::insert(int value, size_t position) {
-    Node* newNode = new Node(value);
-
-    if (!head) {
-        head = tail = newNode;
-        return;
-    }
+    Node* node = new Node(value);
 
     Node* temp = head;
 
     if (position == 0) {
-        newNode->prev = nullptr;
+        node->next = temp;
+        node->prev = nullptr;
 
-        head = newNode;
+        head = node;
         
-        if (temp) {
-            temp->prev = newNode;
+        if (!temp) {
+            tail = node;
+        } else {
+            temp->prev = node;
         }
     } else {
-        for (size_t i = 0; i < position && temp; ++i)
+        for (size_t i = 1; temp && i < position; i++) {
             temp = temp->next;
+        }
 
         if (!temp) {
-            delete newNode;
+            delete node;
             return;
         }
 
+        node->next = temp->next;
+        node->prev = temp;
+
+        temp->next = node;
         
+        if (temp->next) {
+            temp->next->prev = node;
+        } else {
+            tail = node;
+        }
     }
-
-
-    newNode->next = temp->next;
-    newNode->prev = temp;
-    if (temp->next)
-        temp->next->prev = newNode;
-    else
-        tail = newNode; // Inserting at the end
-    temp->next = newNode;
 }
 
 void DoublyLinkedList::delete_val(int value) {
