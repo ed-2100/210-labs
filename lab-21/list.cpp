@@ -1,3 +1,5 @@
+// COMSC-210 | Lab 21 | Edwin Burwell
+
 #include "list.h"
 
 #include <utility>

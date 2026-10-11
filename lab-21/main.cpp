@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 21 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -31,7 +35,7 @@ int main() {
 
     list.print();
     cout << '\n';
-    
+
     list.print_reverse();
     cout << '\n';
 
