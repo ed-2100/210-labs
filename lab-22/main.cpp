@@ -15,12 +15,22 @@ int main() {
     cout << "Calling `push_front(1)`:\n";
     list.push_front(1);
     list.print();
+    
     cout << "\nClearing and calling `push_back(2)`:\n";
     list.~DoublyLinkedList();
     list.push_back(2);
     list.print();
+
     cout << "\nCalling `push_front(1)`:\n";
     list.push_front(1);
+    list.print();
+
+    cout << "\nCalling `push_back(3)`:\n";
+    list.push_back(3);
+    list.print();
+
+    cout << "\nCalling `insert_after(3)`:\n";
+    list.push_back(3);
     list.print();
 
     list.print_reverse();

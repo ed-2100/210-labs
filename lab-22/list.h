@@ -20,11 +20,12 @@ public:
     DoublyLinkedList();
     ~DoublyLinkedList();
 
+    void clear();
     void push_back(int value);
     void push_front(int value);
-    void insert_after(int value, int position);
+    void insert(int value, size_t position);
     void delete_val(int value);
-    void delete_pos(size_t pos);
+    void delete_pos(size_t position);
     void pop_front();
     void pop_back();
 

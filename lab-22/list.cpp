@@ -7,11 +7,17 @@ using namespace std;
 DoublyLinkedList::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
 DoublyLinkedList::~DoublyLinkedList() {
+    clear();
+}
+
+void DoublyLinkedList::clear() {
     while (head) {
         Node* temp = head;
         head = head->next;
         delete temp;
     }
+
+    tail = nullptr;
 }
 
 void DoublyLinkedList::push_back(int value) {
@@ -35,28 +41,37 @@ void DoublyLinkedList::push_front(int value) {
         head = newNode;
     }
 }
-
-void DoublyLinkedList::insert_after(int value, int position) {
-    if (position < 0) {
-        cout << "Position must be >= 0." << endl;
-        return;
-    }
-
+ 
+void DoublyLinkedList::insert(int value, size_t position) {
     Node* newNode = new Node(value);
+
     if (!head) {
         head = tail = newNode;
         return;
     }
 
     Node* temp = head;
-    for (int i = 0; i < position && temp; ++i)
-        temp = temp->next;
 
-    if (!temp) {
-        cout << "Position exceeds list size. Node not inserted.\n";
-        delete newNode;
-        return;
+    if (position == 0) {
+        newNode->prev = nullptr;
+
+        head = newNode;
+        
+        if (temp) {
+            temp->prev = newNode;
+        }
+    } else {
+        for (size_t i = 0; i < position && temp; ++i)
+            temp = temp->next;
+
+        if (!temp) {
+            delete newNode;
+            return;
+        }
+
+        
     }
+
 
     newNode->next = temp->next;
     newNode->prev = temp;
@@ -92,9 +107,9 @@ void DoublyLinkedList::delete_val(int value) {
     delete temp;
 }
 
-void DoublyLinkedList::delete_pos(size_t pos) {
+void DoublyLinkedList::delete_pos(size_t position) {
     Node* temp = head;
-    for (size_t i = 0; temp && i < pos; i++) {
+    for (size_t i = 0; temp && i < position; i++) {
         temp = temp->next;
     }
 
