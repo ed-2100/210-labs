@@ -15,10 +15,14 @@ int main() {
     cout << "Calling `push_front(1)`:\n";
     list.push_front(1);
     list.print();
-    
-    cout << "\nClearing and calling `push_back(2)`:\n";
+
+    cout << "\nClearing:\n";
     list.clear();
-    list.push_back(2);
+    list.print();
+    
+    cout << "\nCalling `push_front(2)`:\n";
+    list.clear();
+    list.push_front(2);
     list.print();
 
     cout << "\nCalling `push_front(1)`:\n";
@@ -29,16 +33,40 @@ int main() {
     list.push_back(3);
     list.print();
 
-    cout << "\nCalling `insert(0, 0)`:\n";
-    list.insert(0, 0);
+    cout << "\nCalling `pop_front()`:\n";
+    list.pop_front();
     list.print();
 
-    cout << "\nCalling `insert(4, 4)`:\n";
-    list.insert(4, 4);
+    cout << "\nCalling `pop_back()`:\n";
+    list.pop_back();
     list.print();
 
     cout << "\nCalling `pop_front()`:\n";
     list.pop_front();
+    list.print();
+
+    cout << "\nCalling `push_back(0)`:\n";
+    list.push_back(0);
+    list.print();
+
+    cout << "\nCalling `pop_back()`:\n";
+    list.pop_back();
+    list.print();
+
+    cout << "\nCalling `insert(1, 0)`:\n";
+    list.insert(1, 0);
+    list.print();
+
+    cout << "\nCalling `insert(0, 0)`:\n";
+    list.insert(0, 0);
+    list.print();
+
+    cout << "\nCalling `insert(3, 2)`:\n";
+    list.insert(3, 2);
+    list.print();
+
+    cout << "\nCalling `insert(2, 2)`:\n";
+    list.insert(2, 2);
     list.print();
 
     cout << "\nCalling `pop_back()`:\n";
@@ -57,23 +85,24 @@ int main() {
     list.delete_pos(0);
     list.print();
 
-    cout << "\nCalling `insert(1, 0)\n";
-    list.clear();
-    list.insert(1, 0);
-    list.print();
 
-    cout << "\nCalling `pop_front()`:\n";
-    list.pop_front();
-    list.print();
+    // cout << "\nCalling `insert(4, 4)`:\n";
+    // list.insert(4, 4);
+    // list.print();
 
-    cout << "\nClearing and calling `insert(1, 0)\n";
-    list.clear();
-    list.insert(1, 0);
-    list.print();
+    // cout << "\nCalling `insert(1, 0)\n";
+    // list.clear();
+    // list.insert(1, 0);
+    // list.print();
 
-    cout << "\nCalling `pop_back()`:\n";
-    list.pop_back();
-    list.print();
+    // cout << "\nClearing and calling `insert(1, 0)\n";
+    // list.clear();
+    // list.insert(1, 0);
+    // list.print();
+
+    // cout << "\nCalling `pop_back()`:\n";
+    // list.pop_back();
+    // list.print();
 
     list.print_reverse();
 
