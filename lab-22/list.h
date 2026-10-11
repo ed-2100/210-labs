@@ -1,4 +1,4 @@
-#include <cstdint>
+#include <cstddef>
 
 class DoublyLinkedList {
 private:
@@ -18,8 +18,7 @@ private:
 
 public:
     // constructor
-    DoublyLinkedList() { head = nullptr; tail = nullptr; }
-
+    DoublyLinkedList();
     ~DoublyLinkedList();
 
     void push_back(int value);
@@ -31,14 +30,5 @@ public:
     int pop_back();
 
     void print();
-
-    void print_reverse() {
-        Node* current = tail;
-        if (!current) return;
-        while (current) {
-            cout << current->data << " ";
-            current = current->prev;
-        }
-        cout << endl;
-    }
+    void print_reverse();
 };
