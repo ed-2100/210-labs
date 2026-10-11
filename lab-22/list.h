@@ -24,7 +24,7 @@ public:
     void push_back(int value);
     void push_front(int value);
     void insert_after(int value, int position);
-    void delete_val(int value);
+    int delete_val(int value);
     int delete_pos(size_t pos);
     int pop_front();
     int pop_back();

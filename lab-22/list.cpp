@@ -67,12 +67,13 @@ void DoublyLinkedList::insert_after(int value, int position) {
     temp->next = newNode;
 }
 
-void DoublyLinkedList::delete_val(int value) {
+int DoublyLinkedList::delete_val(int value) {
     if (!head) return; // Empty list
 
     Node* temp = head;
-    while (temp && temp->data != value)
+    while (temp && temp->data != value) {
         temp = temp->next;
+    }
 
     if (!temp) return; // Value not found
 
@@ -88,7 +89,11 @@ void DoublyLinkedList::delete_val(int value) {
         tail = temp->prev; // Deleting the tail
     }
 
+    int data = move(temp->data);
+
     delete temp;
+
+    return move(data);
 }
 
 int DoublyLinkedList::delete_pos(size_t pos) {
@@ -121,16 +126,47 @@ int DoublyLinkedList::delete_pos(size_t pos) {
 int DoublyLinkedList::pop_front() {
     if (!head) return;
 
-    head->next->prev = nulltp
+    Node* temp = head;
+
+    head = temp->next;
+
+    if (temp->next) {
+        temp->next->prev = nullptr;
+    } else {
+        tail = nullptr;
+    }
+
+    int data = move(temp->data);
+
+    delete temp;
+
+    return move(data);
 }
 
 int DoublyLinkedList::pop_back() {
+    if (!tail) return;
 
+    Node* temp = tail;
+
+    if (temp->prev) {
+        temp->prev->next = nullptr;
+    } else {
+        head = nullptr;
+    }
+
+    tail = temp->prev;
+
+    int data = move(temp->data);
+
+    delete temp;
+
+    return move(data);
 }
 
 void DoublyLinkedList::print() {
     Node* current = head;
     if (!current) return;
+    cout << "List forward: ";
     while (current) {
         cout << current->data << " ";
         current = current->next;
@@ -140,6 +176,7 @@ void DoublyLinkedList::print() {
 
 void DoublyLinkedList::print_reverse() {
     Node* current = tail;
+    cout << "List backward: ";
     if (!current) return;
     while (current) {
         cout << current->data << " ";
