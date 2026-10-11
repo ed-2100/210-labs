@@ -43,5 +43,5 @@ int main() {
     list.~DoublyLinkedList();
     list.print();
 
-    return 0;
+    return 0; // :)
 }
