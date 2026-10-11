@@ -121,5 +121,5 @@ int main() {
     list.delete_val(1);
     list.print();
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
