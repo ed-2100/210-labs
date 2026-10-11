@@ -8,11 +8,7 @@ private:
         int data;
         Node* prev;
         Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) {
-            data = val; 
-            prev = p;
-            next = n;
-        }
+        Node(int val, Node* p = nullptr, Node* n = nullptr);
     };
 
     Node* head;

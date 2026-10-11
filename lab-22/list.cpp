@@ -6,6 +6,12 @@
 
 using namespace std;
 
+DoublyLinkedList::Node::Node(int val, Node* p, Node* n) {
+    data = val; 
+    prev = p;
+    next = n;
+}
+
 DoublyLinkedList::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
 DoublyLinkedList::~DoublyLinkedList() {
