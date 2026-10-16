@@ -1,24 +1,6 @@
 // COMSC-210 | Lab 17 | Edwin Burwell
 //
 // Note: This may contain features from newer C++ versions, such as C++23.
-//
-// I'm documenting my modularization choices here, because it doesn't really
-// fit well anywhere in the rest of the codebase.
-//
-// Initially, I started by modularizing the list implementation into a class,
-// because it would allow me to create a unified user-facing API. I decided
-// to write an iterator implementation, because I thought it would simplify
-// my for loops. In the end, I didn't end up using a for loop, but the
-// iterator came in handy in the `display` function anyway. It allowed me to
-// leave all member variables of `List` private, while still getting keeping
-// all the display logic outside of the `List` code. After modularizing the
-// list function, I went about writing the menu. I decided on a state machine
-// architecture, because it would allow me to expand it if it turned out that
-// I needed to, which I did. After a while, I realized that my main function
-// was becoming far too big and the switch statement was already well over
-// past best-practice cognitive complexity standards. That's when I decided
-// to make the `Application` class. It allowed me to pull the rest of the
-// goofiness out of `main` and properly modularize it.
 
 #include <iostream>
 #include <iterator>
@@ -29,6 +11,156 @@
 #include <list>
 
 using namespace std;
+
+const char* colors[] = {
+    "Red", "Blue", "Green", "Yellow",
+    "Orange", "Purple", "Pink", "Cyan",
+    "Magenta", "Lime", "Teal", "Indigo",
+    "Violet", "Coral", "Aqua", "Maroon",
+    "Olive", "Navy", "Grey", "White",
+    "Black", "Beige", "Turquoise", "Silver",
+    "Gold"
+};
+
+const char* names[] = {
+"Ella",
+"Inga",
+"Zane",
+"Oleg",
+"Wade",
+"Yale",
+"Tami",
+"Tara",
+"Axel",
+"Ola",
+"Beth",
+"Boyd",
+"Rosa",
+"Ezra",
+"Mara",
+"Rico",
+"Kurt",
+"Nell",
+"Cami",
+"Zeke",
+"Yoko",
+"Bree",
+"Seth",
+"Amos",
+"Luke",
+"Elle",
+"Kara",
+"Peg",
+"Faye",
+"Jody",
+"Effy",
+"Cici",
+"Vivi",
+"Rene",
+"Zoie",
+"Arlo",
+"Erin",
+"Pete",
+"Amy",
+"Owen",
+"Joel",
+"Joey",
+"Rudy",
+"Luca",
+"Hana",
+"Eddy",
+"Esme",
+"Lynn",
+"Ruby",
+"Troy",
+"Macy",
+"Rosy",
+"Joni",
+"Dean",
+"Cleo",
+"Dora",
+"Wynn",
+"Olga",
+"Jeri",
+"John",
+"Gary",
+"Cara",
+"Abby",
+"Chad",
+"Adam",
+"Kian",
+"Lori",
+"Yola",
+"Erik",
+"Milo",
+"Katy",
+"Sam",
+"Ike",
+"Eric",
+"Nina",
+"Vida",
+"Neal",
+"Trey",
+"Sara",
+"Mila",
+"Cody",
+"Zoey",
+"Cory",
+"Neil",
+"Robb",
+"Lana",
+"Tala",
+"Sean",
+"Leon",
+"Andy",
+"Fifi",
+"Mimi",
+"Jace",
+"Hans",
+"Opal",
+"Finn",
+"Jade",
+"Vern",
+"Yuri",
+"Kyla",
+"Toby",
+"Ross",
+"Saul",
+"Gael",
+"Juan",
+"Dale",
+"Hugo",
+"Page",
+"Suki",
+"Hope",
+"Tori",
+"Kase",
+"Ivan",
+"Lila",
+"Tina",
+"Lola",
+"Vera",
+"Mark",
+"Kyle",
+"Dede",
+"Raul",
+"Lyle",
+"Levi",
+"Dana",
+"Nora",
+"Ruth",
+"Jude",
+"Nola",
+"Nash",
+"Kiki",
+"Anna",
+"Kole",
+"Alva","Sue",
+"Alex","Hank","Otis","Gail","Paul","Niko","Iris","Ryan","Ivor","Jenn","Kirk","Drew","Lena","Sina","Will","Umar","Jett","Todd","Olin","Uma",
+"Ward","Lara","Tate","Pia",
+"Rena","Gabe","Oran","Jill","Kent","Bibi","Abel","Gigi","Otto","Zena","Noah","Evan","Rory","Dane","Jose","Lily","Karl","Niki","Jack","Omar","Liam","Meg",
+"Dino","Olaf","Josh","Quin","Ally","Zara","Tess","Zack","Jake","Tony","Glen","Carl","Alma","Elmo","Mae",
+"Nick","Marq","Latt","Tron","Zorg",};
 
 // The `MenuState` enum.
 //
@@ -165,7 +297,7 @@ const array<tuple<const char*, MenuState>, 4> options = {
 };
 
 void Application::main_menu() {
-    cout << "Main Menu:\n";
+    cout << "*** GOAT MANAGER 3001 ***\n";
 
     for (size_t i = 0; i < options.size(); i++) {
         cout << format("[{}] {}\n", i + 1, get<0>(options[i]));
@@ -175,7 +307,7 @@ void Application::main_menu() {
 }
 
 void Application::main_menu_decision() {
-    cout << "Your decision: ";
+    cout << "Choice --> ";
     
     string buf;
     getline(cin, buf);
