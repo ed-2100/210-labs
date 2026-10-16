@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "app.h"
+#include "goat.h"
 
 using namespace std;
 

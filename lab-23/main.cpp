@@ -16,9 +16,7 @@ using namespace std;
 
 // The `main` function.
 //
-// Showcases a minimal list implementation, allowing
-// the user to perform arbitrary operations to test
-// its functionality.
+// Manages a goat trip.
 //
 // ### Returns
 //
