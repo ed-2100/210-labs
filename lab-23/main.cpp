@@ -157,7 +157,7 @@ int Application::run() {
     }
 }
 
-const array<tuple<const char*, MenuState>, 5> options = {
+const array<tuple<const char*, MenuState>, 4> options = {
     tuple{"Add a goat", MenuState::APPEND},
     {"Delete a goat", MenuState::REMOVE},
     {"List goats", MenuState::DISPLAY},
