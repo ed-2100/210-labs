@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const char* colors[] = {
+array<const char*, 25> colors = {
     "Red", "Blue", "Green", "Yellow",
     "Orange", "Purple", "Pink", "Cyan",
     "Magenta", "Lime", "Teal", "Indigo",
@@ -17,7 +17,7 @@ const char* colors[] = {
 
 // The assignment didn't say I needed to load this from a file;
 // No need to overcomplicate things lol.
-const char* names[] = {
+array<const char*, 200> names = {
     "Ella", "Inga", "Zane", "Oleg", "Wade", "Yale", "Tami", "Tara",
     "Axel", "Ola","Beth", "Boyd", "Rosa", "Ezra", "Mara", "Rico",
     "Kurt", "Nell", "Cami", "Zeke", "Yoko", "Bree", "Seth", "Amos",
@@ -46,7 +46,7 @@ const char* names[] = {
 };
 
 int Application::run() {
-    listy = list<float>();
+    listy = list<Goat>();
     state = MAIN_MENU;
 
     while (true) {
@@ -116,7 +116,7 @@ void Application::main_menu_decision() {
 }
 
 void Application::append() {
-    cout << "Value to insert (float): ";
+    cout << "Adding a goat...\n";
 
     string buf;
     getline(cin, buf);
