@@ -240,7 +240,11 @@ void Application::insert() {
         return;
     }
 
-    listy.insert(index, number);
+    auto it = listy.begin();
+
+    advance(it, index);
+
+    listy.insert(it, number);
     
     cout << format("\nInserted value: {}\n", number);
 
@@ -271,7 +275,13 @@ void Application::remove()  {
         return;
     }
 
-    cout << format("\nRemoved value: {}\n", listy.remove(choice));
+    auto it = listy.begin();
+
+    advance(it, choice);
+
+    listy.erase(it);
+
+    cout << "\nDeleted.\n";
 
     state = MAIN_MENU;
 }
