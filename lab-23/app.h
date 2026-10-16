@@ -3,6 +3,8 @@
 #include <list>
 #include <string>
 
+#include "goat.h"
+
 // The `MenuState` enum.
 //
 // Describes the different states in 
@@ -23,7 +25,7 @@ enum MenuState {
 // unified structure for this assignment.
 class Application {
 private:
-    std::list<float> listy;
+    std::list<Goat> listy;
     MenuState state = MAIN_MENU;
 
 public:

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono>
+#include <random>
 
 #include "app.h"
 #include "goat.h"
@@ -116,27 +118,25 @@ void Application::main_menu_decision() {
 }
 
 void Application::append() {
-    cout << "Adding a goat...\n";
+    cout << "Adding a goat...";
 
-    string buf;
-    getline(cin, buf);
+    auto current_time = chrono::steady_clock::now();
 
-    float number;
-    try {
-        number = stof(buf);
-    } catch (const invalid_argument &e) {
-        cout << "Not a number!\n";
-        state = MAIN_MENU;
-        return;
-    } catch (const out_of_range &e) {
-        cout << "floats cannot represent that large of a number.\n";
-        state = MAIN_MENU;
-        return;
-    }
+    mt19937 gen(current_time.time_since_epoch().count());
 
-    listy.push_back(number);
+    uniform_int_distribution<uint32_t> dist_names(0, names.size());
+    uniform_int_distribution<uint32_t> dist_age(1, 20);
+    uniform_int_distribution<uint32_t> dist_colors(0, colors.size());
     
-    cout << format("\nInserted value: {}\n", number);
+    string name = names[dist_names(gen)];
+    int age = dist_age(gen);
+    string color = colors[dist_colors(gen)];
+
+    Goat goaty(move(name), age, move(color));
+
+    listy.push_back(move(goaty));
+    
+    cout << " Done.\n";
 
     state = MAIN_MENU;
 }
@@ -185,7 +185,7 @@ void Application::display() {
     cout << "[ ";
 
     if (front == back) {
-        cout << ']';
+        cout << "";
     } else {
         while (true) {
             cout << format("{}", *front);
