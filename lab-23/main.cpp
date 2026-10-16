@@ -38,9 +38,8 @@ using namespace std;
 enum MenuState {
     MAIN_MENU,
     MAIN_MENU_DECISION,
-    INSERT,
+    APPEND,
     REMOVE,
-    CLEAR,
     DISPLAY,
     EXIT,
 };
@@ -76,23 +75,16 @@ private:
     // Selects the state based on user input.
     void main_menu_decision();
 
-    // The `insert` state function.
+    // The `append` state function.
     //
-    // Inserts a node at a position in the list
-    // based on user input.
-    void insert();
+    // Appends a node to the list.
+    void append();
 
     // The `remove` state function.
     //
     // Removes a node at a position in the list
     // based on user input.
     void remove();
-
-    // The `clear` state function.
-    //
-    // Clears the list and returns to the main
-    // menu.
-    void clear();
 
     // The `display` state function.
     //
@@ -143,14 +135,11 @@ int Application::run() {
             case MAIN_MENU_DECISION:
                 main_menu_decision();
                 break;
-            case INSERT:
-                insert();
+            case APPEND:
+                append();
                 break;
             case REMOVE:
                 remove();
-                break;
-            case CLEAR:
-                clear();
                 break;
             case DISPLAY:
                 display();
@@ -169,11 +158,10 @@ int Application::run() {
 }
 
 const array<tuple<const char*, MenuState>, 5> options = {
-    tuple{"Insert", MenuState::INSERT},
-    {"Remove", MenuState::REMOVE},
-    {"Clear", MenuState::CLEAR},
-    {"Display", MenuState::DISPLAY},
-    {"Exit", MenuState::EXIT}
+    tuple{"Add a goat", MenuState::APPEND},
+    {"Delete a goat", MenuState::REMOVE},
+    {"List goats", MenuState::DISPLAY},
+    {"Quit", MenuState::EXIT}
 };
 
 void Application::main_menu() {
@@ -205,26 +193,10 @@ void Application::main_menu_decision() {
     state = get<1>(options[choice - 1]);
 }
 
-void Application::insert() {
-    cout << "Index to insert at: ";
-
-    string buf;
-    getline(cin, buf);
-
-    int index;
-    if (!parse_int(index, buf)) {
-        state = MAIN_MENU;
-        return;
-    }
-
-    if (index < 0 || index > listy.size()) {
-        cout << "Out of range!\n";
-        state = MAIN_MENU;
-        return;
-    }
-
+void Application::append() {
     cout << "Value to insert (float): ";
 
+    string buf;
     getline(cin, buf);
 
     float number;
@@ -240,11 +212,7 @@ void Application::insert() {
         return;
     }
 
-    auto it = listy.begin();
-
-    advance(it, index);
-
-    listy.insert(it, number);
+    listy.push_back(number);
     
     cout << format("\nInserted value: {}\n", number);
 
@@ -282,16 +250,6 @@ void Application::remove()  {
     listy.erase(it);
 
     cout << "\nDeleted.\n";
-
-    state = MAIN_MENU;
-}
-
-void Application::clear() {
-    cout << "Clearing list...";
-
-    listy.clear();
-
-    cout << " Cleared.\n";
 
     state = MAIN_MENU;
 }
