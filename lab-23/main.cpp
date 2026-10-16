@@ -168,7 +168,7 @@ void Application::main_menu() {
     cout << "Main Menu:\n";
 
     for (size_t i = 0; i < options.size(); i++) {
-        cout << format("({}) {}\n", i + 1, get<0>(options[i]));
+        cout << format("[{}] {}\n", i + 1, get<0>(options[i]));
     }
 
     state = MAIN_MENU_DECISION;
