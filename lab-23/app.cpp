@@ -49,7 +49,7 @@ array<const char*, 200> names = {
 };
 
 int Application::run() {
-    listy = list<Goat>();
+    trip = list<Goat>();
     while (true) {
         MenuState current;
         
@@ -122,7 +122,9 @@ void Application::main_menu_decision() {
         return;
     }
 
-    state.push_back(get<1>(options[choice - 1]));
+    // state.push_back(get<1>(options[choice - 1]));
+
+    cout << "Your "
 }
 
 void Application::append() {
@@ -142,13 +144,13 @@ void Application::append() {
 
     Goat goaty(move(name), age, move(color));
 
-    listy.push_back(move(goaty));
+    trip.push_back(move(goaty));
     
     cout << " Done.\n";
 }
 
 void Application::remove()  {
-    if (listy.size() == 0) {
+    if (trip.size() == 0) {
         cout << "No elements to remove.\n";
         return;
     }
@@ -166,31 +168,32 @@ void Application::remove()  {
         return;
     }
 
-    if (choice < 1 || choice > listy.size()) {
+    if (choice < 1 || choice > trip.size()) {
         cout << "Out of range!\n";
         state.clear();
         return;
     }
 
-    auto it = listy.begin();
+    auto it = trip.begin();
 
     advance(it, choice - 1);
 
-    listy.erase(it);
+    trip.erase(it);
 
     cout << "\nDeleted.\n";
 }
 
 void Application::display() {
-    if (listy.size() > 0)
-    for (const auto& [i, goat]: views::enumerate(listy)) {
-        cout << format(
-            "[{}] {} ({}, {})\n",
-            i + 1,
-            goat.get_name(),
-            goat.get_age(),
-            goat.get_color()
-        );
+    if (trip.size() > 0) {
+        for (const auto& [i, goat]: views::enumerate(trip)) {
+            cout << format(
+                "[{}] {} ({}, {})\n",
+                i + 1,
+                goat.get_name(),
+                goat.get_age(),
+                goat.get_color()
+            );
+        }
     } else {
         cout << "No goats.\n";
     }

@@ -17,27 +17,6 @@ public:
         this->color = std::move(color);
     }
 
-    // Goat(Goat& rhs) : name(rhs.name), age(rhs.age), color(rhs.color) {}
-    // Goat(Goat&& rhs)
-    //   : name(std::exchange(rhs.name, "")),
-    //     age(std::exchange(rhs.age, 0)),
-    //     color(std::exchange(rhs.color, "")) {}
-
-    // Goat& operator=(const Goat& rhs) {
-    //     if (this != &rhs) {
-    //         this->name = rhs.name;
-    //         this->age = rhs.age;
-    //         this->color = rhs.color;
-    //     }
-    //     return *this;
-    // }
-
-    // Goat& operator=(Goat&& rhs) {
-    //     if (this != &rhs) {
-
-    //     }
-    // }
-
     template<typename String>
     void set_name(String&& n) {
         name = forward<String>(n);

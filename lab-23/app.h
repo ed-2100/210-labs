@@ -25,7 +25,7 @@ enum MenuState {
 // unified structure for this assignment.
 class Application {
 private:
-    std::list<Goat> listy;
+    std::list<Goat> trip;
     std::vector<MenuState> state;
 
 public:
