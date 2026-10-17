@@ -41,7 +41,7 @@ public:
 private:
     // The `main_menu` state function.
     //
-    // Displays a list of list operations to the user.
+    // Displays a list of trip operations to the user.
     // and sets `state` to `MAIN_MENU_DECISION`.
     void main_menu();
 
@@ -52,18 +52,18 @@ private:
 
     // The `append` state function.
     //
-    // Appends a goat to the list.
+    // Appends a goat to the trip.
     void append();
 
     // The `remove` state function.
     //
-    // Removes a goat at a position in the list
+    // Removes a goat at a position in the trip
     // based on user input.
     void remove();
 
     // The `display` state function.
     //
-    // Displays the current contents of the goat list.
+    // Displays the current contents of the trip.
     void display();
 
     // A small helper to parse integer inputs.

@@ -24,5 +24,5 @@ using namespace std;
 int main() {
     Application app;
 
-    return app.run(); // :)
+    return app.run();
 }

@@ -5,6 +5,9 @@
 
 using namespace std;
 
+// The `Goat` class.
+//
+// Holds information on a goat.
 class Goat {
 private:
     string name;

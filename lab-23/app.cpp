@@ -122,11 +122,7 @@ void Application::main_menu_decision() {
         return;
     }
 
-    // state.push_back(get<1>(options[choice - 1]));
-
-    cout << "\nValidated.\n\nYour choice: " << choice << '\n';
-
-    state.push_back(EXIT);
+    state.push_back(get<1>(options[choice - 1]));
 }
 
 void Application::append() {
