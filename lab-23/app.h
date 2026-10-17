@@ -26,7 +26,7 @@ enum MenuState {
 class Application {
 private:
     std::list<Goat> listy;
-    MenuState state = MAIN_MENU;
+    std::vector<MenuState> state;
 
 public:
     // The `run` function.

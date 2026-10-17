@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <ranges>
 
 #include "app.h"
 #include "goat.h"
@@ -49,10 +50,17 @@ array<const char*, 200> names = {
 
 int Application::run() {
     listy = list<Goat>();
-    state = MAIN_MENU;
-
     while (true) {
-        switch (state) {
+        MenuState current;
+        
+        if (state.size() > 0) {
+            current = state.back();
+            state.pop_back();
+        } else {
+            current = MAIN_MENU;
+        }
+
+        switch (current) {
             case MAIN_MENU:
                 main_menu();
                 break;
@@ -74,7 +82,6 @@ int Application::run() {
             default:
                 // Invalid Menu
                 cout << "Menu not found.\n";
-                state = MenuState::MAIN_MENU;
         }
 
         cout << '\n';
@@ -95,7 +102,7 @@ void Application::main_menu() {
         cout << format("[{}] {}\n", i + 1, get<0>(options[i]));
     }
 
-    state = MAIN_MENU_DECISION;
+    state.pushMAIN_MENU_DECISION;
 }
 
 void Application::main_menu_decision() {
@@ -124,9 +131,9 @@ void Application::append() {
 
     mt19937 gen(current_time.time_since_epoch().count());
 
-    uniform_int_distribution<uint32_t> dist_names(0, names.size());
+    uniform_int_distribution<uint32_t> dist_names(0, names.size() - 1);
     uniform_int_distribution<uint32_t> dist_age(1, 20);
-    uniform_int_distribution<uint32_t> dist_colors(0, colors.size());
+    uniform_int_distribution<uint32_t> dist_colors(0, colors.size() - 1);
     
     string name = names[dist_names(gen)];
     int age = dist_age(gen);
@@ -137,8 +144,6 @@ void Application::append() {
     listy.push_back(move(goaty));
     
     cout << " Done.\n";
-
-    state = MAIN_MENU;
 }
 
 void Application::remove()  {
@@ -172,39 +177,16 @@ void Application::remove()  {
     listy.erase(it);
 
     cout << "\nDeleted.\n";
-
-    state = MAIN_MENU;
 }
 
 void Application::display() {
     cout << "Current list contents:\n";
     
-    auto front = listy.begin();
-    auto back = listy.end();
-
-    cout << "[ ";
-
-    if (front == back) {
-        cout << "";
+    if (listy.size() > 0) for (const auto& [i, goat]: views::enumerate(listy)) {
+        cout << format("[{}] {} ({}, {})\n", i, goat.get_name(), goat.get_age(), goat.get_color());
     } else {
-        while (true) {
-            cout << format("{}", *front);
-
-            front++;
-
-            if (front == back) {
-                break;
-            }
-
-            cout << ", ";
-        }
-
-        cout << " ]";
+        cout << "No goats.\n";
     }
-
-    cout << '\n';
-
-    state = MAIN_MENU;
 }
 
 bool Application::parse_int(int& num, const string& input) {
