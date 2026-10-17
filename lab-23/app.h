@@ -52,18 +52,18 @@ private:
 
     // The `append` state function.
     //
-    // Appends a node to the list.
+    // Appends a goat to the list.
     void append();
 
     // The `remove` state function.
     //
-    // Removes a node at a position in the list
+    // Removes a goat at a position in the list
     // based on user input.
     void remove();
 
     // The `display` state function.
     //
-    // Displays the current contents of the list.
+    // Displays the current contents of the goat list.
     void display();
 
     // A small helper to parse integer inputs.

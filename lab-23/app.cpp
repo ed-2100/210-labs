@@ -102,7 +102,7 @@ void Application::main_menu() {
         cout << format("[{}] {}\n", i + 1, get<0>(options[i]));
     }
 
-    state.pushMAIN_MENU_DECISION;
+    state.push_back(MAIN_MENU_DECISION);
 }
 
 void Application::main_menu_decision() {
@@ -118,10 +118,11 @@ void Application::main_menu_decision() {
 
     if (choice < 1 || choice > options.size()) {
         cout << "Out of range!\n";
+        state.clear();
         return;
     }
 
-    state = get<1>(options[choice - 1]);
+    state.push_back(get<1>(options[choice - 1]));
 }
 
 void Application::append() {
@@ -149,30 +150,31 @@ void Application::append() {
 void Application::remove()  {
     if (listy.size() == 0) {
         cout << "No elements to remove.\n";
-        state = MAIN_MENU;
         return;
     }
 
-    cout << "Index to remove: ";
+    display();
+
+    cout << "\nGoat to remove: ";
 
     string buf;
     getline(cin, buf);
 
     int choice;
     if (!parse_int(choice, buf)) {
-        state = MAIN_MENU;
+        state.clear();
         return;
     }
 
-    if (choice < 0 || choice >= listy.size()) {
+    if (choice < 1 || choice > listy.size()) {
         cout << "Out of range!\n";
-        state = MAIN_MENU;
+        state.clear();
         return;
     }
 
     auto it = listy.begin();
 
-    advance(it, choice);
+    advance(it, choice - 1);
 
     listy.erase(it);
 
@@ -180,10 +182,15 @@ void Application::remove()  {
 }
 
 void Application::display() {
-    cout << "Current list contents:\n";
-    
-    if (listy.size() > 0) for (const auto& [i, goat]: views::enumerate(listy)) {
-        cout << format("[{}] {} ({}, {})\n", i, goat.get_name(), goat.get_age(), goat.get_color());
+    if (listy.size() > 0)
+    for (const auto& [i, goat]: views::enumerate(listy)) {
+        cout << format(
+            "[{}] {} ({}, {})\n",
+            i + 1,
+            goat.get_name(),
+            goat.get_age(),
+            goat.get_color()
+        );
     } else {
         cout << "No goats.\n";
     }
