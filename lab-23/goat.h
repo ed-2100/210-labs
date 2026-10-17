@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 23 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #pragma once
 
 #include <iostream>
