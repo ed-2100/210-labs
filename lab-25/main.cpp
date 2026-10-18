@@ -111,7 +111,7 @@ int main(int argc, const char** argv) {
 
     {
         set<const char*> cont;
-        cont.insert_range(views::transform([](const string& i){i.c_str()})))''
+        cont.insert_range(data | views::transform([](const string& i){ return i.c_str(); }));
         for (const auto& i : data) {
             cont.insert(i.c_str());
         }
