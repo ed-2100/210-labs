@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 24 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <chrono>
 #include <random>
@@ -99,7 +103,7 @@ const array<tuple<const char*, MenuState>, 4> options = {
 };
 
 void Application::main_menu() {
-    cout << "*** GOAT MANAGER 3001 ***\n";
+    cout << "*** GOAT MANAGER 3002 ***\n";
 
     for (size_t i = 0; i < options.size(); i++) {
         cout << format("[{}] {}\n", i + 1, get<0>(options[i]));
