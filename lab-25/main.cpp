@@ -6,32 +6,14 @@
 #include <vector>
 #include <memory>
 #include <format>
+#include <span>
 
 using namespace std;
 
-struct BenchmarkX {
-    virtual ~BenchmarkX() = default;
-    virtual void run() = 0;
-    virtual const char* name() = 0;
-};
-
-template <typename Task>
-struct Benchmark : public BenchmarkX {
-    Task t;
-    string name;
-
-    Benchmark() {
-        
-    }
-
-    void run() override {
-
-    }
-
-    const char* name() override {
-        return name;
-    }
-};
+template <typename Container>
+void read(Container& container, span<const char*>) {
+    
+}
 
 int main(int argc, const char** argv) {
 
