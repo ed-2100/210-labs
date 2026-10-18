@@ -10,11 +10,8 @@
 
 using namespace std;
 
-template <typename Container, typename Func>
-void read(Container& container, Func func, span<const char*> data) {
-    for (const char* d : data)
-    func(container, data)
-}
+//   | READING | SORTING | INSERTING | REMOVING
+
 
 int main(int argc, const char** argv) {
 
