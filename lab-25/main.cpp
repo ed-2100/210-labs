@@ -12,6 +12,14 @@
 
 using namespace std;
 
+template <typename F>
+chrono::high_resolution_clock::duration measure(F f) {
+    auto begin = chrono::high_resolution_clock::now();
+    f();
+    auto end = chrono::high_resolution_clock::now();
+    return end - begin;
+}
+
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
 // | list   |         |         |           |          |
@@ -33,12 +41,11 @@ int main(int argc, const char** argv) {
 
     {
         list<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data](){
+            for (const auto& i : data) {
+                cont.push_back(i.c_str());
+            }
+        });
     }
 
     {
@@ -89,7 +96,7 @@ int main(int argc, const char** argv) {
         }
         auto begin = chrono::high_resolution_clock::now();
         auto it = cont.begin();
-        next(it, cont.size() >> 1 - 1);
+        it = next(it, cont.size() >> 1 - 1);
         cont.insert(it, "TESTCODE");
         auto end = chrono::high_resolution_clock::now();
         auto duration = end - begin;
@@ -102,8 +109,7 @@ int main(int argc, const char** argv) {
             cont.push_back(i.c_str());
         }
         auto begin = chrono::high_resolution_clock::now();
-        auto it = cont.begin();
-        next(it, cont.size() >> 1 - 1);
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
         cont.insert(it, "TESTCODE");
         auto end = chrono::high_resolution_clock::now();
         auto duration = end - begin;
@@ -116,11 +122,48 @@ int main(int argc, const char** argv) {
             cont.insert(i.c_str());
         }
         auto begin = chrono::high_resolution_clock::now();
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
+        cont.insert(it, "TESTCODE");
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = end - begin;
+    }
+
+    {
+        list<const char*> cont;
+        for (const auto& i : data) {
+            cont.push_back(i.c_str());
+        }
+        auto begin = chrono::high_resolution_clock::now();
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
+        cont.erase(it);
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = end - begin;
+    }
+
+    {
+        vector<const char*> cont;
+        cont.reserve(data.size());
+        for (const auto& i : data) {
+            cont.push_back(i.c_str());
+        }
+        auto begin = chrono::high_resolution_clock::now();
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
+        cont.erase(it);
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = end - begin;
+    }
+
+    {
+        set<const char*> cont;
+        cont.insert_range(data | views::transform([](const string& i){ return i.c_str(); }));
         for (const auto& i : data) {
             cont.insert(i.c_str());
+        }
+        auto begin = chrono::high_resolution_clock::now();
+        for (const auto& i : data) {
+            cont.erase(i.c_str());
         }
         auto end = chrono::high_resolution_clock::now();
         auto duration = end - begin;
     }
-    
 }
