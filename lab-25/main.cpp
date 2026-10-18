@@ -7,11 +7,15 @@
 #include <memory>
 #include <format>
 #include <span>
+#include <filesystem>
 
 using namespace std;
 
-//   | READING | SORTING | INSERTING | REMOVING
-
+// | NAME   | READING | SORTING | INSERTING | REMOVING |
+// | ====== | ======= | ======= | ========= | ======== |
+// | list   |         |         |           |          |
+// | set    |         |         |           |          |
+// | vector |         |         |           |          |
 
 int main(int argc, const char** argv) {
 
@@ -19,5 +23,14 @@ int main(int argc, const char** argv) {
     string storage;
     vector<const char*> data;
 
-    read(listy, [](){}, data);
+    auto exe_file = filesystem::path(argv[0]);
+    auto exe_dir = exe_file.parent_path();
+    auto input_file = exe_dir / "input.txt";
+
+    ifstream file(input_file);
+    string s;
+    std::stringstream buffer(s);
+    buffer << file.rdbuf();
+    file.close();
+
 }
