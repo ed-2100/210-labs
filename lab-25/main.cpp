@@ -5,12 +5,13 @@
 #include <set>
 #include <vector>
 #include <memory>
+#include <format>
 
 using namespace std;
 
 struct Container {
     virtual ~Container() = default;
-    virtual bool read(const const char** entries, size_t n) {
+    virtual bool read(const char** entries, size_t n) {
         return false;
     }
     virtual bool sort() {
@@ -27,11 +28,20 @@ struct Container {
     }
 };
 
+struct Operation {
+    virtual ~Operation() = default;
+
+}
 
 int main(int argc, const char** argv) {
     vector<unique_ptr<Container>> containers;
 
-
+    const char* operations[] = {
+        "READING\0",
+        "SORTING\0",
+        "INSERTING\0",
+        "DELETING\0"
+    };
 
     for (auto& c : containers) {
         const char* name = c->name();
@@ -40,9 +50,14 @@ int main(int argc, const char** argv) {
             name = "UNKNOWN\0";
         }
 
+        cout << format("Testing {}:", name);
+
         for (size_t i = 0; i < 4; i++) {
+            cout << "    ";
+
             switch (i) {
                 case 0:
+                    cout << "READING";
                     break;
                 case 1:
                     break;

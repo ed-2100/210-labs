@@ -24,5 +24,6 @@ add_subdirectory(lab-21)
 add_subdirectory(lab-22)
 add_subdirectory(lab-23)
 add_subdirectory(lab-24)
+add_subdirectory(lab-25)
 
 # (O.O)
