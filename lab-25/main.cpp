@@ -10,11 +10,17 @@
 
 using namespace std;
 
-template <typename Container>
-void read(Container& container, span<const char*>) {
-    
+template <typename Container, typename Func>
+void read(Container& container, Func func, span<const char*> data) {
+    for (const char* d : data)
+    func(container, data)
 }
 
 int main(int argc, const char** argv) {
 
+    list<const char*> listy;
+    string storage;
+    vector<const char*> data;
+
+    read(listy, [](){}, data);
 }
