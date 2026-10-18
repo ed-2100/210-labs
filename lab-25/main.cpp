@@ -19,18 +19,22 @@ using namespace std;
 
 int main(int argc, const char** argv) {
 
-    list<const char*> listy;
     string storage;
-    vector<const char*> data;
+    vector<string> data;
 
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
     auto input_file = exe_dir / "input.txt";
 
     ifstream file(input_file);
-    string s;
-    std::stringstream buffer(s);
-    buffer << file.rdbuf();
-    file.close();
+    string buf;
+    while (getline(file, buf)) {
+        data.push_back(buf);
+    }
 
+    list<const char*> a;
+    auto begin = chrono::high_resolution_clock::now();
+    for (const auto& i : data) {
+        
+    }
 }
