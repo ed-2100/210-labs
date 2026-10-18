@@ -8,6 +8,7 @@
 #include <format>
 #include <span>
 #include <filesystem>
+#include <ranges>
 
 using namespace std;
 
@@ -83,25 +84,37 @@ int main(int argc, const char** argv) {
 
     {
         list<const char*> cont;
+        for (const auto& i : data) {
+            cont.push_back(i.c_str());
+        }
         auto begin = chrono::high_resolution_clock::now();
-        cont.insert(cont.size() >> 2, "TESTCODE");
+        auto it = cont.begin();
+        next(it, cont.size() >> 1 - 1);
+        cont.insert(it, "TESTCODE");
         auto end = chrono::high_resolution_clock::now();
         auto duration = end - begin;
     }
 
     {
         vector<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
         cont.reserve(data.size());
         for (const auto& i : data) {
             cont.push_back(i.c_str());
         }
+        auto begin = chrono::high_resolution_clock::now();
+        auto it = cont.begin();
+        next(it, cont.size() >> 1 - 1);
+        cont.insert(it, "TESTCODE");
         auto end = chrono::high_resolution_clock::now();
         auto duration = end - begin;
     }
 
     {
         set<const char*> cont;
+        cont.insert_range(views::transform([](const string& i){i.c_str()})))''
+        for (const auto& i : data) {
+            cont.insert(i.c_str());
+        }
         auto begin = chrono::high_resolution_clock::now();
         for (const auto& i : data) {
             cont.insert(i.c_str());
