@@ -9,63 +9,30 @@
 
 using namespace std;
 
-struct Container {
-    virtual ~Container() = default;
-    virtual bool read(const char** entries, size_t n) {
-        return false;
+struct BenchmarkX {
+    virtual ~BenchmarkX() = default;
+    virtual void run() = 0;
+    virtual const char* name() = 0;
+};
+
+template <typename Task>
+struct Benchmark : public BenchmarkX {
+    Task t;
+    string name;
+
+    Benchmark() {
+        
     }
-    virtual bool sort() {
-        return false;
+
+    void run() override {
+
     }
-    virtual bool insert(const char* entry) {
-        return false;
-    }
-    virtual bool remove() {
-        return false;
-    }
-    virtual const char* name() {
-        return nullptr;
+
+    const char* name() override {
+        return name;
     }
 };
 
-struct Operation {
-    virtual ~Operation() = default;
-
-}
-
 int main(int argc, const char** argv) {
-    vector<unique_ptr<Container>> containers;
 
-    const char* operations[] = {
-        "READING\0",
-        "SORTING\0",
-        "INSERTING\0",
-        "DELETING\0"
-    };
-
-    for (auto& c : containers) {
-        const char* name = c->name();
-
-        if (!name) {
-            name = "UNKNOWN\0";
-        }
-
-        cout << format("Testing {}:", name);
-
-        for (size_t i = 0; i < 4; i++) {
-            cout << "    ";
-
-            switch (i) {
-                case 0:
-                    cout << "READING";
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-            }
-        }
-    }
 }
