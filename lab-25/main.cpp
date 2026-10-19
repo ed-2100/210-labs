@@ -52,17 +52,30 @@ optional<chrono::high_resolution_clock::duration> run_sort(span<const string> da
     Cont cont;
 
     if constexpr ( requires { cont.sort(); } ) {
-        cont.sort();
-    populate(cont, data);
-    return measure([&cont, &data]() {
-    });
+        populate(cont, data);
+        return measure([&cont, &data]() {
+            cont.sort();
+        });
     } else if constexpr ( requires { ranges::sort(cont); } ) {
-        ranges::sort(cont);
-    populate(cont, data);
-    return measure([&cont, &data]() {
-    });
+        populate(cont, data);
+        return measure([&cont, &data]() {
+            ranges::sort(cont);
+        });
+    } else {
+        return nullopt;
     }
 }
+
+template<typename Cont>
+optional<chrono::high_resolution_clock::duration> run_insert(span<const string> data) {
+    Cont cont;
+    populate(cont, data);
+    return measure([&cont, &data]() {
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
+        cont.insert(it, "TESTCODE");
+    });
+}
+
 
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
@@ -109,31 +122,15 @@ int main(int argc, const char** argv) {
     }
 
     {
-        list<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.insert(it, "TESTCODE");
-        });
+        auto duration = run_insert<list<const char*>>(data);
     }
 
     {
-        vector<const char*> cont;
-        cont.reserve(data.size());
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.insert(it, "TESTCODE");
-        });
+        auto duration = run_insert<vector<const char*>>(data);
     }
 
     {
-        set<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.insert(it, "TESTCODE");
-        });
+        auto duration = run_insert<set<const char*>>(data);
     }
 
     {
@@ -158,9 +155,8 @@ int main(int argc, const char** argv) {
         set<const char*> cont;
         populate(cont, data);
         auto duration = measure([&cont, &data]() {
-            for (const auto& i : data) {
-                cont.erase(i.c_str());
-            }
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.erase(it);
         });
     }
 }
