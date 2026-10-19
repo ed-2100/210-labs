@@ -46,7 +46,7 @@ struct Populate {
     const char* name = "READING";
 
     template<typename Cont>
-    optional<Duration> run(span<const string> data) {
+    static optional<Duration> run(span<const string> data) {
         Cont cont;
         return measure([&cont, &data]() {
             populate(cont, data);
@@ -95,7 +95,7 @@ struct Remove {
     const char* name = "REMOVING";
 
     template<typename Cont>
-    static optional<Duration> run_remove(span<const string> data) {
+    static optional<Duration> run(span<const string> data) {
         Cont cont;
         populate(cont, data);
         return measure([&cont, &data]() {
@@ -112,14 +112,16 @@ struct Container {
     const char* name;
 };
 
-template <typename ... Op, typename... Cont>
-void benchmark(span<const string> data, Container<Cont> ... cont) {
-    auto run_row = [&data]<typename C>(Container(C)) {
-        return { Op::template run<C>(data)... };
-    };
 
+template <typename ...Op, typename Cont>
+array<optional<Duration>, sizeof...(Op)> run_row(span<const string> data) {
+    return { Op::template run<Cont>(data)... };
+}
+
+template <typename ...Op, typename ...Cont>
+void benchmark(span<const string> data, Container<Cont> ... cont) {
     array<array<optional<Duration>, sizeof...(Op)>, sizeof...(Cont)> results {
-        run_row<Cont>(cont)...
+        run_row<Op..., Cont>(data)...
     };
 }
 
