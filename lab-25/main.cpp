@@ -11,6 +11,7 @@
 #include <ranges>
 #include <concepts>
 #include <algorithm>
+#include <array>
 
 using namespace std;
 
@@ -80,7 +81,7 @@ struct Insert {
     const char* name = "INSERTING";
 
     template<typename Cont>
-    optional<Duration> run(span<const string> data) {
+    static optional<Duration> run(span<const string> data) {
         Cont cont;
         populate(cont, data);
         return measure([&cont, &data]() {
@@ -94,7 +95,7 @@ struct Remove {
     const char* name = "REMOVING";
 
     template<typename Cont>
-    optional<Duration> run_remove(span<const string> data) {
+    static optional<Duration> run_remove(span<const string> data) {
         Cont cont;
         populate(cont, data);
         return measure([&cont, &data]() {
@@ -113,7 +114,7 @@ struct Container {
 
 template <typename ... Op, typename... Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
-    
+    array<array<optional<Duration>, sizeof...(Op)>, sizeof...(Cont)> results;
 }
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
@@ -135,53 +136,10 @@ int main(int argc, const char** argv) {
         data.push_back(buf);
     }
 
-    benchmark<Populate, Sort, Insert, Remove>(data, Container<list<const char*>>{"list"});
-
-    {
-        auto duration = run_populate<list<const char*>>(data);
-    }
-
-    {
-        auto duration = run_populate<vector<const char*>>(data);
-    }
-
-    {
-        auto duration = run_populate<set<const char*>>(data);
-    }
-
-    {
-        auto duration = run_sort<list<const char*>>(data);
-    }
-
-    {
-        auto duration = run_sort<vector<const char*>>(data);
-    }
-
-    {
-        auto duration = run_sort<set<const char*>>(data);
-    }
-
-    {
-        auto duration = run_insert<list<const char*>>(data);
-    }
-
-    {
-        auto duration = run_insert<vector<const char*>>(data);
-    }
-
-    {
-        auto duration = run_insert<set<const char*>>(data);
-    }
-
-    {
-        auto duration = run_remove<list<const char*>>(data);
-    }
-
-    {
-        auto duration = run_remove<vector<const char*>>(data);
-    }
-
-    {
-        auto duration = run_remove<set<const char*>>(data);
-    }
+    benchmark<Populate, Sort, Insert, Remove>(
+        data,
+        Container<list<const char*>>{"list"},
+        Container<vector<const char*>>{"vector"},
+        Container<set<const char*>>{"set"}
+    );
 }
