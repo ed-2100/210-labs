@@ -123,17 +123,20 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         run_row(Op{})...
     };
 
-    
+    cout << "| " << setw(15) << ' ' << " |";
+    ((cout << setw(15) << cont.name << " |"), ...);
+    cout << "\n";
 
-    for (const auto& row : results) {
+    array names { Op::name... };
 
-        cout << "| ";
+    for (const auto& [name, row] : views::zip(names, results)) {
+        cout << "| " << setw(15) << name << " |";
         for (const Result& result : row) {
-            cout << setw(15) << result.transform(
+            cout << setw(12) << result.transform(
                 [](const Duration& d) {
                     return std::chrono::nanoseconds(d).count();
                 }
-            ).value_or(-1) << " |";
+            ).value_or(-1) << " ns |";
         }
 
         cout << '\n';
