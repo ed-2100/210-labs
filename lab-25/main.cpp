@@ -20,6 +20,14 @@ chrono::high_resolution_clock::duration measure(F f) {
     return end - begin;
 }
 
+template <typename Cont>
+void populate(Cont& cont, span<const string> data) {
+    if constexpr (requires { cont.reserve(data.size()); }) {
+        cont.reserve(data.size());
+    }
+
+}
+
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
 // | list   |         |         |           |          |
@@ -41,7 +49,7 @@ int main(int argc, const char** argv) {
 
     {
         list<const char*> cont;
-        auto duration = measure([&cont, &data](){
+        auto duration = measure([&cont, &data]() {
             for (const auto& i : data) {
                 cont.push_back(i.c_str());
             }
@@ -50,39 +58,41 @@ int main(int argc, const char** argv) {
 
     {
         vector<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
-        cont.reserve(data.size());
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            cont.reserve(data.size());
+            for (const auto& i : data) {
+                cont.push_back(i.c_str());
+            }
+        });
     }
 
     {
         set<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
-        for (const auto& i : data) {
-            cont.insert(i.c_str());
-        }
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            for (const auto& i : data) {
+                cont.insert(i.c_str());
+            }
+        });
     }
 
     {
         list<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
-        cont.sort();
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        for (const auto& i : data) {
+            cont.push_back(i.c_str());
+        }
+        auto duration = measure([&cont, &data]() {
+            cont.sort();
+        });
     }
 
     {
         vector<const char*> cont;
-        auto begin = chrono::high_resolution_clock::now();
-        sort(cont.begin(), cont.end());
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        for (const auto& i : data) {
+            cont.push_back(i.c_str());
+        }
+        auto duration = measure([&cont, &data]() {
+            sort(cont.begin(), cont.end());
+        });
     }
 
     {
@@ -94,12 +104,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.push_back(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        auto it = cont.begin();
-        it = next(it, cont.size() >> 1 - 1);
-        cont.insert(it, "TESTCODE");
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.insert(it, "TESTCODE");
+        });
     }
 
     {
@@ -108,11 +116,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.push_back(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.insert(it, "TESTCODE");
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.insert(it, "TESTCODE");
+        });
     }
 
     {
@@ -121,11 +128,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.insert(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.insert(it, "TESTCODE");
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.insert(it, "TESTCODE");
+        });
     }
 
     {
@@ -133,11 +139,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.push_back(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.erase(it);
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.erase(it);
+        });
     }
 
     {
@@ -146,11 +151,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.push_back(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.erase(it);
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.erase(it);
+        });
     }
 
     {
@@ -159,11 +163,10 @@ int main(int argc, const char** argv) {
         for (const auto& i : data) {
             cont.insert(i.c_str());
         }
-        auto begin = chrono::high_resolution_clock::now();
-        for (const auto& i : data) {
-            cont.erase(i.c_str());
-        }
-        auto end = chrono::high_resolution_clock::now();
-        auto duration = end - begin;
+        auto duration = measure([&cont, &data]() {
+            for (const auto& i : data) {
+                cont.erase(i.c_str());
+            }
+        });
     }
 }
