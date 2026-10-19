@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 25 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -49,4 +53,6 @@ int main(int argc, const char** argv) {
         Container<vector<const char*>>{"vector"},
         Container<set<const char*>>{"set"}
     );
+
+    return EXIT_SUCCESS; // :)
 }
