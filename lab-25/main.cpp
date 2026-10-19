@@ -44,19 +44,19 @@ void populate(Cont& cont, span<const string> data) {
 }
 
 struct Populate {
-    const char* name = "READING";
+    static constexpr const char* name = "READING";
 
     template<typename Cont>
     static Result run(span<const string> data) {
         Cont cont;
-        return measure([&cont, &data]() {
+        return measure([&]() {
             populate(cont, data);
         });
     }
 };
 
 struct Sort {
-    const char* name = "SORTING";
+    static constexpr const char* name = "SORTING";
 
     template<typename Cont>
     static Result run(span<const string> data) {
@@ -64,12 +64,12 @@ struct Sort {
 
         if constexpr ( requires { cont.sort(); } ) {
             populate(cont, data);
-            return measure([&cont, &data]() {
+            return measure([&]() {
                 cont.sort();
             });
         } else if constexpr ( requires { ranges::sort(cont); } ) {
             populate(cont, data);
-            return measure([&cont, &data]() {
+            return measure([&]() {
                 ranges::sort(cont);
             });
         } else {
@@ -79,13 +79,13 @@ struct Sort {
 };
 
 struct Insert {
-    const char* name = "INSERTING";
+    static constexpr const char* name = "INSERTING";
 
     template<typename Cont>
     static Result run(span<const string> data) {
         Cont cont;
         populate(cont, data);
-        return measure([&cont, &data]() {
+        return measure([&]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.insert(it, "TESTCODE");
         });
@@ -93,13 +93,13 @@ struct Insert {
 };
 
 struct Remove {
-    const char* name = "REMOVING";
+    static constexpr const char* name = "REMOVING";
 
     template<typename Cont>
     static Result run(span<const string> data) {
         Cont cont;
         populate(cont, data);
-        return measure([&cont, &data]() {
+        return measure([&]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.erase(it);
         });
@@ -115,16 +115,19 @@ struct Container {
 
 template <typename ...Op, typename ...Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
-    auto run_row = [&data]<typename C>(Container<C> c) -> array<Result, sizeof...(Op)> {
-        return array{ Op::template run<C>(data)... };
+    auto run_row = [&]<typename O>(O) -> array<Result, sizeof...(Cont)> {
+        return array{ O::template run<Cont>(data)... };
     };
 
-    array<array<Result, sizeof...(Op)>, sizeof...(Cont)> results {
-        run_row(cont)...
+    array<array<Result, sizeof...(Cont)>, sizeof...(Op)> results {
+        run_row(Op{})...
     };
 
-
-    
+    for (const auto& row : results) {
+        for (const Result& result : row) {
+            cout << setw(20) << result.value_or("-1");
+        }
+    }
 }
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
