@@ -17,12 +17,19 @@
 
 using namespace std;
 
-// | NAME   | READING | SORTING | INSERTING | REMOVING |
-// | ====== | ======= | ======= | ========= | ======== |
-// | list   |         |         |           |          |
-// | set    |         |         |           |          |
-// | vector |         |         |           |          |
-
+// The `main` function.
+//
+// Benchmarks operations of various containers and subsequently
+// displays the results to `stdout`.
+//
+// ### Arguments
+//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     vector<string> data;
 

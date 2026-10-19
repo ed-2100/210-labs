@@ -8,6 +8,11 @@ using namespace std;
 using Duration = chrono::high_resolution_clock::duration;
 using Result = optional<Duration>;
 
+// Simple wrapper for measuring the execution time of an operation.
+//
+// ### Arguments
+//
+// - `f`; The function whose execution time is to be measured.
 template <typename F>
 Duration measure(F f) {
     auto begin = chrono::high_resolution_clock::now();
@@ -16,6 +21,12 @@ Duration measure(F f) {
     return end - begin;
 }
 
+// Populates a container with the provided data.
+//
+// ### Arguments
+//
+//  - `cont`: The container to populate.
+//  - `data`: The data to populate the container with.
 template <typename Cont>
 void populate(Cont& cont, span<const string> data) {
     if constexpr ( requires { cont.reserve(data.size()); } ) {
@@ -24,8 +35,10 @@ void populate(Cont& cont, span<const string> data) {
 
     for (const string& s : data) {
         if constexpr ( requires {cont.push_back(s.c_str());} ) {
+            // List / Vector
             cont.push_back(s.c_str());
         } else if constexpr ( requires { cont.insert(s.c_str()); } ) {
+            // Set
             cont.insert(s.c_str());
         } else {
             static_assert(false, "That ain't it.");
@@ -59,16 +72,19 @@ struct Sort {
         Cont cont;
 
         if constexpr ( requires { cont.sort(); } ) {
+            // List
             populate(cont, data);
             return measure([&]() {
                 cont.sort();
             });
         } else if constexpr ( requires { ranges::sort(cont); } ) {
+            // Vector
             populate(cont, data);
             return measure([&]() {
                 ranges::sort(cont);
             });
         } else {
+            // Set
             return nullopt;
         }
     }
@@ -122,6 +138,8 @@ struct Container {
 // Benchmarks a list of different containers using the provided string data
 // and displays the results to `stdout`.
 //
+// Note: This took ages...
+//
 // ### Arguments
 //
 //  - `data`:    The data to be used when benchmarking each operation.
@@ -136,12 +154,14 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         run_row(Op{})...
     };
 
+    // Header column
     cout << "| " << setw(15) << ' ' << " |";
     ((cout << setw(15) << cont.name << " |"), ...);
     cout << "\n";
 
     array names { Op::name... };
-
+    
+    // Rows
     for (const auto& [name, row] : views::zip(names, results)) {
         cout << "| " << setw(15) << name << " |";
         for (const Result& result : row) {
