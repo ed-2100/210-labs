@@ -98,11 +98,19 @@ struct Insert {
 
     template<typename Cont>
     static Result run(span<const string> data) {
+        constexpr const char item[] = "TESTCODE";
+
         Cont cont;
         populate(cont, data);
         return measure([&]() {
-            auto it = next(cont.begin(), (cont.size() >> 1) - 1);
-            cont.insert(it, "TESTCODE");
+            if constexpr ( require { cont.insert(item); }) {
+                // Set
+                cont.insert(item);
+            } else {
+                // List, Vector
+                auto it = next(cont.begin(), (cont.size() - 1) >> 1);
+                cont.insert(it, item);
+            }
         });
     }
 };
@@ -118,7 +126,7 @@ struct Remove {
         Cont cont;
         populate(cont, data);
         return measure([&]() {
-            auto it = next(cont.begin(), (cont.size() >> 1) - 1);
+            auto it = next(cont.begin(), (cont.size() - 1) >> 1);
             cont.erase(it);
         });
     }
@@ -147,10 +155,12 @@ struct Container {
 template <typename ...Op, typename ...Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
     auto run_row = [&]<typename O>(O) -> array<Result, sizeof...(Cont)> {
+        // Expand over ...Cont
         return array{ O::template run<Cont>(data)... };
     };
 
     array<array<Result, sizeof...(Cont)>, sizeof...(Op)> results {
+        // Expand over ...Op
         run_row(Op{})...
     };
 
