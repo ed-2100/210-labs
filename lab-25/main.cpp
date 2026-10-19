@@ -41,52 +41,68 @@ void populate(Cont& cont, span<const string> data) {
     }
 }
 
-template<typename Cont>
-optional<Duration> run_populate(span<const string> data) {
-    Cont cont;
-    return measure([&cont, &data]() {
-        populate(cont, data);
-    });
-}
+struct Populate {
+    const char* name = "READING";
 
-template<typename Cont>
-optional<Duration> run_sort(span<const string> data) {
-    Cont cont;
-
-    if constexpr ( requires { cont.sort(); } ) {
-        populate(cont, data);
+    template<typename Cont>
+    optional<Duration> run(span<const string> data) {
+        Cont cont;
         return measure([&cont, &data]() {
-            cont.sort();
+            populate(cont, data);
         });
-    } else if constexpr ( requires { ranges::sort(cont); } ) {
-        populate(cont, data);
-        return measure([&cont, &data]() {
-            ranges::sort(cont);
-        });
-    } else {
-        return nullopt;
     }
-}
+};
 
-template<typename Cont>
-optional<Duration> run_insert(span<const string> data) {
-    Cont cont;
-    populate(cont, data);
-    return measure([&cont, &data]() {
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.insert(it, "TESTCODE");
-    });
-}
+struct Sort {
+    const char* name = "SORTING";
 
-template<typename Cont>
-optional<Duration> run_remove(span<const string> data) {
-    Cont cont;
-    populate(cont, data);
-    return measure([&cont, &data]() {
-        auto it = next(cont.begin(), cont.size() >> 1 - 1);
-        cont.erase(it);
-    });
-}
+    template<typename Cont>
+    optional<Duration> run(span<const string> data) {
+        Cont cont;
+
+        if constexpr ( requires { cont.sort(); } ) {
+            populate(cont, data);
+            return measure([&cont, &data]() {
+                cont.sort();
+            });
+        } else if constexpr ( requires { ranges::sort(cont); } ) {
+            populate(cont, data);
+            return measure([&cont, &data]() {
+                ranges::sort(cont);
+            });
+        } else {
+            return nullopt;
+        }
+    }
+};
+
+struct Insert {
+    const char* name = "INSERTING";
+
+    template<typename Cont>
+    optional<Duration> run(span<const string> data) {
+        Cont cont;
+        populate(cont, data);
+        return measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.insert(it, "TESTCODE");
+        });
+    }
+};
+
+struct Remove {
+    const char* name = "REMOVING";
+
+    template<typename Cont>
+    optional<Duration> run_remove(span<const string> data) {
+        Cont cont;
+        populate(cont, data);
+        return measure([&cont, &data]() {
+            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            cont.erase(it);
+        });
+    }
+};
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
