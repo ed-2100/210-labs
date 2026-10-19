@@ -86,7 +86,7 @@ struct Insert {
         Cont cont;
         populate(cont, data);
         return measure([&]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            auto it = next(cont.begin(), (cont.size() >> 1) - 1);
             cont.insert(it, "TESTCODE");
         });
     }
@@ -100,7 +100,7 @@ struct Remove {
         Cont cont;
         populate(cont, data);
         return measure([&]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
+            auto it = next(cont.begin(), (cont.size() >> 1) - 1);
             cont.erase(it);
         });
     }
@@ -123,10 +123,20 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         run_row(Op{})...
     };
 
+    
+
     for (const auto& row : results) {
+
+        cout << "| ";
         for (const Result& result : row) {
-            cout << setw(20) << result.value_or("-1");
+            cout << setw(15) << result.transform(
+                [](const Duration& d) {
+                    return std::chrono::nanoseconds(d).count();
+                }
+            ).value_or(-1) << " |";
         }
+
+        cout << '\n';
     }
 }
 
@@ -141,7 +151,7 @@ int main(int argc, const char** argv) {
 
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
-    auto input_file = exe_dir / "input.txt";
+    auto input_file = exe_dir / "codes.txt";
 
     ifstream file(input_file);
     string buf;
