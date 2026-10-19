@@ -37,9 +37,28 @@ void populate(Cont& cont, span<const string> data) {
     }
 }
 
-optional<chrono::high_resolution_clock::duration> run_populate(span<const string> data) {
-    
+template<typename Cont>
+chrono::high_resolution_clock::duration run_populate(span<const string> data) {
+    Cont cont;
+    auto duration = measure([&cont, &data]() {
+        populate(cont, data);
+    });
 }
+
+template<typename Cont>
+optional<chrono::high_resolution_clock::duration> run_sort(span<const string> data) {
+    if ()
+    Cont cont;
+    populate(cont, data);
+    auto duration = measure([&cont, &data]() {
+        if constexpr ( requires { cont.sort(); } ) {
+            cont.sort();
+        } else {
+            sort(cont.begin(), cont.end());
+        }
+    });
+}
+
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
@@ -61,24 +80,15 @@ int main(int argc, const char** argv) {
     }
 
     {
-        list<const char*> cont;
-        auto duration = measure([&cont, &data]() {
-            populate(cont, data);
-        });
+        auto duration = run_populate<list<const char*>>(data);
     }
 
     {
-        vector<const char*> cont;
-        auto duration = measure([&cont, &data]() {
-            populate(cont, data);
-        });
+        auto duration = run_populate<vector<const char*>>(data);
     }
 
     {
-        set<const char*> cont;
-        auto duration = measure([&cont, &data]() {
-            populate(cont, data);
-        });
+        auto duration = run_populate<set<const char*>>(data);
     }
 
     {
