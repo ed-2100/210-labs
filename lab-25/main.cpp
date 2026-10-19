@@ -14,8 +14,10 @@
 
 using namespace std;
 
+using Duration = chrono::high_resolution_clock::duration;
+
 template <typename F>
-chrono::high_resolution_clock::duration measure(F f) {
+Duration measure(F f) {
     auto begin = chrono::high_resolution_clock::now();
     f();
     auto end = chrono::high_resolution_clock::now();
@@ -40,7 +42,7 @@ void populate(Cont& cont, span<const string> data) {
 }
 
 template<typename Cont>
-chrono::high_resolution_clock::duration run_populate(span<const string> data) {
+optional<Duration> run_populate(span<const string> data) {
     Cont cont;
     return measure([&cont, &data]() {
         populate(cont, data);
@@ -48,7 +50,7 @@ chrono::high_resolution_clock::duration run_populate(span<const string> data) {
 }
 
 template<typename Cont>
-optional<chrono::high_resolution_clock::duration> run_sort(span<const string> data) {
+optional<Duration> run_sort(span<const string> data) {
     Cont cont;
 
     if constexpr ( requires { cont.sort(); } ) {
@@ -67,7 +69,7 @@ optional<chrono::high_resolution_clock::duration> run_sort(span<const string> da
 }
 
 template<typename Cont>
-optional<chrono::high_resolution_clock::duration> run_insert(span<const string> data) {
+optional<Duration> run_insert(span<const string> data) {
     Cont cont;
     populate(cont, data);
     return measure([&cont, &data]() {
@@ -76,7 +78,15 @@ optional<chrono::high_resolution_clock::duration> run_insert(span<const string> 
     });
 }
 
-
+template<typename Cont>
+optional<Duration> run_remove(span<const string> data) {
+    Cont cont;
+    populate(cont, data);
+    return measure([&cont, &data]() {
+        auto it = next(cont.begin(), cont.size() >> 1 - 1);
+        cont.erase(it);
+    });
+}
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
@@ -134,29 +144,14 @@ int main(int argc, const char** argv) {
     }
 
     {
-        list<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.erase(it);
-        });
+        auto duration = run_remove<list<const char*>>(data);
     }
 
     {
-        vector<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.erase(it);
-        });
+        auto duration = run_remove<vector<const char*>>(data);
     }
 
     {
-        set<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            auto it = next(cont.begin(), cont.size() >> 1 - 1);
-            cont.erase(it);
-        });
+        auto duration = run_remove<set<const char*>>(data);
     }
 }
