@@ -58,7 +58,7 @@ struct Sort {
     const char* name = "SORTING";
 
     template<typename Cont>
-    optional<Duration> run(span<const string> data) {
+    static optional<Duration> run(span<const string> data) {
         Cont cont;
 
         if constexpr ( requires { cont.sort(); } ) {
@@ -81,7 +81,7 @@ struct Insert {
     const char* name = "INSERTING";
 
     template<typename Cont>
-    optional<Duration> run(span<const string> data) {
+    static optional<Duration> run(span<const string> data) {
         Cont cont;
         populate(cont, data);
         return measure([&cont, &data]() {
@@ -95,7 +95,7 @@ struct Remove {
     const char* name = "REMOVING";
 
     template<typename Cont>
-    optional<Duration> run_remove(span<const string> data) {
+    static optional<Duration> run_remove(span<const string> data) {
         Cont cont;
         populate(cont, data);
         return measure([&cont, &data]() {
@@ -114,8 +114,12 @@ struct Container {
 
 template <typename ... Op, typename... Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
+    auto run_row = [&data]<typename C>(Container(C)) {
+        return { Op::template run<C>(data)... };
+    };
+
     array<array<optional<Duration>, sizeof...(Op)>, sizeof...(Cont)> results {
-        { Op::template run<Cont>(data)... }...
+        run_row<Cont>(cont)...
     };
 }
 
