@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <ranges>
 #include <concepts>
+#include <algorithm>
 
 using namespace std;
 
@@ -48,17 +49,18 @@ chrono::high_resolution_clock::duration run_populate(span<const string> data) {
 
 template<typename Cont>
 optional<chrono::high_resolution_clock::duration> run_sort(span<const string> data) {
-    if constexpr (sortable<ranges::iterator_t<Cont>>) {
-        Cont cont;
-        populate(cont, data);
-        return measure([&cont, &data]() {
-            if constexpr ( requires { cont.sort(); } ) {
-                cont.sort();
-            } else {
-                sort(cont.begin(), cont.end());
-            }
-        });
+    Cont cont;
 
+    if constexpr ( requires { cont.sort(); } ) {
+        cont.sort();
+    populate(cont, data);
+    return measure([&cont, &data]() {
+    });
+    } else if constexpr ( requires { ranges::sort(cont); } ) {
+        ranges::sort(cont);
+    populate(cont, data);
+    return measure([&cont, &data]() {
+    });
     }
 }
 
@@ -95,23 +97,15 @@ int main(int argc, const char** argv) {
     }
 
     {
-        list<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            cont.sort();
-        });
+        auto duration = run_sort<list<const char*>>(data);
     }
 
     {
-        vector<const char*> cont;
-        populate(cont, data);
-        auto duration = measure([&cont, &data]() {
-            sort(cont.begin(), cont.end());
-        });
+        auto duration = run_sort<vector<const char*>>(data);
     }
 
     {
-        // No sort for set.
+        auto duration = run_sort<set<const char*>>(data);
     }
 
     {
