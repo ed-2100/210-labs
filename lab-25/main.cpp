@@ -104,6 +104,18 @@ struct Remove {
     }
 };
 
+template <typename Cont>
+struct Container {
+    using type = Cont;
+
+    const char* name;
+};
+
+template <typename ... Op, typename... Cont>
+void benchmark(span<const string> data, Container<Cont> ... cont) {
+    
+}
+
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
 // | ====== | ======= | ======= | ========= | ======== |
 // | list   |         |         |           |          |
@@ -122,6 +134,8 @@ int main(int argc, const char** argv) {
     while (getline(file, buf)) {
         data.push_back(buf);
     }
+
+    benchmark<Populate, Sort, Insert, Remove>(data, Container<list<const char*>>{"list"});
 
     {
         auto duration = run_populate<list<const char*>>(data);
