@@ -22,10 +22,23 @@ chrono::high_resolution_clock::duration measure(F f) {
 
 template <typename Cont>
 void populate(Cont& cont, span<const string> data) {
-    if constexpr (requires { cont.reserve(data.size()); }) {
+    if constexpr ( requires { cont.reserve(data.size()); } ) {
         cont.reserve(data.size());
     }
 
+    for (const string& s : data) {
+        if constexpr ( requires {cont.push_back(s.c_str());} ) {
+            cont.push_back(s.c_str());
+        } else if constexpr ( requires { cont.insert(s.c_str()); } ) {
+            cont.insert(s.c_str());
+        } else {
+            static_assert(false, "That ain't it.");
+        }
+    }
+}
+
+optional<chrono::high_resolution_clock::duration> run_populate(span<const string> data) {
+    
 }
 
 // | NAME   | READING | SORTING | INSERTING | REMOVING |
@@ -50,36 +63,27 @@ int main(int argc, const char** argv) {
     {
         list<const char*> cont;
         auto duration = measure([&cont, &data]() {
-            for (const auto& i : data) {
-                cont.push_back(i.c_str());
-            }
+            populate(cont, data);
         });
     }
 
     {
         vector<const char*> cont;
         auto duration = measure([&cont, &data]() {
-            cont.reserve(data.size());
-            for (const auto& i : data) {
-                cont.push_back(i.c_str());
-            }
+            populate(cont, data);
         });
     }
 
     {
         set<const char*> cont;
         auto duration = measure([&cont, &data]() {
-            for (const auto& i : data) {
-                cont.insert(i.c_str());
-            }
+            populate(cont, data);
         });
     }
 
     {
         list<const char*> cont;
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             cont.sort();
         });
@@ -87,9 +91,7 @@ int main(int argc, const char** argv) {
 
     {
         vector<const char*> cont;
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             sort(cont.begin(), cont.end());
         });
@@ -101,9 +103,7 @@ int main(int argc, const char** argv) {
 
     {
         list<const char*> cont;
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.insert(it, "TESTCODE");
@@ -113,9 +113,7 @@ int main(int argc, const char** argv) {
     {
         vector<const char*> cont;
         cont.reserve(data.size());
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.insert(it, "TESTCODE");
@@ -124,10 +122,7 @@ int main(int argc, const char** argv) {
 
     {
         set<const char*> cont;
-        cont.insert_range(data | views::transform([](const string& i){ return i.c_str(); }));
-        for (const auto& i : data) {
-            cont.insert(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.insert(it, "TESTCODE");
@@ -136,9 +131,7 @@ int main(int argc, const char** argv) {
 
     {
         list<const char*> cont;
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.erase(it);
@@ -147,10 +140,7 @@ int main(int argc, const char** argv) {
 
     {
         vector<const char*> cont;
-        cont.reserve(data.size());
-        for (const auto& i : data) {
-            cont.push_back(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             auto it = next(cont.begin(), cont.size() >> 1 - 1);
             cont.erase(it);
@@ -159,10 +149,7 @@ int main(int argc, const char** argv) {
 
     {
         set<const char*> cont;
-        cont.insert_range(data | views::transform([](const string& i){ return i.c_str(); }));
-        for (const auto& i : data) {
-            cont.insert(i.c_str());
-        }
+        populate(cont, data);
         auto duration = measure([&cont, &data]() {
             for (const auto& i : data) {
                 cont.erase(i.c_str());
