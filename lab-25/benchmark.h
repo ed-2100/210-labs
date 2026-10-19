@@ -102,16 +102,22 @@ struct Insert {
 
         Cont cont;
         populate(cont, data);
-        return measure([&]() {
-            if constexpr ( require { cont.insert(item); }) {
-                // Set
+        if constexpr ( requires { cont.reserve(data.size() + 1); } ) {
+            cont.reserve(data.size() + 1);
+        }
+
+        if constexpr ( requires { cont.insert(item); }) {
+            // Set
+            return measure([&]() {
                 cont.insert(item);
-            } else {
-                // List, Vector
-                auto it = next(cont.begin(), (cont.size() - 1) >> 1);
+            });
+        } else {
+            // List, Vector
+            auto it = next(cont.begin(), cont.size() / 2);
+            return measure([&]() {
                 cont.insert(it, item);
-            }
-        });
+            });
+        }
     }
 };
 
@@ -125,8 +131,8 @@ struct Remove {
     static Result run(span<const string> data) {
         Cont cont;
         populate(cont, data);
+        auto it = next(cont.begin(), cont.size() / 2);
         return measure([&]() {
-            auto it = next(cont.begin(), (cont.size() - 1) >> 1);
             cont.erase(it);
         });
     }
