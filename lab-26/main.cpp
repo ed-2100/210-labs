@@ -24,7 +24,8 @@ using namespace std;
 // The `main` function.
 //
 // Benchmarks operations of various containers and subsequently
-// displays the results to `stdout`.
+// displays the results to `stdout`. Uses multiple samples to
+// improve the consistency the results.
 //
 // ### Arguments
 //
