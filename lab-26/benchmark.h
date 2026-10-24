@@ -164,8 +164,13 @@ struct Container {
 //  - `...cont`: An arbitrary number of `Containers` to be benchmarked.
 template <typename ...Op, typename ...Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
-    auto run_item = [&]<typename O, typename C>(O, C) -> optional<array<Result, 15>> {
-        array<Duration, 15> temp = {};
+    using DurationArray = array<Duration, 15>;
+    using Results = optional<DurationArray>;
+    using Row = array<Results, sizeof...(Cont)>;
+    using Matrix = array<Row, sizeof...(Op)>;
+
+    auto run_item = [&]<typename O, typename C>() -> Results {
+        DurationArray temp = {};
 
         for (Duration& sample : temp) {
             if (auto t = O::template run<C>(data)) {
@@ -175,15 +180,15 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
             }
         }
 
-        return  temp;
+        return temp;
     };
 
-    auto run_row = [&]<typename O>(O) -> array<Result, sizeof...(Cont)> {
+    auto run_row = [&]<typename O>() -> Row {
         // Expand over ...Cont
         return array{ run_item.template operator()<O, Cont>()... };
     };
 
-    array<array<optional<array<Duration, 15>>, sizeof...(Cont)>, sizeof...(Op)> results {
+    Matrix results {
         // Expand over ...Op
         run_row.template operator()<Op>()...
     };
@@ -198,7 +203,8 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
     // Rows
     for (const auto& [name, row] : views::zip(names, results)) {
         cout << "| " << setw(15) << name << " |";
-        for (const Result& result : row) {
+        for (const Results& results : row) {
+            
             cout << setw(12) << result.transform(
                 [](const Duration& d) {
                     return std::chrono::nanoseconds(d).count();
