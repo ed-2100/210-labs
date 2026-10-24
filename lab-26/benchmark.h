@@ -202,7 +202,13 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         return array{ run_item<O, Cont>(data)... };
     };
 
-    // Expands to:
+    // A 3D array that holds the results of benchmarking each
+    // operation on each container `N_SAMPLES` times;
+    //
+    // This variable, from outer array to inner array is:
+    // operation -> container -> supports operation? -> samples
+    //
+    // `Matrix` expands to:
     // std::array<
     //     std::array<
     //         std::optional<std::array<
@@ -211,15 +217,12 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
     //         sizeof...(Cont)>,
     //     sizeof...(Op)
     // >
-    //
-    // This array, in row major order is
-    // operation -> container -> supports operation? -> sample
     Matrix results {
         // Expand over ...Op
         run_row.template operator()<Op>()...
     };
 
-    cout << "Number of simulations: " << N_SAMPLES;
+    cout << "Number of simulations: " << N_SAMPLES << '\n';
 
     // Header row
     cout << setw(10) << "Operation";
