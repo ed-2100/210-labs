@@ -54,5 +54,5 @@ int main(int argc, const char** argv) {
         Container<set<const char*>>{"set"}
     );
 
-    return EXIT_SUCCESS; // :)
+    return EXIT_SUCCESS;
 }
