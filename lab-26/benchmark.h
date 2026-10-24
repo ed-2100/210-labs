@@ -164,12 +164,22 @@ struct Container {
 //  - `...cont`: An arbitrary number of `Containers` to be benchmarked.
 template <typename ...Op, typename ...Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
-    auto run_row = [&]<typename O>(O) -> array<Result, sizeof...(Cont)> {
-        // Expand over ...Cont
-        return array{ O::template run<Cont>(data)... };
+    auto run_item = [&]<O, >() -> array<Result, 15> {
+        array<Duration, 15> temp = {};
+
+        for (Duration& sample : temp) {
+            sample = O::run<Cont>(data);.
+        }
+
+        return move(temp);
     };
 
-    array<array<Result, sizeof...(Cont)>, sizeof...(Op)> results {
+    auto run_row = [&]<typename O>(O) -> array<Result, sizeof...(Cont)> {
+        // Expand over ...Cont
+        return array{ run_item<O, Cont>... };
+    };
+
+    array<array<optional<array<Duration, 15>>, sizeof...(Cont)>, sizeof...(Op)> results {
         // Expand over ...Op
         run_row(Op{})...
     };
