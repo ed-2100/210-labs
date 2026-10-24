@@ -173,11 +173,13 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         DurationArray temp = {};
 
         for (Duration& sample : temp) {
-            if (auto t = O::template run<C>(data)) {
-                sample = *t;
-            } else {
+            auto result = O::template run<C>(data);
+
+            if (!result) {
                 return nullopt;
             }
+            
+            sample = *result;
         }
 
         return temp;
@@ -204,12 +206,20 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
     for (const auto& [name, row] : views::zip(names, results)) {
         cout << "| " << setw(15) << name << " |";
         for (const Results& results : row) {
-            
-            cout << setw(12) << result.transform(
-                [](const Duration& d) {
-                    return std::chrono::nanoseconds(d).count();
+            cout << setw(12);
+
+            cout << results.transform([](const Results& results){
+                auto sum = Duration{};
+
+                const DurationArray& durations = *results;
+                for (const Duration& d : durations) {
+                    sum += d;
                 }
-            ).value_or(-1) << " ns |";
+                
+                cout << chrono::nanoseconds(sum / durations.size()).count();}).value_or(-1);
+
+
+            cout << " ns |";
         }
 
         cout << '\n';
