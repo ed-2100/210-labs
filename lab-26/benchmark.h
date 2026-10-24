@@ -13,7 +13,7 @@ constexpr size_t N_SAMPLES = 15;
 
 using Duration = chrono::high_resolution_clock::duration;
 using Result = optional<Duration>;
-using DurationArray = array<Duration, 15>;
+using DurationArray = array<Duration, N_SAMPLES>;
 using Results = optional<DurationArray>;
 
 // Simple wrapper for measuring the execution time of an operation.
