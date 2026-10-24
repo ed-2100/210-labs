@@ -58,7 +58,7 @@ void populate(Cont& cont, span<const string> data) {
 //
 // Benchmarks populating a container.
 struct Populate {
-    static constexpr const char* name = "READING";
+    static constexpr const char* name = "Read";
 
     template<typename Cont>
     static Result run(span<const string> data) {
@@ -73,7 +73,7 @@ struct Populate {
 //
 // Benchmarks a container's sorting function, if present.
 struct Sort {
-    static constexpr const char* name = "SORTING";
+    static constexpr const char* name = "Sort";
 
     template<typename Cont>
     static Result run(span<const string> data) {
@@ -102,7 +102,7 @@ struct Sort {
 //
 // Benchmarks adding an item to a container.
 struct Insert {
-    static constexpr const char* name = "INSERTING";
+    static constexpr const char* name = "Insert";
 
     template<typename Cont>
     static Result run(span<const string> data) {
@@ -133,7 +133,7 @@ struct Insert {
 //
 // Benchmarks a container's removal operation.
 struct Remove {
-    static constexpr const char* name = "REMOVING";
+    static constexpr const char* name = "Delete";
 
     template<typename Cont>
     static Result run(span<const string> data) {
@@ -208,18 +208,18 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
     };
 
     // Header column
-    cout << "| " << setw(15) << ' ' << " |";
-    ((cout << setw(15) << cont.name << " |"), ...);
-    cout << "\n";
+    cout << setw(10) << "Operation";
+    ((cout << setw(10) << cont.name), ...);
+    cout << '\n';
 
     array names { Op::name... };
     
     // Rows
     for (const auto& [name, row] : views::zip(names, results)) {
-        cout << "| " << setw(15) << name << " |";
+        cout << setw(10) << name;
 
         for (const Results& results : row) {
-            cout << setw(12);
+            cout << setw(10);
 
             cout << results.transform(
                 [](const DurationArray& durations) {
@@ -232,8 +232,6 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
                     return chrono::nanoseconds(sum / durations.size()).count();
                 }
             ).value_or(-1);
-
-            cout << " ns |";
         }
 
         cout << '\n';

@@ -49,9 +49,9 @@ int main(int argc, const char** argv) {
 
     benchmark<Populate, Sort, Insert, Remove>(
         data,
-        Container<list<const char*>>{"list"},
-        Container<vector<const char*>>{"vector"},
-        Container<set<const char*>>{"set"}
+        Container<list<const char*>>{"List"},
+        Container<vector<const char*>>{"Vector"},
+        Container<set<const char*>>{"Set"}
     );
 
     return EXIT_SUCCESS;
