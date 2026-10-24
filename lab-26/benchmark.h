@@ -202,12 +202,26 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         return array{ run_item<O, Cont>(data)... };
     };
 
+    // Expands to:
+    // std::array<
+    //     std::array<
+    //         std::optional<std::array<
+    //             Duration,
+    //             N_SAMPLES>>,
+    //         sizeof...(Cont)>,
+    //     sizeof...(Op)
+    // >
+    //
+    // This array, in row major order is
+    // operation -> container -> supports operation? -> sample
     Matrix results {
         // Expand over ...Op
         run_row.template operator()<Op>()...
     };
 
-    // Header column
+    cout << "Number of simulations: " << N_SAMPLES;
+
+    // Header row
     cout << setw(10) << "Operation";
     ((cout << setw(10) << cont.name), ...);
     cout << '\n';
@@ -219,9 +233,7 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         cout << setw(10) << name;
 
         for (const Results& results : row) {
-            cout << setw(10);
-
-            cout << results.transform(
+            cout << setw(10) << results.transform(
                 [](const DurationArray& durations) {
                     auto sum = Duration{};
 
