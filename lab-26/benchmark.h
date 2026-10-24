@@ -9,8 +9,12 @@
 
 using namespace std;
 
+constexpr size_t N_SAMPLES = 15;
+
 using Duration = chrono::high_resolution_clock::duration;
 using Result = optional<Duration>;
+using DurationArray = array<Duration, 15>;
+using Results = optional<DurationArray>;
 
 // Simple wrapper for measuring the execution time of an operation.
 //
@@ -153,6 +157,32 @@ struct Container {
     const char* name;
 };
 
+// Helper function for taking multiple samples a given
+// operation + container combination.
+//
+// ### Returns
+//
+// An optional array containing the duration of each sample.
+//
+// If the operation isn't timeable with the provided container,
+// `nullopt` is returned.
+template <typename O, typename C>
+auto run_item(span<const string> data) -> Results {
+    DurationArray temp = {};
+
+    for (Duration& sample : temp) {
+        auto result = O::template run<C>(data);
+
+        if (!result) {
+            return nullopt;
+        }
+        
+        sample = *result;
+    }
+
+    return temp;
+};
+
 // Benchmarks a list of different containers using the provided string data
 // and displays the results to `stdout`.
 //
@@ -164,30 +194,12 @@ struct Container {
 //  - `...cont`: An arbitrary number of `Containers` to be benchmarked.
 template <typename ...Op, typename ...Cont>
 void benchmark(span<const string> data, Container<Cont> ... cont) {
-    using DurationArray = array<Duration, 15>;
-    using Results = optional<DurationArray>;
     using Row = array<Results, sizeof...(Cont)>;
     using Matrix = array<Row, sizeof...(Op)>;
 
-    auto run_item = [&]<typename O, typename C>() -> Results {
-        DurationArray temp = {};
-
-        for (Duration& sample : temp) {
-            auto result = O::template run<C>(data);
-
-            if (!result) {
-                return nullopt;
-            }
-            
-            sample = *result;
-        }
-
-        return temp;
-    };
-
     auto run_row = [&]<typename O>() -> Row {
         // Expand over ...Cont
-        return array{ run_item.template operator()<O, Cont>()... };
+        return array{ run_item<O, Cont>(data)... };
     };
 
     Matrix results {
@@ -205,19 +217,21 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
     // Rows
     for (const auto& [name, row] : views::zip(names, results)) {
         cout << "| " << setw(15) << name << " |";
+
         for (const Results& results : row) {
             cout << setw(12);
 
-            cout << results.transform([](const Results& results){
-                auto sum = Duration{};
+            cout << results.transform(
+                [](const DurationArray& durations) {
+                    auto sum = Duration{};
 
-                const DurationArray& durations = *results;
-                for (const Duration& d : durations) {
-                    sum += d;
+                    for (const Duration& d : durations) {
+                        sum += d;
+                    }
+                    
+                    return chrono::nanoseconds(sum / durations.size()).count();
                 }
-                
-                cout << chrono::nanoseconds(sum / durations.size()).count();}).value_or(-1);
-
+            ).value_or(-1);
 
             cout << " ns |";
         }
