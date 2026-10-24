@@ -42,12 +42,12 @@ void populate(Cont& cont, span<const string> data) {
     }
 
     for (const string& s : data) {
-        if constexpr ( requires {cont.push_back(s.c_str());} ) {
+        if constexpr ( requires {cont.push_back(s);} ) {
             // List / Vector
-            cont.push_back(s.c_str());
-        } else if constexpr ( requires { cont.insert(s.c_str()); } ) {
+            cont.push_back(s);
+        } else if constexpr ( requires { cont.insert(s); } ) {
             // Set
-            cont.insert(s.c_str());
+            cont.insert(s);
         } else {
             static_assert(false, "That ain't it.");
         }
@@ -106,7 +106,7 @@ struct Insert {
 
     template<typename Cont>
     static Result run(span<const string> data) {
-        constexpr const char item[] = "TESTCODE";
+        string item = "TESTCODE";
 
         Cont cont;
         populate(cont, data);
@@ -114,16 +114,16 @@ struct Insert {
             cont.reserve(data.size() + 1);
         }
 
-        if constexpr ( requires { cont.insert(item); }) {
+        if constexpr ( requires { cont.insert(move(item)); }) {
             // Set
             return measure([&]() {
-                cont.insert(item);
+                cont.insert(move(item));
             });
         } else {
             // List, Vector
             auto it = next(cont.begin(), cont.size() / 2);
             return measure([&]() {
-                cont.insert(it, item);
+                cont.insert(it, move(item));
             });
         }
     }
