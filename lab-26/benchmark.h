@@ -202,10 +202,12 @@ void benchmark(span<const string> data, Container<Cont> ... cont) {
         return array{ run_item<O, Cont>(data)... };
     };
 
-    // A 3D array that holds the results of benchmarking each
-    // operation on each container `N_SAMPLES` times;
+    // A 3D array that holds results of benchmarking each
+    // operation on each container. If a benchmark is not possible
+    // then the `optional` will be set to `nullopt`. Otherwise, a number
+    // of samples, determined by `N_SAMPLES` will be present.
     //
-    // This variable, from outer array to inner array is:
+    // This array, from outside to inside, is:
     // operation -> container -> supports operation? -> samples
     //
     // `Matrix` expands to:
