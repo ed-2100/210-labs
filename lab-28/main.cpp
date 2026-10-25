@@ -66,13 +66,16 @@ int main(int argc, const char** argv) {
     while (sel != 12) {
         sel = main_menu();
 
+        println();
+
         switch (sel) {
             case 1: append_goat(trip, gen, names, colors); break;
             case 6: remove_goat(trip); break;
             case 9: 
-                println("\nCurrent trip:");
+                println("Current trip:");
                 display_trip(trip);
                 break;
+            case 12: println("Exiting..."); break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -166,7 +169,7 @@ int choose_number(int min, int max) {
     int choice;
 
     while (true) {
-        print("\nChoice --> ");
+        print("Choice --> ");
 
         string buf;
         getline(cin, buf);
@@ -216,18 +219,65 @@ void append_goat(
     span<const string> names,
     span<const string> colors
 ) {
-    println("\nAPPEND A GOAT");
+    println("APPEND A GOAT");
 
     trip.push_back(random_goat(gen, names, colors));
 
-    println("\nGoat appended. New trip size: {}", trip.size());
+    println("Goat appended. New trip size: {}", trip.size());
 }
 
-void remove_goat(list<Goat> &trip) {
-    println("\nREMOVE A GOAT");
+template <typename Rng>
+void prepend_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
+    println("PREPEND A GOAT");
+
+    trip.push_back(random_goat(gen, names, colors));
+
+    println("Goat prepended. New trip size: {}", trip.size());
+}
+
+void remove_first_goat(list<Goat>& trip) {
+    println("REMOVE FIRST GOAT");
+
+    trip.pop_front();
+
+    println("First goat deleted. New trip size: {}", trip.size());
+}
+
+void remove_last_goat(list<Goat>& trip) {
+    println("REMOVE LAST GOAT");
+
+    trip.pop_back();
+
+    println("Last goat deleted. New trip size: {}", trip.size());
+}
+
+template <typename Rng>
+void insert_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
+    println("INSERT A GOAT");
+
+    println("Where to insert?");
+    display_trip(trip)
+
+    trip.insert(next(trip.begin(), choose_number(1, trip.size()) - 1), )
+
+    println("Goat appended. New trip size: {}", trip.size());
+}
+
+void remove_goat(list<Goat>& trip) {
+    println("REMOVE A GOAT");
 
     int index = select_goat(trip);
     trip.erase(next(trip.begin(), index - 1));
 
-    println("\nGoat deleted. New trip size: {}", trip.size());
+    println("Goat deleted. New trip size: {}", trip.size());
 }
