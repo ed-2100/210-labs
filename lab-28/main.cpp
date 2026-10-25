@@ -88,7 +88,7 @@ bool parse_int(const string& src, int& dst);
 // The chosen number.
 int choose_number(int min, int max);
 
-// Promp
+// Prompts the user to select a goat from a trip.
 //
 // ### Arguments
 //
@@ -96,17 +96,18 @@ int choose_number(int min, int max);
 //
 // ### Returns
 //
-//
+// The number of the goat chosen.
 int select_goat(list<Goat> trip);
 
-// 
+// Prints a list of trip operations and prompts the user to make a decision.
 //
 // ### Returns
 //
+// The number of the operation decided upon.
 //
 int main_menu();
 
-// 
+// Prepends a goat to the provided trip and displays helpful logs.
 //
 // ### Arguments
 //
@@ -122,7 +123,7 @@ void prepend_goat(
     span<const string> colors
 );
 
-// 
+// Appends a goat to the provided trip and displays helpful logs.
 //
 // ### Arguments
 //
@@ -138,7 +139,8 @@ void append_goat(
     span<const string> colors
 );
 
-// 
+// Inserts a goat in the provided trip at a user-selected
+// location while displaying helpful logs.
 //
 // ### Arguments
 //
@@ -154,56 +156,59 @@ void insert_goat(
     span<const string> colors
 );
 
-// 
+// Removes the first goat in the provided trip and displays helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void remove_first_goat(list<Goat>& trip);
 
-// 
+// Removes the last goat in the provided trip and displays helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void remove_last_goat(list<Goat>& trip);
 
-// 
+// Removes a user-selected goat from the provided
+// trip while displaying helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void remove_goat(list<Goat>& trip);
 
-// 
+// Sorts the provided trip while displaying helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void sort_trip(list<Goat>& trip);
 
-// 
+// Finds a user-specified goat by name and reports the goat's details to the user.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void find_goat(list<Goat>& trip);
 
-// 
+// Reverses the provided trip while displaying helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void reverse_trip(list<Goat>& trip);
 
-// 
+// Clears the provided trip and displays helpful logs.
 //
 // ### Arguments
 //
 // - `trip`: The trip
 void clear_trip(list<Goat>& trip);
 
-// 
+// The `main` function.
+//
+// Demonstrates STL 
 //
 // ### Arguments
 //
