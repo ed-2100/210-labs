@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     // declarations
-    map<string, tuple<uint8_t, string, string>> villagerColors;
+    map<string, tuple<int, string, string>> villagerColors;
 
     // insert elements into the map
     // note how the right-hand side of the assignment are the vector elements
