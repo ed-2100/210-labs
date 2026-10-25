@@ -5,6 +5,8 @@
 
 using namespace std;
 
+bool parse_int(string_view src, int& dst)
+
 int main() {
     // declarations
     map<string, tuple<int, string, string>> villagerColors;
@@ -85,19 +87,25 @@ int main() {
             continue;
         }
 
-        if (choice < 1 || choice ) {
-            cout << "Out of range.\n";
-            continue;
-        }
-
         switch (choice) {
             case 1:
-                cout << ""
+                cout << "By how much? ";
+
+                cin >> buf;
             case 2:
 
-            case
+            case 3:
+
+            case 4:
+                cout << "Exiting...\n";
+                should_exit = true;
+                break;
+            default:
+                cout << "Invalid choice.\n";
         }
     }
+
+    cout << "\nGoodbye.\n";
 
     return 0; // :)
 }
