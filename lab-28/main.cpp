@@ -12,8 +12,19 @@
 
 using namespace std;
 
+// Reads the lines of a file and returns them in a `vector`.
+//
+// ### Arguments
+//
+//  - `file`: The path of the file to be read.
+//
+// ### Returns
 vector<string> read_lines(const filesystem::path& file);
 
+// Reads the lines of a file and returns them in a `vector`.
+//
+// ### Arguments
+//
 template <typename Rng>
 Goat random_goat(
     Rng& gen,
