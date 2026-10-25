@@ -47,32 +47,15 @@ int main(int argc, const char** argv) {
     auto names_file = exe_dir / "names.txt";
     auto colors_file = exe_dir / "colors.txt";
 
-    vector<string> names;
-    {
-        ifstream f(names_file);
-
-
-        string buf;
-        while (getline(f, buf)) {
-            names.push_back(move(buf));
-        }
-    }
-
-    vector<string> colors;
-    {
-        ifstream f(colors_file);
-
-        string buf;
-        while (getline(f, buf)) {
-            names.push_back(move(buf));
-        }
-    }
-
+    vector<string> names = read_lines(names_file);
+    vector<string> colors = read_lines(colors_file);
     list<Goat> trip = random_trip(gen, names, colors);
 
     // Goat Manager 3001 Engine
-    int sel = main_menu();
+    int sel;
     while (sel != 4) {
+        sel = main_menu();
+
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -90,9 +73,7 @@ int main(int argc, const char** argv) {
                 cout << "Invalid selection.\n";
                 break;
         }
-        sel = main_menu();
     }
-    
 
     return 0;
 }
@@ -187,7 +168,6 @@ list<Goat> random_trip(Rng& gen, span<const string> names, span<const string> co
     int tripSize = dist_size(gen);
 
     for (size_t i = 0; i < tripSize; i++) {
-
         trip.push_back(random_goat(gen));
     }
     
