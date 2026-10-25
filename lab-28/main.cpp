@@ -29,8 +29,17 @@ void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
 
+template <typename Rng>
+Goat random_goat(Rng& gen);
+
+template <typename Rng>
+list<Goat> populate_goats(names, Rng& gen) {
+
+}
+
 int main(int argc, const char** argv) {
-    srand(time(0));
+    auto current_time = chrono::steady_clock::now();
+    mt19937 gen(current_time.time_since_epoch().count());
 
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
@@ -57,33 +66,25 @@ int main(int argc, const char** argv) {
             names.push_back(move(buf));
         }
     }
-    
-    auto current_time = chrono::steady_clock::now();
-    mt19937 gen(current_time.time_since_epoch().count());
 
-    uniform_int_distribution<size_t> dist_size(8, 15);
-    uniform_int_distribution<size_t> dist_names(0, names.size() - 1);
-    uniform_int_distribution<uint32_t> dist_age(1, 20);
-    uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
-
-    // create & populate a trip of Goats using std::list of random size 8-15
-    int tripSize = dist_size(gen);
     list<Goat> trip;
-    for (size_t i = 0; i < tripSize; i++) {
-        trip.push_back({
-            names[dist_names(gen)],
-            dist_age(gen),
-            colors[dist_colors(gen)]
-        });
+    {
+        uniform_int_distribution<size_t> dist_size(8, 15);
+        int tripSize = dist_size(gen);
+
+        for (size_t i = 0; i < tripSize; i++) {
+
+            trip.push_back(random_goat(gen));
+        }
     }
-    
+
     // Goat Manager 3001 Engine
     int sel = main_menu();
     while (sel != 4) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
-                add_goat(trip, names, colors);
+                add_goat(trip, gen, names, colors);
                 break;
             case 2:    
                 cout << "Removing a goat.\n";
@@ -129,13 +130,10 @@ void delete_goat(list<Goat> &trip) {
     cout << "Goat deleted. New trip size: " << trip.size() << endl;
 }
 
-void add_goat(list<Goat> &trip, span<const string> names, span<const string> colors) {
+template <typename Rng>
+void add_goat(list<Goat> &trip, Rng& gen, span<const string> names, span<const string> colors) {
     cout << "ADD A GOAT\n";
-    int age = rand() % MAX_AGE;
-    string nm = names[rand() % names.size()];
-    string cl = colors[rand() % colors.size()];
-    Goat tmp(nm, age, cl);
-    trip.push_back(tmp);
+    trip.push_back(random_goat(gen));
     cout << "Goat added. New trip size: " << trip.size() << endl;
 }
 
@@ -160,4 +158,17 @@ int select_goat(list<Goat> trp) {
         cin >> input;
     }
     return input;
+}
+
+template <typename Rng>
+Goat random_goat(Rng& gen) {
+    uniform_int_distribution<size_t> dist_names(0, names.size() - 1);
+    uniform_int_distribution<uint32_t> dist_age(1, 20);
+    uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
+
+    Goat goat {
+        names[dist_names(gen)],
+        dist_age(gen),
+        colors[dist_colors(gen)]
+    };
 }
