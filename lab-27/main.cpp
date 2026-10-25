@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 27 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <map>
 #include <vector>
@@ -17,6 +21,14 @@ using namespace std;
 // A boolean, which is true on successful parsing.
 bool parse_int(const string& src, int& dst);
 
+// The `main` function.
+//
+// Demonstrates the standard library's `map` implementation
+// using a villager book-keeping scenario.
+//
+// ### Returns
+//
+// A signed integer value, where `0` means success.
 int main() {
     // declarations
     map<string, tuple<int, string, string>> villagers;
@@ -60,7 +72,20 @@ int main() {
         }
 
         switch (choice) {
-            case 1: case 2: {
+            case 1: {
+                cout << "Villager name: ";
+                string name;
+                cin >> name;
+                "Friendship level: "
+                "Species: "
+                "Catchphrase: "
+                " added."
+                break;
+            }
+            case 2: {
+                break;
+            }
+            case 3: case 4: {
                 cout << "Of who? ";
                 cin >> buf;
 
@@ -83,7 +108,7 @@ int main() {
 
                 int temp = get<0>(villager);
                 
-                if (choice == 1) {
+                if (choice == 3) {
                     temp += d_friendship;
                 } else {
                     temp -= d_friendship;
@@ -100,7 +125,7 @@ int main() {
 
                 break;
             }
-            case 3: {
+            case 5: {
                 cout << "Who? ";
                 cin >> buf;
 
@@ -120,7 +145,7 @@ int main() {
 
                 break;
             }
-            case 4: {
+            case 6: {
                 cout << "\nExiting...\n";
                 should_exit = true;
                 break;
