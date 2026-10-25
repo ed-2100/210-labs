@@ -15,7 +15,7 @@ void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
 
-int main() {
+int main(int argc, const char** argv) {
     srand(time(0));
     bool again;
 
