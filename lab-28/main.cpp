@@ -68,6 +68,8 @@ void remove_last_goat(list<Goat>& trip);
 
 void remove_goat(list<Goat>& trip);
 
+void sort_trip(list<Goat>& trip);
+
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -95,6 +97,7 @@ int main(int argc, const char** argv) {
             case 4: remove_first_goat(trip); break;
             case 5: remove_last_goat(trip); break;
             case 6: remove_goat(trip); break;
+            case 7: sort_trip(trip); break;
             case 9: 
                 println("Current trip:");
                 display_trip(trip);
@@ -226,7 +229,7 @@ int main_menu() {
             "[4 ] Remove first goat         (3rd new)\n"
             "[5 ] Remove last goat          (4th new)\n"
             "[6 ] Remove custom goat        (pre-existing)\n"
-            // "[7 ] Sort goats                (5th new)\n"
+            "[7 ] Sort trip                 (5th new)\n"
             // "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
             // "[10] Reverse goats             (7th new)\n"
@@ -310,4 +313,12 @@ void remove_goat(list<Goat>& trip) {
     trip.erase(next(trip.begin(), index - 1));
 
     println("Goat deleted. New trip size: {}", trip.size());
+}
+
+void sort_trip(list<Goat>& trip) {
+    println("SORT TRIP");
+
+    trip.sort();
+
+    println("Trip sorted.");
 }
