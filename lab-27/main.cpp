@@ -133,7 +133,7 @@ int main() {
 
     cout << "\nGoodbye.\n\n";
 
-    return 0;
+    return 0; // :)
 }
 
 bool parse_int(const string& src, int& dst) {
