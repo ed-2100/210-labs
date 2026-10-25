@@ -39,12 +39,32 @@ int select_goat(list<Goat> trip);
 int main_menu();
 
 template <typename Rng>
+void prepend_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+);
+
+template <typename Rng>
 void append_goat(
     list<Goat> &trip,
     Rng& gen,
     span<const string> names,
     span<const string> colors
 );
+
+// template <typename Rng>
+// void insert_goat(
+//     list<Goat>& trip,
+//     Rng& gen,
+//     span<const string> names,
+//     span<const string> colors
+// );
+
+// void remove_first_goat(list<Goat>& trip);
+
+// void remove_last_goat(list<Goat>& trip);
 
 void remove_goat(list<Goat>& trip);
 
@@ -69,7 +89,11 @@ int main(int argc, const char** argv) {
         println();
 
         switch (sel) {
-            case 1: append_goat(trip, gen, names, colors); break;
+            case 1: prepend_goat(trip, gen, names, colors); break;
+            case 2: append_goat(trip, gen, names, colors); break;
+            // case 3: insert_goat(trip, gen, names, colors); break;
+            // case 4: remove_first_goat(trip); break;
+            // case 5: remove_last_goat(trip); break;
             case 6: remove_goat(trip); break;
             case 9: 
                 println("Current trip:");
@@ -196,12 +220,12 @@ int select_goat(list<Goat> trip) {
 
 int main_menu() {
     cout << "*** GOAT MANAGER 3001 ***\n"
-            "[1 ] Append goat               (pre-existing)\n"
-            // "[2 ] Prepend goat              (1st new)\n"
-            // "[3 ] Remove first goat         (2nd new)\n"
-            // "[4 ] Remove last goat          (3rd new)\n"
-            // "[5 ] Insert goat before number (4th new)\n"
-            "[6 ] Remove goat at number     (pre-existing)\n"
+            "[1 ] Prepend goat              (1st new)\n"
+            "[2 ] Append goat               (pre-existing)\n"
+            // "[3 ] Insert goat before goat   (4th new)\n"
+            // "[4 ] Remove first goat         (2nd new)\n"
+            // "[5 ] Remove last goat          (3rd new)\n"
+            "[6 ] Remove custom goat        (pre-existing)\n"
             // "[7 ] Sort goats                (5th new)\n"
             // "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
@@ -210,6 +234,20 @@ int main_menu() {
             "[12] Exit                      (pre-existing)\n";
 
     return choose_number(1, 12);
+}
+
+template <typename Rng>
+void prepend_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
+    println("PREPEND A GOAT");
+
+    trip.push_front(random_goat(gen, names, colors));
+
+    println("Goat prepended. New trip size: {}", trip.size());
 }
 
 template <typename Rng>
@@ -226,52 +264,44 @@ void append_goat(
     println("Goat appended. New trip size: {}", trip.size());
 }
 
-template <typename Rng>
-void prepend_goat(
-    list<Goat>& trip,
-    Rng& gen,
-    span<const string> names,
-    span<const string> colors
-) {
-    println("PREPEND A GOAT");
+// template <typename Rng>
+// void insert_goat(
+//     list<Goat>& trip,
+//     Rng& gen,
+//     span<const string> names,
+//     span<const string> colors
+// ) {
+//     println("INSERT A GOAT");
 
-    trip.push_back(random_goat(gen, names, colors));
+//     println("Decide where to insert:");
+//     display_trip(trip)
 
-    println("Goat prepended. New trip size: {}", trip.size());
-}
+//     trip.insert(
+//         next(
+//             trip.begin(),
+//             choose_number(1, trip.size()) - 1
+//         ),
+//         random_goat(gen, names, colors)
+//     );
 
-void remove_first_goat(list<Goat>& trip) {
-    println("REMOVE FIRST GOAT");
+//     println("Goat appended. New trip size: {}", trip.size());
+// }
 
-    trip.pop_front();
+// void remove_first_goat(list<Goat>& trip) {
+//     println("REMOVE FIRST GOAT");
 
-    println("First goat deleted. New trip size: {}", trip.size());
-}
+//     trip.pop_front();
 
-void remove_last_goat(list<Goat>& trip) {
-    println("REMOVE LAST GOAT");
+//     println("First goat deleted. New trip size: {}", trip.size());
+// }
 
-    trip.pop_back();
+// void remove_last_goat(list<Goat>& trip) {
+//     println("REMOVE LAST GOAT");
 
-    println("Last goat deleted. New trip size: {}", trip.size());
-}
+//     trip.pop_back();
 
-template <typename Rng>
-void insert_goat(
-    list<Goat>& trip,
-    Rng& gen,
-    span<const string> names,
-    span<const string> colors
-) {
-    println("INSERT A GOAT");
-
-    println("Where to insert?");
-    display_trip(trip)
-
-    trip.insert(next(trip.begin(), choose_number(1, trip.size()) - 1), )
-
-    println("Goat appended. New trip size: {}", trip.size());
-}
+//     println("Last goat deleted. New trip size: {}", trip.size());
+// }
 
 void remove_goat(list<Goat>& trip) {
     println("REMOVE A GOAT");
