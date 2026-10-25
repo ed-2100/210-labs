@@ -5,19 +5,17 @@
 
 using namespace std;
 
-bool parse_int(const string& src, int& dst) {
-    try {
-        dst = stoi(src);
-    } catch (invalid_argument) {
-        cout << "Not a valid number.\n";
-        return false;
-    } catch (out_of_range) {
-        cout << "Definitely out of range.\n";
-        return false;
-    }
-
-    return true;
-}
+// Helper for parsing integers from user input.
+//
+// ### Arguments
+//
+//  - `src`: Input to parse
+//  - `dst`: Variable to store the parsed input in
+//
+// ### Returns
+//
+// A boolean, which is true on successful parsing.
+bool parse_int(const string& src, int& dst);
 
 int main() {
     // declarations
@@ -75,15 +73,15 @@ int main() {
     bool should_exit = false;
 
     while (!should_exit) {
-        cout << "\nVillagers and their traits:" << endl;
+        cout << "\nVillager details:" << endl;
         for (auto pair : villagers) {
             cout << pair.first << ":\n";
 
             auto& stats = pair.second;
 
-            cout << "    Friendship Level: " << get<0>(stats) << '\n';
-            cout << "    Species: " << get<1>(stats) << '\n';
-            cout << "    Catchphrase: " << get<2>(stats) << '\n';
+            cout << "    Friendship Level: " << get<0>(stats) << '\n'
+                 << "    Species: " << get<1>(stats) << '\n'
+                 << "    Catchphrase: " << get<2>(stats) << '\n';
         }
 
         cout << "\n"
@@ -106,7 +104,8 @@ int main() {
                 auto it = villagers.find(buf);
 
                 if (it == villagers.end()) {
-                    cout << "That villager doesn't exist.\n";
+                    cout << "\nThat villager doesn't exist.\n";
+                    break;
                 }
 
                 auto& villager = it->second;
@@ -128,13 +127,13 @@ int main() {
                 }
 
                 if (d_friendship < 0 || temp < 0 || temp > 10) {
-                    cout << "Out of range.\n";
+                    cout << "\nOut of range.\n";
                     break;
                 }
 
                 get<0>(villager) = temp;
 
-                cout << "Friendship adjusted.\n";
+                cout << "\nFriendship adjusted.\n";
 
                 break;
             }
@@ -144,26 +143,27 @@ int main() {
 
                 auto it = villagers.find(buf);
                 if (it == villagers.end()) {
-                    cout << endl << buf << " not found." << endl;
-                    cout << ""
+                    cout << '\n' << buf << " not found.\n";
+                    break;
                 }
-                    cout << "\nFound " << buf << "'s traits:\n";
+            
+                cout << "\nFound " << buf << "'s details:\n";
 
-                    auto& stats = it->second;
+                auto& stats = it->second;
 
-                    cout << "    Friendship Level: " << get<0>(stats) << '\n';
-                    cout << "    Species: " << get<1>(stats) << '\n';
-                    cout << "    Catchphrase: " << get<2>(stats) << '\n';
+                cout << "    Friendship Level: " << get<0>(stats) << '\n'
+                     << "    Species: " << get<1>(stats) << '\n'
+                     << "    Catchphrase: " << get<2>(stats) << '\n';
 
                 break;
             }
             case 4: {
-                cout << "Exiting...\n";
+                cout << "\nExiting...\n";
                 should_exit = true;
                 break;
             }
             default: {
-                cout << "Invalid choice.\n";
+                cout << "\nInvalid choice.\n";
             }
         }
     }
@@ -171,4 +171,18 @@ int main() {
     cout << "\nGoodbye.\n\n";
 
     return 0;
+}
+
+bool parse_int(const string& src, int& dst) {
+    try {
+        dst = stoi(src);
+    } catch (invalid_argument) {
+        cout << "\nNot a valid number.\n";
+        return false;
+    } catch (out_of_range) {
+        cout << "\nDefinitely out of range.\n";
+        return false;
+    }
+
+    return true;
 }
