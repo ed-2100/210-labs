@@ -44,7 +44,6 @@ int main() {
             "========================\n";
 
     string buf;
-    int choice;
     bool should_exit = false;
 
     while (!should_exit) {
@@ -60,13 +59,17 @@ int main() {
         }
 
         cout << "\n"
-                "1. Increase Friendship\n"
-                "2. Decrease Friendship\n"
-                "3. Search for Villager\n"
-                "4. Exit\n"
+        1. Add Villager
+2. Delete Villager
+                "3. Increase Friendship\n"
+                "4. Decrease Friendship\n"
+                "5. Search for Villager\n"
+                "6. Exit\n"
                 "Enter choice: ";
         
         cin >> buf;
+
+        int choice;
         if (!parse_int(buf, choice)) {
             continue;
         }
@@ -74,16 +77,13 @@ int main() {
         switch (choice) {
             case 1: {
                 string name;
-                int friendship_level;
-                string species;
-                string catchphrase;
-
                 cout << "Villager name: ";
                 cin >> name;
 
                 cout << "Friendship level: ";
                 cin >> buf;
 
+                int friendship_level;
                 if (!parse_int(buf, friendship_level)) {
                     break;
                 }
@@ -93,21 +93,23 @@ int main() {
                     break;
                 }
 
+                string species;
                 cout << "Species: ";
                 cin >> species;
 
+                string catchphrase;
                 cout << "Catchphrase: ";
                 cin >> catchphrase;
 
-                villagers.insert({
-                    name, {
+                villagers.insert_or_assign(
+                    name, tuple {
                         friendship_level,
                         move(species),
                         move(catchphrase)
                     }
-                });
+                );
 
-                cout << name << " added.";
+                cout << name << " added.\n";
 
                 break;
             }
@@ -116,10 +118,11 @@ int main() {
                 cin >> buf;
 
                 if (villagers.erase(buf) == 0) {
-                    cout << buf << " does not exist.";
+                    cout << '\n' << buf << " does not exist.\n";
+                    break;
                 }
 
-                cout << " "
+                cout << buf << " deleted.\n";
 
                 break;
             }
@@ -144,20 +147,20 @@ int main() {
                     break;
                 }
 
-                int temp = get<0>(villager);
+                int friendship_level = get<0>(villager);
                 
                 if (choice == 3) {
-                    temp += d_friendship;
+                    friendship_level += d_friendship;
                 } else {
-                    temp -= d_friendship;
+                    friendship_level -= d_friendship;
                 }
 
-                if (d_friendship < 0 || temp < 0 || temp > 10) {
+                if (d_friendship < 0 || friendship_level < 0 || friendship_level > 10) {
                     cout << "\nOut of range.\n";
                     break;
                 }
 
-                get<0>(villager) = temp;
+                get<0>(villager) = friendship_level;
 
                 cout << "\nFriendship adjusted.\n";
 
