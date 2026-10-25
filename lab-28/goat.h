@@ -53,14 +53,4 @@ public:
     }
 
     auto operator<=>(const Goat& rhs) const = default;
-
-    void display(int) const {
-        println(
-            "    [{}] {} ({}, {})",
-            i + 1,
-            name,
-            age,
-            color
-        );
-    }
 };
