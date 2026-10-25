@@ -2,23 +2,25 @@
 #include <fstream>
 #include <iomanip>
 #include <list>
+#include <filesystem>
+#include <vector>
 
 #include "goat.h"
 
 using namespace std;
 
-const int SZ_NAMES = 200, SZ_COLORS = 25;
-
-// 1.  Append goat (pre-existing)
-// 2.  Prepend goat (1st new)
-// 3.  Remove first goat (2nd new)
-// 4.  Remove last goat (3rd new)
+// 1.  Append goat               (pre-existing)
+// 2.  Prepend goat              (1st new)
+// 3.  Remove first goat         (2nd new)
+// 4.  Remove last goat          (3rd new)
 // 5.  Insert goat before number (4th new)
-// 6.  Remove goat at number (pre-existing)
-// 7.  Sort goats (5th )
-// 8.  Find goat
-// 9.  List goats
-// 10. Exit
+// 6.  Remove goat at number     (pre-existing)
+// 7.  Sort goats                (5th new)
+// 8.  Find goat                 (6th new)
+// 9.  List goats                (pre-existing)
+// 10. Reverse goats             (7th new)
+// 11. Clear goats               (8th new)
+// 12. Exit                      (pre-existing)
 
 int select_goat(list<Goat> trip);
 void delete_goat(list<Goat> &trip);
@@ -30,17 +32,31 @@ int main(int argc, const char** argv) {
     srand(time(0));
     bool again;
 
-    // read & populate arrays for names and colors
-    ifstream fin("names.txt");
-    string names[SZ_NAMES];
-    int i = 0;
-    while (fin >> names[i++]);
-    fin.close();
-    ifstream fin1("colors.txt");
-    string colors[SZ_COLORS];
-    i = 0;
-    while (fin1 >> colors[i++]);
-    fin1.close();
+    auto exe_file = filesystem::path(argv[0]);
+    auto exe_dir = exe_file.parent_path();
+    auto names_file = exe_dir / "names.txt";
+    auto colors_file = exe_dir / "colors.txt";
+
+    vector<string> names;
+    {
+        ifstream f(names_file);
+
+
+        string buf;
+        while (getline(f, buf)) {
+            names.push_back(move(buf));
+        }
+    }
+
+    vector<string> colors;
+    {
+        ifstream f(colors_file);
+
+        string buf;
+        while (getline(f, buf)) {
+            names.push_back(move(buf));
+        }
+    }
 
     // create & populate a trip of Goats using std::list of random size 8-15
     int tripSize = rand() % 8 + 8;
@@ -49,8 +65,8 @@ int main(int argc, const char** argv) {
     string name, color;
     for (int i = 0; i < tripSize; i++) {
         age = rand() % MAX_AGE;  // defined in Goat.h
-        name = names[rand() % SZ_NAMES];
-        color = colors[rand() % SZ_COLORS];
+        name = names[rand() % names.size()];
+        color = colors[rand() % colors.size()];
         Goat tmp(name, age, color);
         trip.push_back(tmp);
     }
@@ -107,11 +123,11 @@ void delete_goat(list<Goat> &trip) {
     cout << "Goat deleted. New trip size: " << trip.size() << endl;
 }
 
-void add_goat(list<Goat> &trip, string nms[], string cls[]) {
+void add_goat(list<Goat> &trip, span<const string> names, span<const string> colors) {
     cout << "ADD A GOAT\n";
     int age = rand() % MAX_AGE;
-    string nm = nms[rand() % SZ_NAMES];
-    string cl = cls[rand() % SZ_COLORS];
+    string nm = names[rand() % names.size()];
+    string cl = colors[rand() % colors.size()];
     Goat tmp(nm, age, cl);
     trip.push_back(tmp);
     cout << "Goat added. New trip size: " << trip.size() << endl;
