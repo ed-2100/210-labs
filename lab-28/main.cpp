@@ -4,6 +4,7 @@
 #include <list>
 #include <filesystem>
 #include <vector>
+#include <random>
 
 #include "goat.h"
 
@@ -30,7 +31,6 @@ int main_menu();
 
 int main(int argc, const char** argv) {
     srand(time(0));
-    bool again;
 
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
@@ -57,18 +57,24 @@ int main(int argc, const char** argv) {
             names.push_back(move(buf));
         }
     }
+    
+    auto current_time = chrono::steady_clock::now();
+    mt19937 gen(current_time.time_since_epoch().count());
+
+    uniform_int_distribution<size_t> dist_size(8, 15);
+    uniform_int_distribution<size_t> dist_names(0, names.size() - 1);
+    uniform_int_distribution<uint32_t> dist_age(1, 20);
+    uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
 
     // create & populate a trip of Goats using std::list of random size 8-15
-    int tripSize = rand() % 8 + 8;
+    int tripSize = dist_size(gen);
     list<Goat> trip;
-    int age;
-    string name, color;
-    for (int i = 0; i < tripSize; i++) {
-        age = rand() % MAX_AGE;  // defined in Goat.h
-        name = names[rand() % names.size()];
-        color = colors[rand() % colors.size()];
-        Goat tmp(name, age, color);
-        trip.push_back(tmp);
+    for (size_t i = 0; i < tripSize; i++) {
+        trip.push_back({
+            names[dist_names(gen)],
+            dist_age(gen),
+            colors[dist_colors(gen)]
+        });
     }
     
     // Goat Manager 3001 Engine
