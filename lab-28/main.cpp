@@ -230,7 +230,7 @@ int main_menu() {
             "[5 ] Remove last goat          (4th new)\n"
             "[6 ] Remove custom goat        (pre-existing)\n"
             "[7 ] Sort trip                 (5th new)\n"
-            // "[8 ] Find goat                 (6th new)\n"
+            "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
             // "[10] Reverse goats             (7th new)\n"
             // "[11] Clear goats               (8th new)\n"
@@ -321,4 +321,10 @@ void sort_trip(list<Goat>& trip) {
     trip.sort();
 
     println("Trip sorted.");
+}
+
+void find_goat(list<Goat>& trip) {
+    println("FIND GOAT");
+
+    
 }
