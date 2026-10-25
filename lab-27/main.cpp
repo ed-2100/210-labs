@@ -76,22 +76,23 @@ int main() {
                 "Enter choice: ";
         
         cin >> buf;
-
-        try {
-            choice = stoi(buf);
-        } catch (invalid_argument) {
-            cout << "Not a valid number.\n";
-            continue;
-        } catch (out_of_range) {
-            cout << "Definitely out of range.\n";
-            continue;
-        }
+        parse_int(buf, choice);
 
         switch (choice) {
             case 1:
-                cout << "By how much? ";
+                cout << "Of who? ";
+                cin 
 
+                cout << "By how much? ";
                 cin >> buf;
+
+                int d_friendship;
+                if (parse_int(buf, d_friendship)) {
+                    cout << '\n';
+                    break;
+                }
+
+                if (d_friendship < 0 || d_friendship + )
             case 2:
 
             case 3:
