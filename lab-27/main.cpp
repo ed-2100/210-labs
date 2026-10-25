@@ -59,15 +59,15 @@ int main() {
         }
 
         cout << "\n"
-        1. Add Villager
-2. Delete Villager
+                "1. Add Villager\n"
+                "2. Delete Villager\n"
                 "3. Increase Friendship\n"
                 "4. Decrease Friendship\n"
                 "5. Search for Villager\n"
                 "6. Exit\n"
                 "Enter choice: ";
         
-        cin >> buf;
+        getline(cin, buf);
 
         int choice;
         if (!parse_int(buf, choice)) {
@@ -78,10 +78,17 @@ int main() {
             case 1: {
                 string name;
                 cout << "Villager name: ";
-                cin >> name;
+                getline(cin, name);
+
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    cout << name << " already exists.\n";
+                    break;
+                }
 
                 cout << "Friendship level: ";
-                cin >> buf;
+                getline(cin, buf);
 
                 int friendship_level;
                 if (!parse_int(buf, friendship_level)) {
@@ -95,19 +102,19 @@ int main() {
 
                 string species;
                 cout << "Species: ";
-                cin >> species;
+                getline(cin, species);
 
                 string catchphrase;
                 cout << "Catchphrase: ";
-                cin >> catchphrase;
+                getline(cin, catchphrase);
 
-                villagers.insert_or_assign(
+                villagers.insert({
                     name, tuple {
                         friendship_level,
                         move(species),
                         move(catchphrase)
                     }
-                );
+                });
 
                 cout << name << " added.\n";
 
@@ -115,7 +122,7 @@ int main() {
             }
             case 2: {
                 cout << "Who? ";
-                cin >> buf;
+                getline(cin, buf);
 
                 if (villagers.erase(buf) == 0) {
                     cout << '\n' << buf << " does not exist.\n";
@@ -128,7 +135,7 @@ int main() {
             }
             case 3: case 4: {
                 cout << "Of who? ";
-                cin >> buf;
+                getline(cin, buf);
 
                 auto it = villagers.find(buf);
 
@@ -140,7 +147,7 @@ int main() {
                 auto& villager = it->second;
 
                 cout << "By how much? ";
-                cin >> buf;
+                getline(cin, buf);
 
                 int d_friendship;
                 if (!parse_int(buf, d_friendship)) {
@@ -168,7 +175,7 @@ int main() {
             }
             case 5: {
                 cout << "Who? ";
-                cin >> buf;
+                getline(cin, buf);
 
                 auto it = villagers.find(buf);
                 if (it == villagers.end()) {
