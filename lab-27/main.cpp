@@ -62,7 +62,42 @@ int main() {
     villagerColors.clear();
     cout << "Size after clear: " << villagerColors.size() << endl;
 
-    
+    string buf;
+    int choice;
+    bool should_exit = false;
+
+    while (!should_exit) {
+        cout << "1. Increase Friendship\n"
+                "2. Decrease Friendship\n"
+                "3. Search for Villager\n"
+                "4. Exit\n"
+                "Enter choice: ";
+        
+        cin >> buf;
+
+        try {
+            choice = stoi(buf);
+        } catch (invalid_argument) {
+            cout << "Not a valid number.\n";
+            continue;
+        } catch (out_of_range) {
+            cout << "Definitely out of range.\n";
+            continue;
+        }
+
+        if (choice < 1 || choice ) {
+            cout << "Out of range.\n";
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                cout << ""
+            case 2:
+
+            case
+        }
+    }
 
     return 0; // :)
 }
