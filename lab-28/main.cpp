@@ -11,8 +11,7 @@
 
 using namespace std;
 
-template <typename File>
-vector<string> read_lines(File&& file);
+vector<string> read_lines(const filesystem::path& file);
 
 template <typename Rng>
 Goat random_goat(
@@ -68,8 +67,8 @@ int main(int argc, const char** argv) {
 
         switch (sel) {
             case 1: append_goat(trip, gen, names, colors); break;
-            case 2: remove_goat(trip); break;
-            case 3: display_trip(trip); break;
+            case 6: remove_goat(trip); break;
+            case 9: display_trip(trip); break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -79,15 +78,13 @@ int main(int argc, const char** argv) {
     return 0;
 }
 
-template <typename File>
-vector<string> read_lines(File&& file) {
+vector<string> read_lines(const filesystem::path& file) {
     vector<string> lines;
 
-    ifstream f(forward<File>(file));
+    ifstream f(file);
 
     if (f.fail()) {
-        f.
-        throw runtime_error("Missing ")
+        throw runtime_error(format("Failed to open {}", file.c_str()));
     }
 
     string buf;
@@ -127,9 +124,7 @@ list<Goat> random_trip(
     int tripSize = dist_size(gen);
 
     for (size_t i = 0; i < tripSize; i++) {
-        println("Test");
         trip.push_back(random_goat(gen, names, colors));
-        println("Test2");
     }
 
     return trip;
@@ -192,16 +187,16 @@ int select_goat(list<Goat> trip) {
 int main_menu() {
     cout << "*** GOAT MANAGER 3001 ***\n"
             "[1 ] Append goat               (pre-existing)\n"
-            "[2 ] Prepend goat              (1st new)\n"
-            "[3 ] Remove first goat         (2nd new)\n"
-            "[4 ] Remove last goat          (3rd new)\n"
-            "[5 ] Insert goat before number (4th new)\n"
+            // "[2 ] Prepend goat              (1st new)\n"
+            // "[3 ] Remove first goat         (2nd new)\n"
+            // "[4 ] Remove last goat          (3rd new)\n"
+            // "[5 ] Insert goat before number (4th new)\n"
             "[6 ] Remove goat at number     (pre-existing)\n"
-            "[7 ] Sort goats                (5th new)\n"
-            "[8 ] Find goat                 (6th new)\n"
-            "[9 ] List goats                (pre-existing)\n"
-            "[10] Reverse goats             (7th new)\n"
-            "[11] Clear goats               (8th new)\n"
+            // "[7 ] Sort goats                (5th new)\n"
+            // "[8 ] Find goat                 (6th new)\n"
+            "[9 ] Display trip              (pre-existing)\n"
+            // "[10] Reverse goats             (7th new)\n"
+            // "[11] Clear goats               (8th new)\n"
             "[12] Exit                      (pre-existing)\n";
 
     return choose_number(1, 12);
@@ -218,14 +213,14 @@ void append_goat(
 
     trip.push_back(random_goat(gen, names, colors));
 
-    println("Goat appended. New trip size: {}", trip.size());
+    println("\nGoat appended. New trip size: {}", trip.size());
 }
 
 void remove_goat(list<Goat> &trip) {
-    cout << "\nDELETE A GOAT\n";
+    cout << "\nREMOVE A GOAT\n";
 
     int index = select_goat(trip);
     trip.erase(next(trip.begin(), index - 1));
 
-    cout << "Goat deleted. New trip size: " << trip.size() << '\n';
+    cout << "\nGoat deleted. New trip size: " << trip.size() << '\n';
 }
