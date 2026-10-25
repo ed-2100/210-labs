@@ -27,43 +27,6 @@ int main() {
     villagers["Raymond"] = {7, "Duck", "Got any grapes?"};
     villagers.insert({"Marshal", {9, "Human", "My back..."}});
 
-    // // access the map using a range-based for loop
-
-    // // access the map using iterators
-    // cout << "\nVillagers and their traits (iterators):" << endl;
-    // for (auto it = villagers.begin(); it != villagers.end(); ++it) {
-    //     cout << it->first << ":\n";
-
-    //     auto& stats = it->second;
-
-    //     cout << "    Friendship Level: " << get<0>(stats) << '\n';
-    //     cout << "    Species: " << get<1>(stats) << '\n';
-    //     cout << "    Catchphrase: " << get<2>(stats) << '\n';
-    // }
-
-    // // delete an element
-    // villagers.erase("Raymond");
-
-    // // search for an element using .find() to avoid errors
-    // string searchKey = "Audie";
-    // auto it = villagers.find(searchKey);
-    // if (it != villagers.end()) {  // the iterator points to beyond the end of the map
-    //                                    // if searchKey is not found
-    //     cout << "\nFound " << searchKey << "'s traits:\n";
-
-    //     auto& stats = it->second;
-
-    //     cout << "    Friendship Level: " << get<0>(stats) << '\n';
-    //     cout << "    Species: " << get<1>(stats) << '\n';
-    //     cout << "    Catchphrase: " << get<2>(stats) << '\n';
-    // } else
-    //     cout << endl << searchKey << " not found." << endl;
-
-    // // report size, clear, report size again to confirm map operations
-    // cout << "\nSize before clear: " << villagers.size() << endl;
-    // villagers.clear();
-    // cout << "Size after clear: " << villagers.size() << endl;
-
     cout << "========================\n"
             "===== Villager Map =====\n"
             "========================\n";
