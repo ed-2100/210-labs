@@ -21,9 +21,16 @@ using namespace std;
 // ### Returns
 vector<string> read_lines(const filesystem::path& file);
 
-// Reads the lines of a file and returns them in a `vector`.
+// Generates a random goat.
 //
 // ### Arguments
+//
+// - `gen`: Random number generator to be used
+// - `names`: List of names to sample from
+// - `colors`: List of colors to sample from
+//
+// ### Returns
+//
 //
 template <typename Rng>
 Goat random_goat(
@@ -32,6 +39,17 @@ Goat random_goat(
     span<const string> colors
 );
 
+// Generates a random trip full of goats.
+//
+// ### Arguments
+//
+// - `gen`: Random number generator to be used
+// - `names`: List of names to sample from
+// - `colors`: List of colors to sample from
+//
+// ### Returns
+//
+// A trip full of goats.
 template <typename Rng>
 list<Goat> random_trip(
     Rng& gen,
@@ -39,16 +57,63 @@ list<Goat> random_trip(
     span<const string> colors
 );
 
+// Prints a trip to `stdout`.
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void display_trip(const list<Goat>& trip);
 
+// Helper for parsing integers.
+//
+// Prints an error mesage when invalid input is given.
+//
+// ### Arguments
+//
+//
+//
+// ### Returns
+//
+// Returns true when parsing was successful.
 bool parse_int(const string& src, int& dst);
 
+// Prompts the user to pick a number in `[min, max]`.
+//
+// ### Arguments
+//
+//
+//
+// ### Returns
+//
+// The chosen number.
 int choose_number(int min, int max);
 
+// Promp
+//
+// ### Arguments
+//
+// - `trip`: The trip
+//
+// ### Returns
+//
+//
 int select_goat(list<Goat> trip);
 
+// 
+//
+// ### Returns
+//
+//
 int main_menu();
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
+// - `gen`: Random number generator to be used
+// - `names`: List of names to sample from
+// - `colors`: List of colors to sample from
 template <typename Rng>
 void prepend_goat(
     list<Goat>& trip,
@@ -57,6 +122,14 @@ void prepend_goat(
     span<const string> colors
 );
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
+// - `gen`: Random number generator to be used
+// - `names`: List of names to sample from
+// - `colors`: List of colors to sample from
 template <typename Rng>
 void append_goat(
     list<Goat> &trip,
@@ -65,6 +138,14 @@ void append_goat(
     span<const string> colors
 );
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
+// - `gen`: Random number generator to be used
+// - `names`: List of names to sample from
+// - `colors`: List of colors to sample from
 template <typename Rng>
 void insert_goat(
     list<Goat>& trip,
@@ -73,18 +154,64 @@ void insert_goat(
     span<const string> colors
 );
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void remove_first_goat(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void remove_last_goat(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void remove_goat(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void sort_trip(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void find_goat(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
 void reverse_trip(list<Goat>& trip);
 
+// 
+//
+// ### Arguments
+//
+// - `trip`: The trip
+void clear_trip(list<Goat>& trip);
+
+// 
+//
+// ### Arguments
+//
+//
+//
+// ### Returns
+//
+//
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -119,6 +246,7 @@ int main(int argc, const char** argv) {
                 display_trip(trip);
                 break;
             case 10: reverse_trip(trip); break;
+            case 11: clear_trip(trip); break;
             case 12: println("Exiting..."); break;
             default:
                 cout << "Invalid selection.\n";
@@ -250,7 +378,7 @@ int main_menu() {
             "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
             "[10] Reverse trip             (7th new)\n"
-            // "[11] Clear trip               (8th new)\n"
+            "[11] Clear trip               (8th new)\n"
             "[12] Exit                      (pre-existing)\n";
 
     return choose_number(1, 12);
@@ -378,4 +506,12 @@ void reverse_trip(list<Goat>& trip) {
     trip.reverse();
 
     println("Trip reversed.");
+}
+
+void clear_trip(list<Goat>& trip) {
+    println("CLEAR TRIP");
+
+    trip.clear();
+
+    println("Trip cleared.");
 }
