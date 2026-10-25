@@ -99,7 +99,7 @@ int main() {
         }
 
         switch (choice) {
-            case 1, 2: {
+            case 1: case 2: {
                 cout << "Of who? ";
                 cin >> buf;
 
@@ -119,20 +119,42 @@ int main() {
                     break;
                 }
 
+                int temp = get<0>(villager);
+                
+                if (choice == 1) {
+                    temp += d_friendship;
+                } else {
+                    temp -= d_friendship;
+                }
 
-
-                if (d_friendship < 0 || get<0>(villager) + d_friendship > 10) {
+                if (d_friendship < 0 || temp < 0 || temp > 10) {
                     cout << "Out of range.\n";
                     break;
                 }
 
-                get<0>(villager) += d_friendship;
+                get<0>(villager) = temp;
 
                 cout << "Friendship adjusted.\n";
 
                 break;
             }
             case 3: {
+                cout << "Who? ";
+                cin >> buf;
+
+                auto it = villagers.find(buf);
+                if (it == villagers.end()) {
+                    cout << endl << buf << " not found." << endl;
+                    cout << ""
+                }
+                    cout << "\nFound " << buf << "'s traits:\n";
+
+                    auto& stats = it->second;
+
+                    cout << "    Friendship Level: " << get<0>(stats) << '\n';
+                    cout << "    Species: " << get<1>(stats) << '\n';
+                    cout << "    Catchphrase: " << get<2>(stats) << '\n';
+
                 break;
             }
             case 4: {
