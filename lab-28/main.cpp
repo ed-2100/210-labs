@@ -170,14 +170,8 @@ list<Goat> random_trip(
 }
 
 void display_trip(const list<Goat>& trip) {
-    for (auto [i, gt]: views::enumerate(trip)) {
-        println(
-            "    [{}] {} ({}, {})",
-            i + 1,
-            gt.get_name(),
-            gt.get_age(),
-            gt.get_color()
-        );
+    for (auto [i, gt]: trip | views::enumerate) {
+        gt.display();
     }
 }
 
@@ -334,25 +328,19 @@ void find_goat(list<Goat>& trip) {
     string buf;
     getline(cin, buf);
 
-    auto it = find_if(
-        trip.begin(),
-        trip.end(),
-        [&](const Goat& gt) {
+    auto view = trip | std::views::enumerate;
+
+    auto it = ranges::find_if(
+        view,
+        [&](const auto& temp) {
+            const auto& [i, gt] = temp;
             return gt.get_name() == buf;
         }
     );
 
-    if (it != trip.end()) {
-        println(
-            "Found goat [{}]:\n"
-            "    Name: {}\n"
-            "    Age: {}\n"
-            "    Color: {}\n",
-            it - trip.begin(),
-            it->get_name(),
-            it->get_age(),
-            it->get_color()
-        );
+    if (it != view.end()) {
+        const auto& [i, gt] = *it;
+        println("Found goat {}:", i + 1);
     } else {
         println("Goat not found.");
     }
