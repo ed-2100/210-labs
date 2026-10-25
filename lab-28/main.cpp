@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 28 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -81,7 +85,8 @@ bool parse_int(const string& src, int& dst);
 //
 // ### Arguments
 //
-//
+//  - `min`: The minimum allowed number
+//  - `max`: The maximum allowed number
 //
 // ### Returns
 //
@@ -208,15 +213,16 @@ void clear_trip(list<Goat>& trip);
 
 // The `main` function.
 //
-// Demonstrates STL 
+// Demonstrates STL algorithms using a goat trip scenario.
 //
 // ### Arguments
 //
-//
+// - `argc`: The length of `argv`.
+// - `argv`: The arguments passed to the program.
 //
 // ### Returns
 //
-//
+// A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -382,8 +388,8 @@ int main_menu() {
             "[7 ] Sort trip                 (5th new)\n"
             "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
-            "[10] Reverse trip             (7th new)\n"
-            "[11] Clear trip               (8th new)\n"
+            "[10] Reverse trip              (7th new)\n"
+            "[11] Clear trip                (8th new)\n"
             "[12] Exit                      (pre-existing)\n";
 
     return choose_number(1, 12);
