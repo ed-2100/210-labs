@@ -29,7 +29,11 @@ template <typename File>
 vector<string> read_lines(File&& file);
 
 template <typename Rng>
-Goat random_goat(Rng& gen);
+Goat random_goat(
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+);
 
 template <typename Rng>
 list<Goat> random_trip(
@@ -39,6 +43,8 @@ list<Goat> random_trip(
 );
 
 bool parse_int(const string& src, int& dst);
+
+int choose_number(int min, int max);
 
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
@@ -86,36 +92,15 @@ int main_menu() {
             "[11] Clear goats               (8th new)\n"
             "[12] Exit                      (pre-existing)\n";
 
-    int choice;
-    while (true) {
-        cout << "\nChoice --> ";
-
-        string buf;
-        getline(cin, buf);
-
-        if (!parse_int(buf, choice)) continue;
-        
-        if (choice < 1 || choice > 12) {
-            cout << "\nOut of range, try again.\n";
-        }
-
-        break;
-    }
-
-    return choice;
+    return choose_number(1, 12);
 }
 
-int select_goat(list<Goat> trp) {
-    int input;
+int select_goat(list<Goat> trip) {
     cout << "Make a selection:\n";
-    display_trip(trp);
-    cout << "Choice --> ";
-    cin >> input;
-    while (input < 1 or input > trp.size()) {
-        cout << "Invalid choice, again --> ";
-        cin >> input;
-    }
-    return input;
+    
+    display_trip(trip);
+    
+    return choose_number(1, trip.size());
 }
 
 template <typename Rng>
@@ -127,7 +112,7 @@ void append_goat(
 ) {
     cout << "Adding a goat.\n";
     cout << "ADD A GOAT\n";
-    trip.push_back(random_goat(gen));
+    trip.push_back(random_goat(gen, names, colors));
     cout << "Goat added. New trip size: " << trip.size() << endl;
 }
 
@@ -141,10 +126,10 @@ void remove_goat(list<Goat> &trip) {
     cout << "Goat deleted. New trip size: " << trip.size() << endl;
 }
 
-void display_trip(list<Goat> trp) {
+void display_trip(list<Goat> trip) {
     cout << "Displaying goat data.\n";
     int i = 1;
-    for (auto gt: trp)
+    for (auto gt: trip)
         cout << "\t"
              << "[" << i++ << "] "
              << gt.get_name()
@@ -167,7 +152,11 @@ vector<string> read_lines(File&& file) {
 };
 
 template <typename Rng>
-Goat random_goat(Rng& gen) {
+Goat random_goat(
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
     uniform_int_distribution<size_t> dist_names(0, names.size() - 1);
     uniform_int_distribution<uint32_t> dist_age(1, 20);
     uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
@@ -191,7 +180,7 @@ list<Goat> random_trip(
     int tripSize = dist_size(gen);
 
     for (size_t i = 0; i < tripSize; i++) {
-        trip.push_back(random_goat(gen));
+        trip.push_back(random_goat(gen, names, colors));
     }
 
     return trip;
@@ -209,4 +198,22 @@ bool parse_int(const string& src, int& dst) {
     }
 
     return true;
+}
+
+int choose_number(int min, int max) {
+    int choice;
+    while (true) {
+        cout << "\nChoice --> ";
+
+        string buf;
+        getline(cin, buf);
+
+        if (!parse_int(buf, choice)) continue;
+        
+        if (choice < min || choice > max) {
+            cout << "\nOut of range, try again.\n";
+        }
+
+        break;
+    }
 }
