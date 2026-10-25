@@ -29,13 +29,14 @@ void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
 
+template <typename File>
+vector<string> read_lines(File&& file);
+
 template <typename Rng>
 Goat random_goat(Rng& gen);
 
 template <typename Rng>
-list<Goat> populate_goats(names, Rng& gen) {
-
-}
+list<Goat> random_trip(Rng& gen, span<const string> names, span<const string> colors);
 
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
@@ -67,16 +68,7 @@ int main(int argc, const char** argv) {
         }
     }
 
-    list<Goat> trip;
-    {
-        uniform_int_distribution<size_t> dist_size(8, 15);
-        int tripSize = dist_size(gen);
-
-        for (size_t i = 0; i < tripSize; i++) {
-
-            trip.push_back(random_goat(gen));
-        }
-    }
+    list<Goat> trip = random_trip(gen, names, colors);
 
     // Goat Manager 3001 Engine
     int sel = main_menu();
@@ -160,15 +152,44 @@ int select_goat(list<Goat> trp) {
     return input;
 }
 
+template <typename File>
+vector<string> read_lines(File&& file) {
+    vector<string> lines;
+
+    ifstream f(forward<File>(file));
+
+    string buf;
+    while (getline(f, buf)) {
+        lines.push_back(move(buf));
+    }
+
+    return lines;
+};
+
 template <typename Rng>
 Goat random_goat(Rng& gen) {
     uniform_int_distribution<size_t> dist_names(0, names.size() - 1);
     uniform_int_distribution<uint32_t> dist_age(1, 20);
     uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
 
-    Goat goat {
+    return {
         names[dist_names(gen)],
         dist_age(gen),
         colors[dist_colors(gen)]
     };
+}
+
+template <typename Rng>
+list<Goat> random_trip(Rng& gen, span<const string> names, span<const string> colors) {
+    list<Goat> trip;
+    
+    uniform_int_distribution<size_t> dist_size(8, 15);
+    int tripSize = dist_size(gen);
+
+    for (size_t i = 0; i < tripSize; i++) {
+
+        trip.push_back(random_goat(gen));
+    }
+    
+    return trip;
 }
