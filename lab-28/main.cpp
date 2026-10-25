@@ -10,22 +10,18 @@
 
 using namespace std;
 
-// 1.  Append goat               (pre-existing)
-// 2.  Prepend goat              (1st new)
-// 3.  Remove first goat         (2nd new)
-// 4.  Remove last goat          (3rd new)
-// 5.  Insert goat before number (4th new)
-// 6.  Remove goat at number     (pre-existing)
-// 7.  Sort goats                (5th new)
-// 8.  Find goat                 (6th new)
-// 9.  List goats                (pre-existing)
-// 10. Reverse goats             (7th new)
-// 11. Clear goats               (8th new)
-// 12. Exit                      (pre-existing)
-
 int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string [], string []);
+
+template <typename Rng>
+void append_goat(
+    list<Goat> &trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+);
+
+void remove_goat(list<Goat> &trip);
+
 void display_trip(list<Goat> trip);
 int main_menu();
 
@@ -36,7 +32,11 @@ template <typename Rng>
 Goat random_goat(Rng& gen);
 
 template <typename Rng>
-list<Goat> random_trip(Rng& gen, span<const string> names, span<const string> colors);
+list<Goat> random_trip(
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+);
 
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
@@ -57,18 +57,9 @@ int main(int argc, const char** argv) {
         sel = main_menu();
 
         switch (sel) {
-            case 1:
-                cout << "Adding a goat.\n";
-                add_goat(trip, gen, names, colors);
-                break;
-            case 2:    
-                cout << "Removing a goat.\n";
-                delete_goat(trip);
-                break;
-            case 3:    
-                cout << "Displaying goat data.\n";
-                display_trip(trip);
-                break;
+            case 1: append_goat(trip, gen, names, colors); break;
+            case 2: remove_goat(trip); break;
+            case 3: display_trip(trip); break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -80,10 +71,20 @@ int main(int argc, const char** argv) {
 
 int main_menu() {
     cout << "*** GOAT MANAGER 3001 ***\n";
-    cout << "[1] Add a goat\n";
-    cout << "[2] Delete a goat\n";
-    cout << "[3] List goats\n";
-    cout << "[4] Quit\n";
+
+    cout << "[1 ] Append goat               (pre-existing)\n"
+         << "[2 ] Prepend goat              (1st new)\n"
+         << "[3 ] Remove first goat         (2nd new)\n"
+         << "[4 ] Remove last goat          (3rd new)\n"
+         << "[5 ] Insert goat before number (4th new)\n"
+         << "[6 ] Remove goat at number     (pre-existing)\n"
+         << "[7 ] Sort goats                (5th new)\n"
+         << "[8 ] Find goat                 (6th new)\n"
+         << "[9 ] List goats                (pre-existing)\n"
+         << "[10] Reverse goats             (7th new)\n"
+         << "[11] Clear goats               (8th new)\n"
+         << "[12] Exit                      (pre-existing)\n";
+
     cout << "Choice --> ";
     int choice;
     cin >> choice;
@@ -92,32 +93,6 @@ int main_menu() {
         cin >> choice;
     }
     return choice;
-}
-
-void delete_goat(list<Goat> &trip) {
-    cout << "DELETE A GOAT\n";
-    int index = select_goat(trip);
-    auto it = trip.begin();
-    advance(it, index-1);
-    trip.erase(it);
-    cout << "Goat deleted. New trip size: " << trip.size() << endl;
-}
-
-template <typename Rng>
-void add_goat(list<Goat> &trip, Rng& gen, span<const string> names, span<const string> colors) {
-    cout << "ADD A GOAT\n";
-    trip.push_back(random_goat(gen));
-    cout << "Goat added. New trip size: " << trip.size() << endl;
-}
-
-void display_trip(list<Goat> trp) {
-    int i = 1;
-    for (auto gt: trp)
-        cout << "\t" 
-             << "[" << i++ << "] "
-             << gt.get_name() 
-             << " (" << gt.get_age() 
-             << ", " << gt.get_color() << ")\n";
 }
 
 int select_goat(list<Goat> trp) {
@@ -131,6 +106,40 @@ int select_goat(list<Goat> trp) {
         cin >> input;
     }
     return input;
+}
+
+template <typename Rng>
+void append_goat(
+    list<Goat> &trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
+    cout << "Adding a goat.\n";
+    cout << "ADD A GOAT\n";
+    trip.push_back(random_goat(gen));
+    cout << "Goat added. New trip size: " << trip.size() << endl;
+}
+
+void remove_goat(list<Goat> &trip) {
+    cout << "Removing a goat.\n";
+    cout << "DELETE A GOAT\n";
+    int index = select_goat(trip);
+    auto it = trip.begin();
+    advance(it, index-1);
+    trip.erase(it);
+    cout << "Goat deleted. New trip size: " << trip.size() << endl;
+}
+
+void display_trip(list<Goat> trp) {
+    cout << "Displaying goat data.\n";
+    int i = 1;
+    for (auto gt: trp)
+        cout << "\t"
+             << "[" << i++ << "] "
+             << gt.get_name()
+             << " (" << gt.get_age()
+             << ", " << gt.get_color() << ")\n";
 }
 
 template <typename File>
@@ -161,15 +170,19 @@ Goat random_goat(Rng& gen) {
 }
 
 template <typename Rng>
-list<Goat> random_trip(Rng& gen, span<const string> names, span<const string> colors) {
+list<Goat> random_trip(
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
     list<Goat> trip;
-    
+
     uniform_int_distribution<size_t> dist_size(8, 15);
     int tripSize = dist_size(gen);
 
     for (size_t i = 0; i < tripSize; i++) {
         trip.push_back(random_goat(gen));
     }
-    
+
     return trip;
 }
