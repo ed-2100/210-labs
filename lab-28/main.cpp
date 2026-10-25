@@ -54,13 +54,13 @@ void append_goat(
     span<const string> colors
 );
 
-// template <typename Rng>
-// void insert_goat(
-//     list<Goat>& trip,
-//     Rng& gen,
-//     span<const string> names,
-//     span<const string> colors
-// );
+template <typename Rng>
+void insert_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+);
 
 // void remove_first_goat(list<Goat>& trip);
 
@@ -91,7 +91,7 @@ int main(int argc, const char** argv) {
         switch (sel) {
             case 1: prepend_goat(trip, gen, names, colors); break;
             case 2: append_goat(trip, gen, names, colors); break;
-            // case 3: insert_goat(trip, gen, names, colors); break;
+            case 3: insert_goat(trip, gen, names, colors); break;
             // case 4: remove_first_goat(trip); break;
             // case 5: remove_last_goat(trip); break;
             case 6: remove_goat(trip); break;
@@ -222,7 +222,7 @@ int main_menu() {
     cout << "*** GOAT MANAGER 3001 ***\n"
             "[1 ] Prepend goat              (1st new)\n"
             "[2 ] Append goat               (pre-existing)\n"
-            // "[3 ] Insert goat before goat   (4th new)\n"
+            "[3 ] Insert goat before goat   (4th new)\n"
             // "[4 ] Remove first goat         (2nd new)\n"
             // "[5 ] Remove last goat          (3rd new)\n"
             "[6 ] Remove custom goat        (pre-existing)\n"
@@ -264,28 +264,28 @@ void append_goat(
     println("Goat appended. New trip size: {}", trip.size());
 }
 
-// template <typename Rng>
-// void insert_goat(
-//     list<Goat>& trip,
-//     Rng& gen,
-//     span<const string> names,
-//     span<const string> colors
-// ) {
-//     println("INSERT A GOAT");
+template <typename Rng>
+void insert_goat(
+    list<Goat>& trip,
+    Rng& gen,
+    span<const string> names,
+    span<const string> colors
+) {
+    println("INSERT A GOAT");
 
-//     println("Decide where to insert:");
-//     display_trip(trip)
+    println("Decide where to insert:");
+    display_trip(trip);
 
-//     trip.insert(
-//         next(
-//             trip.begin(),
-//             choose_number(1, trip.size()) - 1
-//         ),
-//         random_goat(gen, names, colors)
-//     );
+    trip.insert(
+        next(
+            trip.begin(),
+            choose_number(1, trip.size()) - 1
+        ),
+        random_goat(gen, names, colors)
+    );
 
-//     println("Goat appended. New trip size: {}", trip.size());
-// }
+    println("Goat appended. New trip size: {}", trip.size());
+}
 
 // void remove_first_goat(list<Goat>& trip) {
 //     println("REMOVE FIRST GOAT");
