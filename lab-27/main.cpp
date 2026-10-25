@@ -80,10 +80,8 @@ int main() {
                 cout << "Villager name: ";
                 getline(cin, name);
 
-                auto it = villagers.find(name);
-
-                if (it != villagers.end()) {
-                    cout << name << " already exists.\n";
+                if (villagers.find(name) != villagers.end()) {
+                    cout << '\n' << name << " already exists.\n";
                     break;
                 }
 
@@ -116,7 +114,7 @@ int main() {
                     }
                 });
 
-                cout << name << " added.\n";
+                cout << '\n' << name << " added.\n";
 
                 break;
             }
@@ -129,7 +127,7 @@ int main() {
                     break;
                 }
 
-                cout << buf << " deleted.\n";
+                cout << '\n' << buf << " deleted.\n";
 
                 break;
             }
@@ -194,7 +192,7 @@ int main() {
                 break;
             }
             case 6: {
-                cout << "\nExiting...\n";
+                cout << "\nExiting...\n\n";
                 should_exit = true;
                 break;
             }
@@ -203,8 +201,6 @@ int main() {
             }
         }
     }
-
-    cout << "\nGoodbye.\n\n";
 
     return 0; // :)
 }
