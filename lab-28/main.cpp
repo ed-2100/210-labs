@@ -85,6 +85,11 @@ vector<string> read_lines(File&& file) {
 
     ifstream f(forward<File>(file));
 
+    if (f.fail()) {
+        f.
+        throw runtime_error("Missing ")
+    }
+
     string buf;
     while (getline(f, buf)) {
         lines.push_back(move(buf));
@@ -103,11 +108,11 @@ Goat random_goat(
     uniform_int_distribution<uint32_t> dist_age(1, 20);
     uniform_int_distribution<size_t> dist_colors(0, colors.size() - 1);
 
-    return {
+    return Goat(
         names[dist_names(gen)],
         dist_age(gen),
         colors[dist_colors(gen)]
-    };
+    );
 }
 
 template <typename Rng>
@@ -122,7 +127,9 @@ list<Goat> random_trip(
     int tripSize = dist_size(gen);
 
     for (size_t i = 0; i < tripSize; i++) {
+        println("Test");
         trip.push_back(random_goat(gen, names, colors));
+        println("Test2");
     }
 
     return trip;
