@@ -64,7 +64,7 @@ void insert_goat(
 
 void remove_first_goat(list<Goat>& trip);
 
-// void remove_last_goat(list<Goat>& trip);
+void remove_last_goat(list<Goat>& trip);
 
 void remove_goat(list<Goat>& trip);
 
@@ -93,7 +93,7 @@ int main(int argc, const char** argv) {
             case 2: append_goat(trip, gen, names, colors); break;
             case 3: insert_goat(trip, gen, names, colors); break;
             case 4: remove_first_goat(trip); break;
-            // case 5: remove_last_goat(trip); break;
+            case 5: remove_last_goat(trip); break;
             case 6: remove_goat(trip); break;
             case 9: 
                 println("Current trip:");
@@ -224,7 +224,7 @@ int main_menu() {
             "[2 ] Append goat               (pre-existing)\n"
             "[3 ] Insert goat before goat   (2nd new)\n"
             "[4 ] Remove first goat         (3rd new)\n"
-            // "[5 ] Remove last goat          (4th new)\n"
+            "[5 ] Remove last goat          (4th new)\n"
             "[6 ] Remove custom goat        (pre-existing)\n"
             // "[7 ] Sort goats                (5th new)\n"
             // "[8 ] Find goat                 (6th new)\n"
@@ -295,13 +295,13 @@ void remove_first_goat(list<Goat>& trip) {
     println("First goat deleted. New trip size: {}", trip.size());
 }
 
-// void remove_last_goat(list<Goat>& trip) {
-//     println("REMOVE LAST GOAT");
+void remove_last_goat(list<Goat>& trip) {
+    println("REMOVE LAST GOAT");
 
-//     trip.pop_back();
+    trip.pop_back();
 
-//     println("Last goat deleted. New trip size: {}", trip.size());
-// }
+    println("Last goat deleted. New trip size: {}", trip.size());
+}
 
 void remove_goat(list<Goat>& trip) {
     println("REMOVE A GOAT");
