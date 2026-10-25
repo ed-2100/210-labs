@@ -73,16 +73,54 @@ int main() {
 
         switch (choice) {
             case 1: {
-                cout << "Villager name: ";
                 string name;
+                int friendship_level;
+                string species;
+                string catchphrase;
+
+                cout << "Villager name: ";
                 cin >> name;
-                "Friendship level: "
-                "Species: "
-                "Catchphrase: "
-                " added."
+
+                cout << "Friendship level: ";
+                cin >> buf;
+
+                if (!parse_int(buf, friendship_level)) {
+                    break;
+                }
+
+                if (friendship_level < 0 || friendship_level > 10) {
+                    cout << "\nOut of range.\n";
+                    break;
+                }
+
+                cout << "Species: ";
+                cin >> species;
+
+                cout << "Catchphrase: ";
+                cin >> catchphrase;
+
+                villagers.insert({
+                    name, {
+                        friendship_level,
+                        move(species),
+                        move(catchphrase)
+                    }
+                });
+
+                cout << name << " added.";
+
                 break;
             }
             case 2: {
+                cout << "Who? ";
+                cin >> buf;
+
+                if (villagers.erase(buf) == 0) {
+                    cout << buf << " does not exist.";
+                }
+
+                cout << " "
+
                 break;
             }
             case 3: case 4: {
