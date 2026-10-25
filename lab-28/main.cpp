@@ -70,6 +70,8 @@ void remove_goat(list<Goat>& trip);
 
 void sort_trip(list<Goat>& trip);
 
+void find_goat(list<Goat>& trip);
+
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -98,6 +100,7 @@ int main(int argc, const char** argv) {
             case 5: remove_last_goat(trip); break;
             case 6: remove_goat(trip); break;
             case 7: sort_trip(trip); break;
+            case 8: find_goat(trip); break;
             case 9: 
                 println("Current trip:");
                 display_trip(trip);
@@ -326,5 +329,31 @@ void sort_trip(list<Goat>& trip) {
 void find_goat(list<Goat>& trip) {
     println("FIND GOAT");
 
-    
+    print("Name (case sensitive): ");
+
+    string buf;
+    getline(cin, buf);
+
+    auto it = find_if(
+        trip.begin(),
+        trip.end(),
+        [&](const Goat& gt) {
+            return gt.get_name() == buf;
+        }
+    );
+
+    if (it != trip.end()) {
+        println(
+            "Found goat [{}]:\n"
+            "    Name: {}\n"
+            "    Age: {}\n"
+            "    Color: {}\n",
+            it - trip.begin(),
+            it->get_name(),
+            it->get_age(),
+            it->get_color()
+        );
+    } else {
+        println("Goat not found.");
+    }
 }
