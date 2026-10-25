@@ -62,5 +62,5 @@ int main() {
     villagerColors.clear();
     cout << "Size after clear: " << villagerColors.size() << endl;
 
-    return 0;
+    return 0; // :)
 }
