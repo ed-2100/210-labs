@@ -38,6 +38,8 @@ list<Goat> random_trip(
     span<const string> colors
 );
 
+bool parse_int(const string& src, int& dst);
+
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -70,28 +72,36 @@ int main(int argc, const char** argv) {
 }
 
 int main_menu() {
-    cout << "*** GOAT MANAGER 3001 ***\n";
+    cout << "*** GOAT MANAGER 3001 ***\n"
+            "[1 ] Append goat               (pre-existing)\n"
+            "[2 ] Prepend goat              (1st new)\n"
+            "[3 ] Remove first goat         (2nd new)\n"
+            "[4 ] Remove last goat          (3rd new)\n"
+            "[5 ] Insert goat before number (4th new)\n"
+            "[6 ] Remove goat at number     (pre-existing)\n"
+            "[7 ] Sort goats                (5th new)\n"
+            "[8 ] Find goat                 (6th new)\n"
+            "[9 ] List goats                (pre-existing)\n"
+            "[10] Reverse goats             (7th new)\n"
+            "[11] Clear goats               (8th new)\n"
+            "[12] Exit                      (pre-existing)\n";
 
-    cout << "[1 ] Append goat               (pre-existing)\n"
-         << "[2 ] Prepend goat              (1st new)\n"
-         << "[3 ] Remove first goat         (2nd new)\n"
-         << "[4 ] Remove last goat          (3rd new)\n"
-         << "[5 ] Insert goat before number (4th new)\n"
-         << "[6 ] Remove goat at number     (pre-existing)\n"
-         << "[7 ] Sort goats                (5th new)\n"
-         << "[8 ] Find goat                 (6th new)\n"
-         << "[9 ] List goats                (pre-existing)\n"
-         << "[10] Reverse goats             (7th new)\n"
-         << "[11] Clear goats               (8th new)\n"
-         << "[12] Exit                      (pre-existing)\n";
-
-    cout << "Choice --> ";
     int choice;
-    cin >> choice;
-    while (choice < 1 || choice > 4) {
-        cout << "Invalid, again --> ";
-        cin >> choice;
+    while (true) {
+        cout << "\nChoice --> ";
+
+        string buf;
+        getline(cin, buf);
+
+        if (!parse_int(buf, choice)) continue;
+        
+        if (choice < 1 || choice > 12) {
+            cout << "\nOut of range, try again.\n";
+        }
+
+        break;
     }
+
     return choice;
 }
 
@@ -185,4 +195,18 @@ list<Goat> random_trip(
     }
 
     return trip;
+}
+
+bool parse_int(const string& src, int& dst) {
+    try {
+        dst = stoi(src);
+    } catch (invalid_argument) {
+        cout << "\nNot a valid number.\n";
+        return false;
+    } catch (out_of_range) {
+        cout << "\nDefinitely out of range.\n";
+        return false;
+    }
+
+    return true;
 }
