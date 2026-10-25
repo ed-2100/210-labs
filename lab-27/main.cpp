@@ -66,12 +66,16 @@ int main() {
     // villagers.clear();
     // cout << "Size after clear: " << villagers.size() << endl;
 
+    cout << "========================\n"
+            "===== Villager Map =====\n"
+            "========================\n";
+
     string buf;
     int choice;
     bool should_exit = false;
 
     while (!should_exit) {
-        cout << "Villagers and their traits:" << endl;
+        cout << "\nVillagers and their traits:" << endl;
         for (auto pair : villagers) {
             cout << pair.first << ":\n";
 
@@ -95,11 +99,17 @@ int main() {
         }
 
         switch (choice) {
-            case 1: {
+            case 1, 2: {
                 cout << "Of who? ";
                 cin >> buf;
 
-                auto& villager = villagers[buf];
+                auto it = villagers.find(buf);
+
+                if (it == villagers.end()) {
+                    cout << "That villager doesn't exist.\n";
+                }
+
+                auto& villager = it->second;
 
                 cout << "By how much? ";
                 cin >> buf;
@@ -109,13 +119,17 @@ int main() {
                     break;
                 }
 
+
+
                 if (d_friendship < 0 || get<0>(villager) + d_friendship > 10) {
-                    
+                    cout << "Out of range.\n";
+                    break;
                 }
 
-                break;
-            }
-            case 2: {
+                get<0>(villager) += d_friendship;
+
+                cout << "Friendship adjusted.\n";
+
                 break;
             }
             case 3: {
@@ -132,7 +146,7 @@ int main() {
         }
     }
 
-    cout << "\nGoodbye.\n";
+    cout << "\nGoodbye.\n\n";
 
-    return 0; // :)
+    return 0;
 }
