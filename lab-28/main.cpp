@@ -6,6 +6,7 @@
 #include <vector>
 #include <random>
 #include <print>
+#include <ranges>
 
 #include "goat.h"
 
@@ -62,17 +63,22 @@ int main(int argc, const char** argv) {
 
     // Goat Manager 3001 Engine
     int sel = 0;
-    while (sel != 4) {
+    while (sel != 12) {
         sel = main_menu();
 
         switch (sel) {
             case 1: append_goat(trip, gen, names, colors); break;
             case 6: remove_goat(trip); break;
-            case 9: display_trip(trip); break;
+            case 9: 
+                println("\nCurrent trip:");
+                display_trip(trip);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
         }
+
+        println();
     }
 
     return 0;
@@ -131,24 +137,25 @@ list<Goat> random_trip(
 }
 
 void display_trip(const list<Goat>& trip) {
-    cout << "Displaying goat data.\n";
-    int i = 1;
-    for (auto gt: trip)
-        cout << "\t"
-             << "[" << i++ << "] "
-             << gt.get_name()
-             << " (" << gt.get_age()
-             << ", " << gt.get_color() << ")\n";
+    for (auto [i, gt]: views::enumerate(trip)) {
+        println(
+            "    [{}] {} ({}, {})",
+            i + 1,
+            gt.get_name(),
+            gt.get_age(),
+            gt.get_color()
+        );
+    }
 }
 
 bool parse_int(const string& src, int& dst) {
     try {
         dst = stoi(src);
     } catch (invalid_argument) {
-        cout << "\nNot a valid number.\n";
+        println("\nNot a valid number.");
         return false;
     } catch (out_of_range) {
-        cout << "\nDefinitely out of range.\n";
+        println("\nDefinitely out of range.");
         return false;
     }
 
@@ -159,7 +166,7 @@ int choose_number(int min, int max) {
     int choice;
 
     while (true) {
-        cout << "\nChoice --> ";
+        print("\nChoice --> ");
 
         string buf;
         getline(cin, buf);
@@ -167,7 +174,7 @@ int choose_number(int min, int max) {
         if (!parse_int(buf, choice)) continue;
         
         if (choice < min || choice > max) {
-            cout << "\nOut of range, try again.\n";
+            println("\nOut of range, try again.");
         }
 
         break;
@@ -177,7 +184,7 @@ int choose_number(int min, int max) {
 }
 
 int select_goat(list<Goat> trip) {
-    cout << "Make a selection:\n";
+    println("Make a selection:");
     
     display_trip(trip);
     
@@ -209,7 +216,7 @@ void append_goat(
     span<const string> names,
     span<const string> colors
 ) {
-    cout << "\nAPPEND A GOAT\n";
+    println("\nAPPEND A GOAT");
 
     trip.push_back(random_goat(gen, names, colors));
 
@@ -217,10 +224,10 @@ void append_goat(
 }
 
 void remove_goat(list<Goat> &trip) {
-    cout << "\nREMOVE A GOAT\n";
+    println("\nREMOVE A GOAT");
 
     int index = select_goat(trip);
     trip.erase(next(trip.begin(), index - 1));
 
-    cout << "\nGoat deleted. New trip size: " << trip.size() << '\n';
+    println("\nGoat deleted. New trip size: {}", trip.size());
 }
