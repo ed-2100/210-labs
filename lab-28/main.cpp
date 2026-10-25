@@ -72,6 +72,8 @@ void sort_trip(list<Goat>& trip);
 
 void find_goat(list<Goat>& trip);
 
+void reverse_trip(list<Goat>& trip);
+
 int main(int argc, const char** argv) {
     auto current_time = chrono::steady_clock::now();
     mt19937 gen(current_time.time_since_epoch().count());
@@ -105,6 +107,7 @@ int main(int argc, const char** argv) {
                 println("Current trip:");
                 display_trip(trip);
                 break;
+            case 10: reverse_trip(trip); break;
             case 12: println("Exiting..."); break;
             default:
                 cout << "Invalid selection.\n";
@@ -235,8 +238,8 @@ int main_menu() {
             "[7 ] Sort trip                 (5th new)\n"
             "[8 ] Find goat                 (6th new)\n"
             "[9 ] Display trip              (pre-existing)\n"
-            // "[10] Reverse goats             (7th new)\n"
-            // "[11] Clear goats               (8th new)\n"
+            "[10] Reverse trip             (7th new)\n"
+            // "[11] Clear trip               (8th new)\n"
             "[12] Exit                      (pre-existing)\n";
 
     return choose_number(1, 12);
@@ -356,4 +359,12 @@ void find_goat(list<Goat>& trip) {
     } else {
         println("Goat not found.");
     }
+}
+
+void reverse_trip(list<Goat>& trip) {
+    println("REVERSE TRIP");
+
+    trip.reverse();
+
+    println("Trip reversed.");
 }
