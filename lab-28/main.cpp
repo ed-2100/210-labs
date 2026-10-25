@@ -9,6 +9,17 @@ using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25;
 
+// 1.  Append goat (pre-existing)
+// 2.  Prepend goat (1st new)
+// 3.  Remove first goat (2nd new)
+// 4.  Remove last goat (3rd new)
+// 5.  Insert goat before number (4th new)
+// 6.  Remove goat at number (pre-existing)
+// 7.  Sort goats (5th )
+// 8.  Find goat
+// 9.  List goats
+// 10. Exit
+
 int select_goat(list<Goat> trip);
 void delete_goat(list<Goat> &trip);
 void add_goat(list<Goat> &trip, string [], string []);

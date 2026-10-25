@@ -10,33 +10,6 @@ using namespace std;
 
 const int MAX_AGE = 20;
 
-class Goat {
-private:
-    string name;
-    int age;
-    string color;
-public: 
-    Goat(string n = "", int a = 0, string c = "") : name(n), age(a), color(c) {}
-    
-    void set_name(string n) {
-        name = n;
-    };
-    string get_name() const {
-        return name; };
-    void set_age(int a) {
-        age = a; };
-    int get_age() const {
-        return age; }
-    void set_color(string c) {
-        color = c; }
-    string get_color() const {
-        return color; }
-
-    bool operator< (const Goat &other) const {
-        return name < other.name;
-    }
-};
-
 // The `Goat` class.
 //
 // Holds information on a goat.
@@ -46,11 +19,11 @@ private:
     int age;
     string color;
 public:
-    Goat(string name = "", int age = 0, string color = "") : name() {
-        this->name = std::move(name);
-        this->age = age;
-        this->color = std::move(color);
-    }
+    template<typename String1, typename Int, typename String2>
+    Goat(String1&& n = "", Int&& a = 0, String2&& c = "") :
+        name(std::forward<String1>(n)),
+        age(std::forward<Int>(a)),
+        color(std::forward<String2>(c)) {}
 
     template<typename String>
     void set_name(String&& n) {
