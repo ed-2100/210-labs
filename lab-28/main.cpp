@@ -35,7 +35,7 @@ vector<string> read_lines(const filesystem::path& file);
 //
 // ### Returns
 //
-//
+// The goat.
 template <typename Rng>
 Goat random_goat(
     Rng& gen,
@@ -78,7 +78,7 @@ void display_trip(const list<Goat>& trip);
 //
 // ### Returns
 //
-// Returns true when parsing was successful.
+// True when parsing was successful.
 bool parse_int(const string& src, int& dst);
 
 // Prompts the user to pick a number in `[min, max]`.
