@@ -75,7 +75,7 @@ void display_trip(const list<Goat>& trip);
 // ### Arguments
 //
 //  - `src`: String to parse
-//  - `dst`: 
+//  - `dst`: Destination to store the parsed integer
 //
 // ### Returns
 //
