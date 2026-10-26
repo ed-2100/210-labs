@@ -268,7 +268,7 @@ int main(int argc, const char** argv) {
         println();
     }
 
-    return 0;
+    return 0; // :)
 }
 
 vector<string> read_lines(const filesystem::path& file) {
