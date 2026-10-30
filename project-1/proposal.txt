@@ -1,0 +1,38 @@
+This project shall simulate the processing of compute jobs by
+a 4-node compute cluster.
+
+100 jobs shall be loaded from a file, represented in the following
+format:
+
+42
+123
+7
+...
+
+Where column 0 is the Job ID.
+
+The compute cluster shall be represented as a map containing
+arrays of three lists.
+
+The top-level map holds compute nodes by their respective
+unique IDs.
+
+The array of lists represents three job states:
+ - Pending,
+ - Active, and
+ - Completed
+
+When jobs are first loaded from the file, they are queued
+into the compute nodes using a round-robin approach.
+
+On each time tick, each compute node will finish one compute job,
+provided that there are jobs remaining in their respective Active queue.
+
+When a job completes, it will be moved from Active to Completed.
+
+If there are less than 5 jobs in the Active queue, an
+appropriate amount of jobs will be transfered from Pending
+into Active.
+
+This simulation shall run for 25 time periods, as that is the amount
+necessary for 100 jobs to be processed by 4 compute nodes.
