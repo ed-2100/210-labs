@@ -2,12 +2,11 @@
 #include <filesystem>
 #include <list>
 #include <fstream>
+#include <map>
+#include <array>
 
 // Use namespace std
 using namespace std;
-
-// `read_jobs` function declaration
-list<int> read_jobs(filesystem::path file);
 
 // `main` function
 int main(int argc, const char** argv) {
@@ -17,14 +16,34 @@ int main(int argc, const char** argv) {
     auto input_file = exe_dir / "input.txt";
 
     // Load input file into communal job queue (100 items)
-    list<int> jobs = read_jobs(input_file);
+
+    // Open file
+    ifstream f(input_file);
+
+    // Define temporary variables
+    string buf;
+    list<int> jobs;
+
+    // For each line in the file
+    while (getline(f, buf)) {
+        // Convert and add it to the job queue
+        jobs.push_back(stoi(buf));
+    } // End loop
+
+    // Close file
+    f.close();
 
     ifstream input(input_file);
 
     // Define state map
+    map<int, array<list<int>, 3>> compute_cluster;
 
     // Iterate across the compute nodes using the modulo operator and queue
     // jobs into Pending queues until the communal job queue is empty
+    for (size_t i = 0; !jobs.empty(); i = (i + 1) % compute_cluster.size()) {
+        compute_cluster[i][0].push_back(jobs.front());
+        jobs.pop_front();
+    }
 
     // Announce starting state
 
@@ -46,19 +65,4 @@ int main(int argc, const char** argv) {
 
     // Display current compute cluster status
 
-    // End `main` function
-}
-
-// Begin `read_jobs` function
-list<int> read_jobs(filesystem::path file) {
-    ifstream f(file);
-
-    string buf;
-    list<int> jobs;
-
-    while (getline(f, buf)) {
-        jobs.push_back(stoi(buf));
-    }
-}
-
-// End `read_jobs` function
+} // End `main` function
