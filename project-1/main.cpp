@@ -1,52 +1,64 @@
 // Import necessary headers
+#include <filesystem>
+#include <list>
+#include <fstream>
 
 // Use namespace std
+using namespace std;
 
-// `tick` function declaration
+// `read_jobs` function declaration
+list<int> read_jobs(filesystem::path file);
 
 // `main` function
+int main(int argc, const char** argv) {
+    // Process executible path into input directory
+    auto exe_file = filesystem::path(argv[0]);
+    auto exe_dir = exe_file.parent_path();
+    auto input_file = exe_dir / "input.txt";
 
-// Process executible path into input directory
+    // Load input file into communal job queue (100 items)
+    list<int> jobs = read_jobs(input_file);
 
-// Load input file into communal job queue (100 items)
+    ifstream input(input_file);
 
-// Define state map
+    // Define state map
 
-// Iterate across the compute nodes using the modulo operator and queue
-// jobs into Pending queues until the communal job queue is empty
+    // Iterate across the compute nodes using the modulo operator and queue
+    // jobs into Pending queues until the communal job queue is empty
 
-// Announce starting state
+    // Announce starting state
 
-// Display current compute cluster status
+    // Display current compute cluster status
 
-// Announce time stepping
+    // Announce time stepping
 
-// Tick loop (25 times)
+    // Tick loop (25 times)
 
-// For each compute node, run `tick()` on its 3-list array
+        // For each compute node, run `tick()` on its 3-list array
 
-// Display current compute cluster status
+            // Display current compute cluster status
+        
+        // End for loop
 
-// End tick loop
+    // End tick loop
 
-// Announce time stepping finished
+    // Announce time stepping finished
 
-// Display current compute cluster status
+    // Display current compute cluster status
 
-// End `main` function
+    // End `main` function
+}
 
-// Begin `tick` function
+// Begin `read_jobs` function
+list<int> read_jobs(filesystem::path file) {
+    ifstream f(file);
 
-// If Active not empty, then
+    string buf;
+    list<int> jobs;
 
-// De-queue one item from Active and queue it into Completed
+    while (getline(f, buf)) {
+        jobs.push_back(stoi(buf));
+    }
+}
 
-// End if
-
-// While Pending not empty and length of active less than 5,
-
-// De-queue one item from Pending and queue it into Active
-
-// End while
-
-// End `tick` function
+// End `read_jobs` function
