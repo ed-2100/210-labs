@@ -44,7 +44,7 @@ int main(int argc, const char** argv) {
 
     // Iterate across the compute nodes using the modulo operator and queue
     // jobs into Pending queues until the communal job queue is empty
-    for (size_t i = 0; !jobs.empty(); i = (i + 1) % compute_cluster.size()) {
+    for (size_t i = 0; !jobs.empty(); i = (i + 1) % 4) {
         compute_cluster[i][0].push_back(jobs.front());
         jobs.pop_front();
     }
@@ -53,9 +53,10 @@ int main(int argc, const char** argv) {
     println("Starting statistics:");
 
     // Display current compute cluster status
+    print_stats(compute_cluster);
 
     // Announce time stepping
-    println("Beginning time-stepping...");
+    println("\nBeginning time-stepping...");
 
     // Tick loop (26 times)
     for (size_t i = 0; i < 26; i++) {
@@ -74,31 +75,35 @@ int main(int argc, const char** argv) {
                 node[1].push_back(node[0].front());
                 node[0].pop_front();
             } // End while
-
-            // Display current compute cluster status
         
         } // End for loop
+
+        // Display current compute cluster status
+        println("\nStats for timestep {}:", i);
+        print_stats(compute_cluster);
 
     } // End tick loop
 
     // Announce time stepping finished
-    println("Time-stepping finished.");
+    println("\nTime-stepping finished.");
 
     // Display current compute cluster status
-    println("Final cluster statistics:");
+    println("\nFinal cluster statistics:");
+    print_stats(compute_cluster);
 
 } // End `main` function
 
 // 'print_stats' function
-void print_stats(map<int, array<list<int>, 3>> state) {
+void print_stats(map<int, array<list<int>, 3>> compute_cluster) {
     // Display table header
     println("Node ID | Pending | Active | Completed");
 
     // For each node
-    for (auto& [id, node] : )
-
-    // Display a row containing its ID and how many
-    // Pending/Active/Completed jobs there are
+    for (auto& [id, node] : compute_cluster) {
+        // Display a row containing its ID and how many
+        // Pending/Active/Completed jobs there are
     
+        println("{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
     } // End loop
+
 } // End 'print_stats' function
