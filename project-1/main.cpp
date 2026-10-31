@@ -1,12 +1,20 @@
+// COMSC-210 | Lab 28 | Edwin Burwell
+//
+// Note: This may contain features from newer C++ versions, such as C++23.
+
 // Import necessary headers
 #include <filesystem>
 #include <list>
 #include <fstream>
 #include <map>
 #include <array>
+#include <print>
 
 // Use namespace std
 using namespace std;
+
+// Declare `print_stats`
+void print_stats(map<int, array<list<int>, 3>> state);
 
 // `main` function
 int main(int argc, const char** argv) {
@@ -46,23 +54,34 @@ int main(int argc, const char** argv) {
     }
 
     // Announce starting state
+    println("Starting statistics:");
 
     // Display current compute cluster status
 
     // Announce time stepping
+    println("Beginning time-stepping...");
 
-    // Tick loop (25 times)
-
+    // Tick loop (26 times)
+    for (size_t i = 0; i < 26; i++) {
+        for (auto& node : compute_cluster) {
         // For each compute node, run `tick()` on its 3-list array
 
             // Display current compute cluster status
         
         // End for loop
 
-    // End tick loop
+    } // End tick loop
 
     // Announce time stepping finished
+    println("Time-stepping finished.");
 
     // Display current compute cluster status
+    println("Final cluster statistics:");
 
 } // End `main` function
+
+// 'print_stats' function
+void print_stats(map<int, array<list<int>, 3>> state) {
+
+    
+} // End 'print_stats' function
