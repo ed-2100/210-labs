@@ -16,13 +16,13 @@ using namespace std;
 
 using ClusterState = map<int, array<list<int>, 3>>;
 
-// Display stats on a compute cluster state to a specified `ostream`
+// Displays stats on a provided `ClusterState` to a specified `ostream`
 //
 // ### Arguments
 //
 //  - `os`: The stream to display to
 //  - `state`: The state to display stats on
-void print_stats(ostream& os, ClusterState compute_cluster);
+void print_stats(ostream& os, const ClusterState& compute_cluster);
 
 // The `main` function
 //
@@ -120,7 +120,7 @@ int main(int argc, const char** argv) {
     return EXIT_SUCCESS;
 }
 
-void print_stats(ostream& os, ClusterState compute_cluster) {
+void print_stats(ostream& os, const ClusterState& compute_cluster) {
     // Display table header
     println(os, "Node ID | Pending | Active | Completed");
 
@@ -129,5 +129,5 @@ void print_stats(ostream& os, ClusterState compute_cluster) {
         // Display a row containing its ID and how many
         // Pending/Active/Completed jobs there are
         println(os, "{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
-    } // End loop
+    }
 }
