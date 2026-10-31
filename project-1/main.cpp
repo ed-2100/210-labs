@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 28 | Edwin Burwell
+// COMSC-210 | Lab 29 | Edwin Burwell
 //
 // Note: This may contain features from newer C++ versions, such as C++23.
 
@@ -25,6 +25,13 @@ int main(int argc, const char** argv) {
 
     // Open input file
     ifstream f(input_file);
+
+    // Make sure it actually opened
+    if (!f) {
+        // And fail if it didn't
+        println("Failed to open {}", input_file);
+        return EXIT_FAILURE;
+    }
 
     // Define temporary variables
     string buf;
@@ -70,7 +77,7 @@ int main(int argc, const char** argv) {
             } // End if
 
             // While Pending not empty and length of active less than 5,
-            while (!node[0].empty()) {
+            while (!node[0].empty() && node[1].size() < 5) {
                 // De-queue one item from Pending and queue it into Active
                 node[1].push_back(node[0].front());
                 node[0].pop_front();
@@ -79,7 +86,7 @@ int main(int argc, const char** argv) {
         } // End for loop
 
         // Display current compute cluster status
-        println("\nStats for timestep {}:", i);
+        println("\nStats after timestep {}:", i + 1);
         print_stats(compute_cluster);
 
     } // End tick loop
@@ -90,6 +97,9 @@ int main(int argc, const char** argv) {
     // Display current compute cluster status
     println("\nFinal cluster statistics:");
     print_stats(compute_cluster);
+
+    // Return success
+    return EXIT_SUCCESS;
 
 } // End `main` function
 
@@ -102,7 +112,6 @@ void print_stats(map<int, array<list<int>, 3>> compute_cluster) {
     for (auto& [id, node] : compute_cluster) {
         // Display a row containing its ID and how many
         // Pending/Active/Completed jobs there are
-    
         println("{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
     } // End loop
 
