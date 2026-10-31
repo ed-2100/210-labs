@@ -23,9 +23,7 @@ int main(int argc, const char** argv) {
     auto exe_dir = exe_file.parent_path();
     auto input_file = exe_dir / "input.txt";
 
-    // Load input file into communal job queue (100 items)
-
-    // Open file
+    // Open input file
     ifstream f(input_file);
 
     // Define temporary variables
@@ -40,8 +38,6 @@ int main(int argc, const char** argv) {
 
     // Close file
     f.close();
-
-    ifstream input(input_file);
 
     // Define state map
     map<int, array<list<int>, 3>> compute_cluster;
@@ -63,12 +59,25 @@ int main(int argc, const char** argv) {
 
     // Tick loop (26 times)
     for (size_t i = 0; i < 26; i++) {
-        for (auto& node : compute_cluster) {
-        // For each compute node, run `tick()` on its 3-list array
+        // For each compute node
+        for (auto& [id, node] : compute_cluster) {
+            // If Active not empty, then
+            if (!node[1].empty()) {
+                // De-queue one item from Active and queue it into Completed
+                node[2].push_back(node[1].front());
+                node[1].pop_front();
+            } // End if
+
+            // While Pending not empty and length of active less than 5,
+            while (!node[0].empty()) {
+                // De-queue one item from Pending and queue it into Active
+                node[1].push_back(node[0].front());
+                node[0].pop_front();
+            } // End while
 
             // Display current compute cluster status
         
-        // End for loop
+        } // End for loop
 
     } // End tick loop
 
@@ -82,6 +91,14 @@ int main(int argc, const char** argv) {
 
 // 'print_stats' function
 void print_stats(map<int, array<list<int>, 3>> state) {
+    // Display table header
+    println("Node ID | Pending | Active | Completed");
 
+    // For each node
+    for (auto& [id, node] : )
+
+    // Display a row containing its ID and how many
+    // Pending/Active/Completed jobs there are
     
+    } // End loop
 } // End 'print_stats' function
