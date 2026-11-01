@@ -24,6 +24,11 @@ using ClusterState = map<int, array<list<int>, 3>>;
 //  - `state`: The state to display stats on
 void print_stats(ostream& os, const ClusterState& compute_cluster);
 
+// Tests `print_stats` for expected output.
+//
+// ### Returns
+//
+// A boolean value, which is true if the test passed.
 bool test_print_stats();
 
 // The `main` function
@@ -80,6 +85,8 @@ int main(int argc, const char** argv) {
 
     if (!test_print_stats()) {
         println("Unit test failed.");
+    } else {
+        println("Unit test passed.");
     }
 
     // Announce starting state
@@ -157,14 +164,13 @@ bool test_print_stats() {
         }},
     };
 
+    const char expected[] = "Node ID | Pending | Active | Completed\n"
+                            "      0 |       6 |      4 |         2\n"
+                            "     10 |       4 |      6 |         2\n"
+                            "     20 |       2 |      4 |         6\n";
+
     try {
         stringstream sbuf;
-
-        const char expected[] = "Node ID | Pending | Active | Completed\n"
-                                "      0 |       6 |      4 |         2\n"
-                                "     10 |       4 |      6 |         2\n"
-                                "     20 |       2 |      4 |         6\n";
-
         print_stats(sbuf, test_state);
 
         if (sbuf.str().compare(expected) != 0) {
