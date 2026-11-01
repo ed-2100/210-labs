@@ -24,6 +24,8 @@ using ClusterState = map<int, array<list<int>, 3>>;
 //  - `state`: The state to display stats on
 void print_stats(ostream& os, const ClusterState& compute_cluster);
 
+bool test_print_stats();
+
 // The `main` function
 //
 // Implements a simulation of compute cluster job handling, printing
@@ -74,6 +76,10 @@ int main(int argc, const char** argv) {
     for (size_t i = 0; !jobs.empty(); i = (i + 1) % 4) {
         compute_cluster[i][0].push_back(jobs.front());
         jobs.pop_front();
+    }
+
+    if (!test_print_stats()) {
+        println("Unit test failed.");
     }
 
     // Announce starting state
@@ -141,25 +147,29 @@ bool test_print_stats() {
         }},
         {10, {
             list {12, 13, 14, 15},
-            {16, 17, 18, 19, 20},
-            {21, 22}
+            {16, 17, 18, 19, 20, 21},
+            {22, 23}
         }},
         {20, {
-            list {12, 13, 14, 15},
-            {16, 17, 18, 19, 20},
-            {21, 22}
-        }},
-        {30, {
-            list {23, 24},
-            {25, 26, 27, 28},
-            {29, 30, 31, 32, 33, 34}
+            list {24, 25},
+            {26, 27, 28, 29},
+            {30, 31, 32, 33, 34, 35}
         }},
     };
 
     try {
-        string buf;
+        stringstream sbuf;
 
-        print_stats(cout, test_state);
+        const char expected[] = "Node ID | Pending | Active | Completed\n"
+                                "      0 |       6 |      4 |         2\n"
+                                "     10 |       4 |      6 |         2\n"
+                                "     20 |       2 |      4 |         6\n";
+
+        print_stats(sbuf, test_state);
+
+        if (sbuf.str().compare(expected) != 0) {
+            return false;
+        }
     } catch (exception e) {
         return false;
     }
