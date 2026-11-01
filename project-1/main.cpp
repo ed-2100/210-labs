@@ -179,5 +179,5 @@ bool test_print_stats() {
         return false;
     }
 
-    return true;
+    return true; // :)
 }
