@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 29 | Edwin Burwell
+// COMSC-210 | Lab 29 and Lab 30 | Edwin Burwell
 //
 // Note: This may contain features from newer C++ versions, such as C++23.
 
@@ -84,9 +84,8 @@ int main(int argc, const char** argv) {
     }
 
     if (!test_print_stats()) {
-        println("Unit test failed.");
-    } else {
-        println("Unit test passed.");
+        println("`print_stats` unit test failed.\n");
+        return EXIT_FAILURE;
     }
 
     // Announce starting state
