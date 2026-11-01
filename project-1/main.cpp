@@ -131,3 +131,38 @@ void print_stats(ostream& os, const ClusterState& compute_cluster) {
         println(os, "{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
     }
 }
+
+bool test_print_stats() {
+    ClusterState test_state = ClusterState {
+        {0,  {
+            list { 0, 1, 2, 3, 4, 5 },
+            {6, 7, 8, 9},
+            {10, 11}
+        }},
+        {10, {
+            list {12, 13, 14, 15},
+            {16, 17, 18, 19, 20},
+            {21, 22}
+        }},
+        {20, {
+            list {12, 13, 14, 15},
+            {16, 17, 18, 19, 20},
+            {21, 22}
+        }},
+        {30, {
+            list {23, 24},
+            {25, 26, 27, 28},
+            {29, 30, 31, 32, 33, 34}
+        }},
+    };
+
+    try {
+        string buf;
+
+        print_stats(cout, test_state);
+    } catch (exception e) {
+        return false;
+    }
+
+    return true;
+}

@@ -1,0 +1,17 @@
+This project shall test its vital functions using unit testing.
+
+Any function that is to be unit tested must not use global state,
+as to ease verifiability.
+
+If the output does not match the expected output, then the test is a fail.
+
+If the function raises an exception, then the test is a fail.
+
+If the function causes a segmentation fault, then the test is a fail.
+
+The following code tests the `print_stats` function for basic validity
+and returns true when the test passes.
+
+```
+
+```
