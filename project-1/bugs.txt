@@ -1,0 +1,5 @@
+1. Mis-spelling of "executable" in comment
+
+Problem: The word "executable" is misspelled as "executible" in a comment.
+
+Fix: Replace "executible" with proper spelling.

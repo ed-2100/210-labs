@@ -45,7 +45,7 @@ bool test_print_stats();
 //
 // A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
-    // Process executible path into input directory
+    // Process executable path into input directory
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
     auto input_file = exe_dir / "input.txt";
