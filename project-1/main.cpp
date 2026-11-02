@@ -17,6 +17,7 @@
 #include <exception>
 #include <charconv>
 #include <sstream>
+#include <system_error>
 
 // Use namespace std
 using namespace std;
