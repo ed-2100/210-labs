@@ -3,3 +3,15 @@
 Problem: The word "executable" is misspelled as "executible" in a comment.
 
 Fix: Replace "executible" with proper spelling.
+
+2. Missing header inclusions for various things
+
+Problem: Some STL data types aren't explicitly included, which could be an issue on windows systems.
+
+Fix: Add the necessary includes.
+
+3. `exception` not passed by reference in catch statement
+
+Problem: An exception is currently not caught by const reference.
+
+Fix: Make it a const reference.

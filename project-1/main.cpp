@@ -10,6 +10,10 @@
 #include <array>
 #include <print>
 #include <iostream>
+#include <string>
+#include <cstdlib>
+#include <cstddef>
+#include <exception>
 
 // Use namespace std
 using namespace std;
@@ -175,7 +179,7 @@ bool test_print_stats() {
         if (sbuf.str().compare(expected) != 0) {
             return false;
         }
-    } catch (exception e) {
+    } catch (const exception& e) {
         return false;
     }
 
