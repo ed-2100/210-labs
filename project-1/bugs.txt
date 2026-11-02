@@ -15,3 +15,16 @@ Fix: Add the necessary includes.
 Problem: An exception is currently not caught by const reference.
 
 Fix: Make it a const reference.
+
+4. Missing read error handling
+
+Problem: The program currently does not inform the user if `getline` encounters an error.
+
+Fix: Check for read errors after using `getline` on `f`.
+
+5. Unhandled parsing exceptions
+
+Problem: When `stoi` is called, it has the potential to throw exceptions.
+         These aren't properly handled at the moment.
+
+Fix: Wrap `stoi` in a try-catch statement.

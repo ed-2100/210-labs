@@ -71,7 +71,21 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        jobs.push_back(stoi(buf));
+        try {
+            jobs.push_back(stoi(buf));
+        } catch (const invalid_argument& e) {
+            println("Failed to parse {} as an integer", buf);
+            return EXIT_FAILURE;
+        } catch (const out_of_range& e) {
+            println(
+                
+            )
+        }
+    }
+
+    if (f.bad()) {
+        println("An error was encountered while reading from {}", input_file.string());
+        return EXIT_FAILURE;
     }
 
     // Close file
