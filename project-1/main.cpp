@@ -50,6 +50,11 @@ bool test_print_stats();
 //
 // A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
+    if (!test_print_stats()) {
+        println("`print_stats` unit test failed.\n");
+        return EXIT_FAILURE;
+    }
+
     // Process executable path into input directory
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
@@ -72,8 +77,6 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        uint32_t job_id;
-
         try {
             auto temp = stoul(buf);
 
@@ -81,18 +84,25 @@ int main(int argc, const char** argv) {
                 throw out_of_range("Not within the range of a `uint32_t`.");
             }
 
-            jobs.push_back(2);
+            jobs.push_back(temp);
         } catch (const invalid_argument& e) {
             println("Failed to parse {}: {}", buf, e.what());
             return EXIT_FAILURE;
         } catch (const out_of_range& e) {
-            println("Encountered an out of range value while parsing {}: {}", input_file.string(), e.what());
+            println(
+                "Encountered an out of range value while parsing {}: {}",
+                input_file.string(),
+                e.what()
+            );
             return EXIT_FAILURE;
         }
     }
 
     if (f.bad()) {
-        println("An error was encountered while reading from {}", input_file.string());
+        println(
+            "An error was encountered while reading from {}",
+            input_file.string()
+        );
         return EXIT_FAILURE;
     }
 
@@ -107,11 +117,6 @@ int main(int argc, const char** argv) {
     for (size_t i = 0; !jobs.empty(); i = (i + 1) % 4) {
         compute_cluster[i][0].push_back(jobs.front());
         jobs.pop_front();
-    }
-
-    if (!test_print_stats()) {
-        println("`print_stats` unit test failed.\n");
-        return EXIT_FAILURE;
     }
 
     // Announce starting state

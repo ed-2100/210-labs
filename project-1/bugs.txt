@@ -34,7 +34,16 @@ Fix: Wrap `stoi` in a try-catch statement.
 Problem: Negative job IDs are currently allowed, which is unintuitive.
 Fix: Error when reading a negative job ID.
 
+
 7. `int` is not architecture independent
 
 Problem: `int` isn't necessarily 32 bits all the time.
 Fix: Change all integer types to their bit-specific equivalents (eg, `uint32_t`).
+
+
+8. Unit test is done a little late in program execution.
+
+Problem: `test_print_stats` is done midway through program execution.
+Fix: Run the test at the start of the program.
+
+
