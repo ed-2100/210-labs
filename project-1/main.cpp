@@ -80,14 +80,14 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
+        while (!buf.empty() && isspace(buf.back())) {
+            buf.pop_back();
+        }
+
         uint32_t job_id;
         const char* first = buf.data();
         const char* last = first + buf.size();
         auto [ptr, err] = from_chars(first, last, job_id);
-
-        while (!buf.empty() && isspace(buf.back())) {
-            buf.pop_back();
-        }
 
         if (err == errc::invalid_argument || ptr != last) {
             println("Failed to parse {}: Not an unsigned integer.", buf);
