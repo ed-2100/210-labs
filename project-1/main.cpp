@@ -13,8 +13,10 @@
 #include <string>
 #include <cstdlib>
 #include <cstddef>
+#include <cstdint>
 #include <exception>
 #include <charconv>
+#include <sstream>
 
 // Use namespace std
 using namespace std;
@@ -78,7 +80,7 @@ int main(int argc, const char** argv) {
     while (getline(f, buf)) {
         // Convert and add it to the job queue
         try {
-            auto temp = stoul(buf);
+            auto temp = stol(buf);
 
             if (temp > UINT32_MAX || temp < 0) {
                 throw out_of_range("Not within the range of a `uint32_t`.");
