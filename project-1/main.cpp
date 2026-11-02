@@ -71,15 +71,17 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
+        int job_id;
+
         try {
-            jobs.push_back(stoi(buf));
+            stoi(buf)
+            jobs.push_back();
         } catch (const invalid_argument& e) {
-            println("Failed to parse {} as an integer", buf);
+            println("Failed to parse: {}", buf);
             return EXIT_FAILURE;
         } catch (const out_of_range& e) {
-            println(
-                
-            )
+            println("Number too big: {}", buf);
+            return EXIT_FAILURE;
         }
     }
 
