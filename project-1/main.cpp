@@ -79,25 +79,22 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        try {
-            auto temp = stol(buf);
+        uint32_t job_id;
+        const char* first = buf.data();
+        const char* last = first + buf.size();
+        auto [ptr, err] = from_chars(first, last, job_id);
 
-            if (temp > UINT32_MAX || temp < 0) {
-                throw out_of_range("Not within the range of a `uint32_t`.");
-            }
-
-            jobs.push_back(temp);
-        } catch (const invalid_argument& e) {
-            println("Failed to parse {}: {}", buf, e.what());
-            return EXIT_FAILURE;
-        } catch (const out_of_range& e) {
-            println(
-                "Encountered an out of range value while parsing {}: {}",
-                input_file.string(),
-                e.what()
-            );
+        if (err == errc::invalid_argument || ptr != last) {
+            println("Failed to parse {}: Not a number.", buf);
             return EXIT_FAILURE;
         }
+
+        if (err == errc::result_out_of_range) {
+            println("Failed to parse {}: Out of range.", buf);
+            return EXIT_FAILURE;
+        }
+
+        jobs.push_back(job_id);
     }
 
     if (f.bad()) {

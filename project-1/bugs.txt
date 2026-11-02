@@ -47,3 +47,11 @@ Problem: `test_print_stats` is done midway through program execution.
 Fix: Run the test at the start of the program.
 
 
+9. Integer parsing is trash
+
+Problem: If anything is trailing a numerical input, the program will
+         silently proceed, even though it shouldn't.
+Fix: Use `from_chars` instead of `stoi`.
+
+10.
+
