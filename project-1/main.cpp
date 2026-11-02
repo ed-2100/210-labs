@@ -19,7 +19,7 @@
 // Use namespace std
 using namespace std;
 
-using ClusterState = map<int, array<list<int>, 3>>;
+using ClusterState = map<uint32_t, array<list<uint32_t>, 3>>;
 
 // Displays stats on a provided `ClusterState` to a specified `ostream`
 //
@@ -67,25 +67,26 @@ int main(int argc, const char** argv) {
 
     // Define temporary variables
     string buf;
-    list<int> jobs;
+    list<uint32_t> jobs;
 
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        unsigned int job_id;
-
+        uint32_t job_id;
 
         try {
             auto temp = stoul(buf);
 
-            if (temp > INT_MAX)
+            if (temp > UINT32_MAX || temp < 0) {
+                throw out_of_range("Not within the range of a `uint32_t`.");
+            }
 
             jobs.push_back(2);
         } catch (const invalid_argument& e) {
-            println("Failed to parse: {}", buf);
+            println("Failed to parse {}: {}", buf, e.what());
             return EXIT_FAILURE;
         } catch (const out_of_range& e) {
-            println("Number too big: {}", buf);
+            println("Encountered an out of range value while parsing {}: {}", input_file.string(), e.what());
             return EXIT_FAILURE;
         }
     }
@@ -172,17 +173,17 @@ void print_stats(ostream& os, const ClusterState& compute_cluster) {
 bool test_print_stats() {
     ClusterState test_state = ClusterState {
         {0,  {
-            list { 0, 1, 2, 3, 4, 5 },
+            list<uint32_t> { 0, 1, 2, 3, 4, 5 },
             {6, 7, 8, 9},
             {10, 11}
         }},
         {10, {
-            list {12, 13, 14, 15},
+            list<uint32_t> {12, 13, 14, 15},
             {16, 17, 18, 19, 20, 21},
             {22, 23}
         }},
         {20, {
-            list {24, 25},
+            list<uint32_t> {24, 25},
             {26, 27, 28, 29},
             {30, 31, 32, 33, 34, 35}
         }},
