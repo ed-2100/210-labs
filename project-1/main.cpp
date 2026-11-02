@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <cstddef>
 #include <exception>
+#include <charconv>
 
 // Use namespace std
 using namespace std;
@@ -71,11 +72,15 @@ int main(int argc, const char** argv) {
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        int job_id;
+        unsigned int job_id;
+
 
         try {
-            stoi(buf)
-            jobs.push_back();
+            auto temp = stoul(buf);
+
+            if (temp > INT_MAX)
+
+            jobs.push_back(2);
         } catch (const invalid_argument& e) {
             println("Failed to parse: {}", buf);
             return EXIT_FAILURE;
