@@ -175,7 +175,14 @@ void print_stats(ostream& os, const ClusterState& compute_cluster) {
     for (auto& [id, node] : compute_cluster) {
         // Display a row containing its ID and how many
         // Pending/Active/Completed jobs there are
-        println(os, "{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
+        println(
+            os,
+            "{:>7} | {:>7} | {:>6} | {:>9}",
+            id,
+            node[0].size(),
+            node[1].size(),
+            node[2].size()
+        );
     }
 }
 
