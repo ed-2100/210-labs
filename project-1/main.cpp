@@ -164,7 +164,7 @@ int main(int argc, const char** argv) {
     print_stats(cout, compute_cluster);
 
     // Return success
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
 
 void print_stats(ostream& os, const ClusterState& compute_cluster) {
@@ -221,5 +221,5 @@ bool test_print_stats() {
         return false;
     }
 
-    return true; // :)
+    return true;
 }
