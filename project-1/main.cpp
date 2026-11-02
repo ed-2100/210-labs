@@ -85,7 +85,7 @@ int main(int argc, const char** argv) {
         auto [ptr, err] = from_chars(first, last, job_id);
 
         if (err == errc::invalid_argument || ptr != last) {
-            println("Failed to parse {}: Not a number.", buf);
+            println("Failed to parse {}: Not an unsigned integer.", buf);
             return EXIT_FAILURE;
         }
 
