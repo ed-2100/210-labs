@@ -1,4 +1,4 @@
-// COMSC-210 | Lab 29 and Lab 30 | Edwin Burwell
+// COMSC-210 | Lab 29, Lab 30, and Lab 31 | Edwin Burwell
 //
 // Note: This may contain features from newer C++ versions, such as C++23.
 
@@ -10,11 +10,19 @@
 #include <array>
 #include <print>
 #include <iostream>
+#include <string>
+#include <cstdlib>
+#include <cstddef>
+#include <cstdint>
+#include <exception>
+#include <charconv>
+#include <sstream>
+#include <system_error>
 
 // Use namespace std
 using namespace std;
 
-using ClusterState = map<int, array<list<int>, 3>>;
+using ClusterState = map<uint32_t, array<list<uint32_t>, 3>>;
 
 // Displays stats on a provided `ClusterState` to a specified `ostream`
 //
@@ -45,7 +53,12 @@ bool test_print_stats();
 //
 // A signed integer value, where `0` means success.
 int main(int argc, const char** argv) {
-    // Process executible path into input directory
+    if (!test_print_stats()) {
+        println("`print_stats` unit test failed.\n");
+        return EXIT_FAILURE;
+    }
+
+    // Process executable path into input directory
     auto exe_file = filesystem::path(argv[0]);
     auto exe_dir = exe_file.parent_path();
     auto input_file = exe_dir / "input.txt";
@@ -62,12 +75,39 @@ int main(int argc, const char** argv) {
 
     // Define temporary variables
     string buf;
-    list<int> jobs;
+    list<uint32_t> jobs;
 
     // For each line in the file
     while (getline(f, buf)) {
         // Convert and add it to the job queue
-        jobs.push_back(stoi(buf));
+        while (!buf.empty() && isspace(buf.back())) {
+            buf.pop_back();
+        }
+
+        uint32_t job_id;
+        const char* first = buf.data();
+        const char* last = first + buf.size();
+        auto [ptr, err] = from_chars(first, last, job_id);
+
+        if (err == errc::invalid_argument || ptr != last) {
+            println("Failed to parse {}: Not an unsigned integer.", buf);
+            return EXIT_FAILURE;
+        }
+
+        if (err == errc::result_out_of_range) {
+            println("Failed to parse {}: Out of range.", buf);
+            return EXIT_FAILURE;
+        }
+
+        jobs.push_back(job_id);
+    }
+
+    if (f.bad()) {
+        println(
+            "An error was encountered while reading from {}",
+            input_file.string()
+        );
+        return EXIT_FAILURE;
     }
 
     // Close file
@@ -81,11 +121,6 @@ int main(int argc, const char** argv) {
     for (size_t i = 0; !jobs.empty(); i = (i + 1) % 4) {
         compute_cluster[i][0].push_back(jobs.front());
         jobs.pop_front();
-    }
-
-    if (!test_print_stats()) {
-        println("`print_stats` unit test failed.\n");
-        return EXIT_FAILURE;
     }
 
     // Announce starting state
@@ -140,24 +175,31 @@ void print_stats(ostream& os, const ClusterState& compute_cluster) {
     for (auto& [id, node] : compute_cluster) {
         // Display a row containing its ID and how many
         // Pending/Active/Completed jobs there are
-        println(os, "{:>7} | {:>7} | {:>6} | {:>9}", id, node[0].size(), node[1].size(), node[2].size());
+        println(
+            os,
+            "{:>7} | {:>7} | {:>6} | {:>9}",
+            id,
+            node[0].size(),
+            node[1].size(),
+            node[2].size()
+        );
     }
 }
 
 bool test_print_stats() {
     ClusterState test_state = ClusterState {
         {0,  {
-            list { 0, 1, 2, 3, 4, 5 },
+            list<uint32_t> { 0, 1, 2, 3, 4, 5 },
             {6, 7, 8, 9},
             {10, 11}
         }},
         {10, {
-            list {12, 13, 14, 15},
+            list<uint32_t> {12, 13, 14, 15},
             {16, 17, 18, 19, 20, 21},
             {22, 23}
         }},
         {20, {
-            list {24, 25},
+            list<uint32_t> {24, 25},
             {26, 27, 28, 29},
             {30, 31, 32, 33, 34, 35}
         }},
@@ -175,7 +217,7 @@ bool test_print_stats() {
         if (sbuf.str().compare(expected) != 0) {
             return false;
         }
-    } catch (exception e) {
+    } catch (const exception& e) {
         return false;
     }
 
