@@ -53,5 +53,8 @@ Problem: If anything is trailing a numerical input, the program will
          silently proceed, even though it shouldn't.
 Fix: Use `from_chars` instead of `stoi`.
 
-10.
 
+10. Parsing fails if there is a trailing space
+
+Problem: If a space is accidentially left at the end of a line in the file, parsing will fail it as an error
+Fix: Trim trailing whitespace before parsing.

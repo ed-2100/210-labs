@@ -85,6 +85,10 @@ int main(int argc, const char** argv) {
         const char* last = first + buf.size();
         auto [ptr, err] = from_chars(first, last, job_id);
 
+        while (!buf.empty() && isspace(buf.back())) {
+            buf.pop_back();
+        }
+
         if (err == errc::invalid_argument || ptr != last) {
             println("Failed to parse {}: Not an unsigned integer.", buf);
             return EXIT_FAILURE;
