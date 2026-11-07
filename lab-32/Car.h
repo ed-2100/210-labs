@@ -14,6 +14,7 @@ private:
     string make;
     int year;
     int transponder;
+
     static constexpr array manufacturers = {
         "Toyota", "Ford", "Volkswagen", "Honda", "Chevrolet", "Nissan", "BMW", 
         "Mercedes-Benz", "Audi", "Hyundai", "Kia", "Subaru", "Mazda", "Tesla", 
@@ -26,7 +27,7 @@ public:
 
     template <typename Gen>
     Car(Gen& gen) {
-        uniform_int_distribution<size_t> dist_mfg(0, manu);
+        uniform_int_distribution<size_t> dist_mfg(0, manufacturers.size() - 1);
         uniform_int_distribution<int> dist_year(YEAR_MIN, YEAR_MAX);
         uniform_int_distribution<int> dist_transponder(XP_MIN, XP_MAX);
 
@@ -35,15 +36,15 @@ public:
         transponder = dist_transponder(gen);
     }
 
-    const string& getMake() {
+    const string& getMake() const {
         return make;
     }
 
-    int getYear() {
+    int getYear() const {
         return year;
     }
 
-    int getTransponder() {
+    int getTransponder() const {
         return transponder;
     }
 
@@ -60,7 +61,7 @@ public:
         transponder = t;
     }
 
-    void print() {
+    void print() const {
         println("[{} {} ({})]", year, make, transponder);
     }
 };
