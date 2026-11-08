@@ -6,6 +6,7 @@
 #include <deque>
 #include <print>
 #include <random>
+#include <ranges>
 
 #include "Car.h"
 
@@ -26,43 +27,48 @@ int main() {
     srand(seed);
     mt19937 gen(seed);
 
-    deque<Car> line;
+    array<deque<Car>, 4> lanes;
 
-    for (size_t i = 0; i < INITIAL_SIZE; i++) {
-        line.push_back(Car());
+    for (deque<Car>& lane : lanes) {
+        for (size_t i = 0; i < INITIAL_SIZE; i++) {
+            lane.push_back(Car());
+        }
     }
 
     println("Initial Queue:");
-    for (Car& car : line) {
-        print("    ");
-        car.print();
+    for (auto [i, lane] : lanes | views::enumerate) {
+        println("Lane {}", i + 1);
+        for (Car& car : lane) {
+            print("    ");
+            car.print();
+        }
     }
 
     size_t time = 1;
 
     uniform_int_distribution<> dist_probability(0, 99);
 
-    while (!line.empty()) {
+    while (!lanes.empty()) {
         print("\nTime: {} Operation: ", time);
 
         if (dist_probability(gen) < 45) {
             // Join Line
-            line.push_back(Car());
+            lanes.push_back(Car());
             print("Joined lane: ");
-            line.back().print();
+            lanes.back().print();
         } else {
             // Pay Toll
-            Car car = move(line.front());
-            line.pop_front();
+            Car car = move(lanes.front());
+            lanes.pop_front();
             print("Car paid: ");
             car.print();
         }
 
         println("Queue:");
-        if (line.empty()) {
+        if (lanes.empty()) {
             println("    Empty");
         } else {
-            for (Car& car : line) {
+            for (Car& car : lanes) {
                 print("    ");
                 car.print();
             }
