@@ -14,6 +14,7 @@
 using namespace std;
 
 constexpr size_t INITIAL_SIZE = 2;
+constexpr size_t JOIN_P = 
 
 // The `main` function.
 //
@@ -46,6 +47,7 @@ int main() {
     }
 
     uniform_int_distribution dist_probability(0, 99);
+    uniform_int_distribution dist_lane(1, 3);
 
     for (size_t time : views::iota(0, 20)) {
         println("\nTime: {}", time);
@@ -55,19 +57,24 @@ int main() {
 
             auto prob = dist_probability(gen);
 
-            if (prob < 39) {
-                // Join Line
-                lane.push_back(Car());
-                print("Joined: ");
-                lane.back().print();
-            } else if (!lane.empty()) {
+            if (prob < 46 && !lane.empty()) {
                 // Pay Toll
                 Car car = move(lane.front());
                 lane.pop_front();
                 print("Paid: ");
                 car.print();
-            } else if (prob) {
-
+            } else if (prob < 46 + 39) {
+                // Join Lane
+                lane.push_back(Car());
+                print("Joined: ");
+                lane.back().print();
+            } else if (!lane.empty()) {
+                // Switch Lanes
+                size_t new_lane = (i + dist_lane(gen)) % lanes.size();
+                lanes[new_lane].push_back(move(lane.back()));
+                lane.pop_back();
+                print("Switched: ");
+                lanes[new_lane].back().print();
             } else {
                 print("No Operation");
             }
