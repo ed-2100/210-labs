@@ -45,44 +45,44 @@ int main() {
         }
     }
 
-    // uniform_int_distribution<> dist_probability(0, 99);
+    uniform_int_distribution<> dist_probability(0, 99);
 
-    // for (size_t time : views::iota(0, 20)) {
-    //     println("\nTime: {}", time);
+    for (size_t time : views::iota(0, 20)) {
+        println("\nTime: {}", time);
 
-    //     for (auto [i, lane] : lanes | views::enumerate) {
-    //         print("Lane: {} ", i + 1);
+        for (auto [i, lane] : lanes | views::enumerate) {
+            print("Lane: {} ", i + 1);
 
-    //         auto prob = dist_probability(gen);
+            auto prob = dist_probability(gen);
 
-    //         if (prob < 50) {
-    //             // Join Line
-    //             lane.push_back(Car());
-    //             print("Joined: ");
-    //             lane.back().print();
-    //         } else if (!lane.empty()) {
-    //             // Pay Toll
-    //             Car car = move(lane.front());
-    //             lane.pop_front();
-    //             print("Paid: ");
-    //             car.print();
-    //         } else {
-    //             print("No Operation");
-    //         }
-    //     }
+            if (prob < 50) {
+                // Join Line
+                lane.push_back(Car());
+                print("Joined: ");
+                lane.back().print();
+            } else if (!lane.empty()) {
+                // Pay Toll
+                Car car = move(lane.front());
+                lane.pop_front();
+                print("Paid: ");
+                car.print();
+            } else {
+                print("No Operation");
+            }
+        }
 
-    //     for (auto [i, lane] : lanes | views::enumerate) {
-    //         println("Lane {} Queue:", i + 1);
-    //         if (lane.empty()) {
-    //             println("    Empty");
-    //         } else {
-    //             for (Car& car : lane) {
-    //                 print("\t");
-    //                 car.print();
-    //             }
-    //         }
-    //     }
-    // }
+        for (auto [i, lane] : lanes | views::enumerate) {
+            println("Lane {} Queue:", i + 1);
+            if (lane.empty()) {
+                println("    Empty");
+            } else {
+                for (Car& car : lane) {
+                    print("\t");
+                    car.print();
+                }
+            }
+        }
+    }
     
     return EXIT_SUCCESS;
 }
