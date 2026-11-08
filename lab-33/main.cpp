@@ -55,7 +55,7 @@ int main() {
 
             auto prob = dist_probability(gen);
 
-            if (prob < 50) {
+            if (prob < 39) {
                 // Join Line
                 lane.push_back(Car());
                 print("Joined: ");
@@ -66,6 +66,8 @@ int main() {
                 lane.pop_front();
                 print("Paid: ");
                 car.print();
+            } else if (prob) {
+
             } else {
                 print("No Operation");
             }
