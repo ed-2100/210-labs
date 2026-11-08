@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <deque>
+#include <numeric>
 #include <print>
 #include <random>
 #include <ranges>
@@ -30,7 +31,7 @@ int main() {
     array<deque<Car>, 4> lanes;
 
     for (deque<Car>& lane : lanes) {
-        for (size_t i = 0; i < INITIAL_SIZE; i++) {
+        for (size_t i : views::iota(0, 4)) {
             lane.push_back(Car());
         }
     }
@@ -49,28 +50,34 @@ int main() {
     uniform_int_distribution<> dist_probability(0, 99);
 
     while (!lanes.empty()) {
-        print("\nTime: {} Operation: ", time);
+        println("\nTime: {}", time);
 
-        if (dist_probability(gen) < 45) {
-            // Join Line
-            lanes.push_back(Car());
-            print("Joined lane: ");
-            lanes.back().print();
-        } else {
-            // Pay Toll
-            Car car = move(lanes.front());
-            lanes.pop_front();
-            print("Car paid: ");
-            car.print();
+        for (auto [i, lane] : lanes | views::enumerate) {
+            print("Lane: {} ", i + 1);
+
+            if (dist_probability(gen) < 45) {
+                // Join Line
+                lane.push_back(Car());
+                print("Joined: ");
+                lane.back().print();
+            } else {
+                // Pay Toll
+                Car car = move(lane.front());
+                lane.pop_front();
+                print("Paid: ");
+                car.print();
+            }
         }
 
-        println("Queue:");
-        if (lanes.empty()) {
-            println("    Empty");
-        } else {
-            for (Car& car : lanes) {
-                print("    ");
-                car.print();
+        for (auto [i, lane] : lanes | views::enumerate) {
+            println("Lane {} Queue:", i + 1);
+            if (lanes.empty()) {
+                println("    Empty");
+            } else {
+                for (Car& car : lane) {
+                    print("    ");
+                    car.print();
+                }
             }
         }
 
