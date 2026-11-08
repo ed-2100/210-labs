@@ -52,23 +52,24 @@ int main() {
         }
     }
 
-    discrete_distribution dist_probability({PAY_P, JOIN_P, SWITCH_P});
+    uniform_int_distribution dist_empty(0, 1);
+    discrete_distribution dist_p({PAY_P, JOIN_P, SWITCH_P});
     uniform_int_distribution dist_lane(1, 3);
 
     for (size_t time : views::iota(
         static_cast<decltype(N_ITERATIONS)>(0),
         N_ITERATIONS
     )) {
-        println("\nTime: {}", time);
+        println("\nTime: {}", time + 1);
 
         for (auto [i, lane] : lanes | views::enumerate) {
             print("Lane: {} ", i + 1);
 
-            switch (dist_probability(gen)) {
+            switch (lane.empty() ? dist_empty(gen) : dist_p(gen)) {
                 case 0: {
                     // Pay Toll
                     if (lane.empty()) {
-                        println("No Operation");
+                        println("no operation");
                         break;
                     }
                     Car car = move(lane.front());
@@ -87,7 +88,7 @@ int main() {
                 case 2: {
                     // Switch Lanes
                     if (lane.empty()) {
-                        println("No Operation");
+                        println("no operation");
                         break;
                     }
                     size_t new_lane = (i + dist_lane(gen)) % lanes.size();
@@ -101,10 +102,11 @@ int main() {
         }
 
         for (auto [i, lane] : lanes | views::enumerate) {
-            println("Lane {} Queue:", i + 1);
+            print("Lane {} Queue:", i + 1);
             if (lane.empty()) {
-                println("    Empty");
+                println(" empty");
             } else {
+                println();
                 for (Car& car : lane) {
                     print("\t");
                     car.print();
