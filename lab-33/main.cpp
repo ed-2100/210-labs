@@ -45,7 +45,7 @@ int main() {
         }
     }
 
-    uniform_int_distribution<> dist_probability(0, 99);
+    uniform_int_distribution dist_probability(0, 99);
 
     for (size_t time : views::iota(0, 20)) {
         println("\nTime: {}", time);
@@ -84,5 +84,5 @@ int main() {
         }
     }
     
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; // :)
 }
