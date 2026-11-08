@@ -13,7 +13,11 @@
 
 using namespace std;
 
-constexpr size_t INITIAL_SIZE = 2, PAY_P = 46, JOIN_P = 39, SWITCH_P = 15;
+constexpr size_t INITIAL_SIZE = 2;
+constexpr size_t N_ITERATIONS = 20;
+constexpr size_t PAY_P = 46;
+constexpr size_t JOIN_P = 39;
+constexpr size_t SWITCH_P = 15;
 
 // The `main` function.
 //
@@ -31,7 +35,10 @@ int main() {
     array<deque<Car>, 4> lanes;
 
     for (deque<Car>& lane : lanes) {
-        for (size_t i : views::iota(static_cast<size_t>(0), INITIAL_SIZE)) {
+        for (size_t i : views::iota(
+            static_cast<decltype(INITIAL_SIZE)>(0), 
+            INITIAL_SIZE
+        )) {
             lane.push_back(Car());
         }
     }
@@ -48,48 +55,48 @@ int main() {
     discrete_distribution dist_probability({PAY_P, JOIN_P, SWITCH_P});
     uniform_int_distribution dist_lane(1, 3);
 
-    for (size_t time : views::iota(0, 20)) {
+    for (size_t time : views::iota(
+        static_cast<decltype(N_ITERATIONS)>(0),
+        N_ITERATIONS
+    )) {
         println("\nTime: {}", time);
 
         for (auto [i, lane] : lanes | views::enumerate) {
             print("Lane: {} ", i + 1);
 
-            auto prob = dist_probability(gen);
-
             switch (dist_probability(gen)) {
                 case 0: {
                     // Pay Toll
+                    if (lane.empty()) {
+                        println("No Operation");
+                        break;
+                    }
                     Car car = move(lane.front());
                     lane.pop_front();
                     print("Paid: ");
                     car.print();
                     break;
                 }
-                case 2: {
+                case 1: {
                     // Join Lane
                     lane.push_back(Car());
                     print("Joined: ");
                     lane.back().print();
                     break;
                 }
-                case 3: {
+                case 2: {
                     // Switch Lanes
+                    if (lane.empty()) {
+                        println("No Operation");
+                        break;
+                    }
                     size_t new_lane = (i + dist_lane(gen)) % lanes.size();
                     lanes[new_lane].push_back(move(lane.back()));
                     lane.pop_back();
                     print("Switched: ");
                     lanes[new_lane].back().print();
-                    
+                    break;
                 }
-            }
-            if (prob < PAY_P && !lane.empty())
-            
-            if (prob > PAY_P && prob < PAY_P + JOIN_P) {
-            }
-            
-            if (prob > PAY_P + JOIN_P && prob < PAY_P + JOIN_P!lane.empty()) {
-            } else {
-                print("No Operation");
             }
         }
 
