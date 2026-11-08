@@ -87,10 +87,6 @@ int main() {
                 }
                 case 2: {
                     // Switch Lanes
-                    if (lane.empty()) {
-                        println("no operation");
-                        break;
-                    }
                     size_t new_lane = (i + dist_lane(gen)) % lanes.size();
                     lanes[new_lane].push_back(move(lane.back()));
                     lane.pop_back();
@@ -115,5 +111,5 @@ int main() {
         }
     }
     
-    return EXIT_SUCCESS; // :)
+    return EXIT_SUCCESS;
 }
