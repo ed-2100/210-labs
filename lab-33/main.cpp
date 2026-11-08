@@ -53,17 +53,21 @@ int main() {
         for (auto [i, lane] : lanes | views::enumerate) {
             print("Lane: {} ", i + 1);
 
-            if (dist_probability(gen) < 45 || lane.empty()) {
+            auto prob = dist_probability(gen);
+
+            if (prob < 50) {
                 // Join Line
                 lane.push_back(Car());
                 print("Joined: ");
                 lane.back().print();
-            } else {
+            } else if (!lane.empty()) {
                 // Pay Toll
                 Car car = move(lane.front());
                 lane.pop_front();
                 print("Paid: ");
                 car.print();
+            } else {
+                print("No Operation");
             }
         }
 
@@ -80,5 +84,5 @@ int main() {
         }
     }
     
-    return EXIT_SUCCESS; // :)
+    return EXIT_SUCCESS;
 }
