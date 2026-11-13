@@ -5,6 +5,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <cctype>
 using namespace std;
 
 const int SIZE = 9;
@@ -14,6 +15,18 @@ const int CAPACITY_SCALE = 100;
 const int INF_DIST = INT_MAX;
 const int ZERO_DIST = 0;
 const int NO_PARENT = -1;
+
+const int OPT_EXIT = 0;
+const int OPT_DISPLAY = 1;
+const int OPT_BFS = 2;
+const int OPT_DFS = 3;
+const int OPT_SHORTEST = 4;
+const int OPT_MST = 5;
+const int MIN_CHOICE = OPT_EXIT;
+const int MAX_CHOICE = OPT_MST;
+const int MAX_INPUT_LEN = 6;
+const int FIRST_IDX = 0;
+const int SECOND_IDX = 1;
 
 struct Edge {
     int src, dest, weight;
@@ -267,6 +280,11 @@ public:
     }
 };
 
+// Function prototypes
+void displayMenu();
+int getMenuChoice();
+bool isNumericInput(string const &input);
+
 int main() {
     // Define power grid transmission lines as (source, destination, weight)
     vector<Edge> edges = {
@@ -288,13 +306,118 @@ int main() {
         "Solar Generation Array"
     };
 
-    // Instantiate the power grid graph and run all network analyses
     Graph powerGrid(edges, facilityTypes);
-    powerGrid.printGraph();
-    powerGrid.dfs(START_VERTEX);
-    powerGrid.bfs(START_VERTEX);
-    powerGrid.shortestPath(START_VERTEX);
-    powerGrid.minimumSpanningTree(START_VERTEX);
+    int choice = OPT_DISPLAY;
+
+    // Run interactive menu loop until the user selects Exit
+    while (choice != OPT_EXIT) {
+        displayMenu();
+        choice = getMenuChoice();
+        cout << endl;
+
+        switch (choice) {
+            case OPT_DISPLAY:
+                powerGrid.printGraph();
+                break;
+            case OPT_BFS:
+                powerGrid.bfs(START_VERTEX);
+                break;
+            case OPT_DFS:
+                powerGrid.dfs(START_VERTEX);
+                break;
+            case OPT_SHORTEST:
+                powerGrid.shortestPath(START_VERTEX);
+                break;
+            case OPT_MST:
+                powerGrid.minimumSpanningTree(START_VERTEX);
+                break;
+            case OPT_EXIT:
+                cout << "Exiting Regional Power Grid Network System." << endl;
+                break;
+        }
+    }
 
     return 0;
+}
+
+// displayMenu() prints the interactive power grid options menu to the console
+// arguments: none
+// returns: void
+void displayMenu() {
+    cout << "Regional Power Grid Network Menu:" << endl;
+    cout << "[" << OPT_DISPLAY << "] Display power grid network" << endl;
+    cout << "[" << OPT_BFS << "] Inspect delivery zones (BFS)" << endl;
+    cout << "[" << OPT_DFS << "] Trace cascading fault paths (DFS)" << endl;
+    cout << "[" << OPT_SHORTEST << "] Calculate shortest paths" << endl;
+    cout << "[" << OPT_MST << "] Find Minimum Spanning Tree" << endl;
+    cout << "[" << OPT_EXIT << "] Exit" << endl;
+    cout << "Enter your choice: ";
+}
+
+// isNumericInput() checks whether a string represents a signed or unsigned int
+// arguments: input - constant reference to the user's raw input string
+// returns: true if input contains only valid integer digits, false otherwise
+bool isNumericInput(string const &input) {
+    if (input.empty()) {
+        return false;
+    }
+
+    int startPos = FIRST_IDX;
+    if (input[FIRST_IDX] == '-' || input[FIRST_IDX] == '+') {
+        if (input.length() == SECOND_IDX) {
+            return false;
+        }
+        startPos = SECOND_IDX;
+    }
+
+    for (size_t i = startPos; i < input.length(); i++) {
+        if (!isdigit(static_cast<unsigned char>(input[i]))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// getMenuChoice() reads and validates a menu selection from standard input
+// arguments: none
+// returns: validated integer choice between MIN_CHOICE and MAX_CHOICE
+int getMenuChoice() {
+    string rawInput;
+
+    while (true) {
+        if (!getline(cin, rawInput)) {
+            return OPT_EXIT;
+        }
+
+        if (rawInput.empty()) {
+            cout << "Invalid input: entry cannot be blank. Please type a "
+                 << "digit from " << MIN_CHOICE << " to " << MAX_CHOICE
+                 << " and try again: ";
+            continue;
+        }
+
+        if (!isNumericInput(rawInput)) {
+            cout << "Invalid input: '" << rawInput << "' contains non-digit "
+                 << "characters. Please enter a number from " << MIN_CHOICE
+                 << " to " << MAX_CHOICE << " and try again: ";
+            continue;
+        }
+
+        if (rawInput.length() > MAX_INPUT_LEN) {
+            cout << "Invalid choice: '" << rawInput << "' is out of range. "
+                 << "Please enter a menu option between " << MIN_CHOICE
+                 << " and " << MAX_CHOICE << " and try again: ";
+            continue;
+        }
+
+        int value = stoi(rawInput);
+        if (value < MIN_CHOICE || value > MAX_CHOICE) {
+            cout << "Invalid choice: " << value << " is out of range. "
+                 << "Please enter a menu option between " << MIN_CHOICE
+                 << " and " << MAX_CHOICE << " and try again: ";
+            continue;
+        }
+
+        return value;
+    }
 }
