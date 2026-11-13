@@ -238,7 +238,7 @@ bool input_phone(istream &is, string& phone, bool prompt) {
         return false;
     }
 
-    phone = std::move(phone_buf);
+    phone = move(phone_buf);
 
     return true;
 }

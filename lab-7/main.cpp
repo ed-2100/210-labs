@@ -53,7 +53,7 @@ int main() {
 
 string* reverseArray(string* arr, size_t n_arr) {
     for (size_t a = 0, b = n_arr - 1; a < b; a++, b--) {
-        std::swap(arr[a], arr[b]);
+        swap(arr[a], arr[b]);
     }
 
     return arr;
