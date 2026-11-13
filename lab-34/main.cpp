@@ -13,6 +13,7 @@ const int START_VERTEX = 0;
 const int CAPACITY_SCALE = 100;
 const int INF_DIST = INT_MAX;
 const int ZERO_DIST = 0;
+const int NO_PARENT = -1;
 
 struct Edge {
     int src, dest, weight;
@@ -212,6 +213,58 @@ public:
         }
         cout << endl;
     }
+
+    // minimumSpanningTree() finds and prints the MST using Prim's algorithm
+    // arguments: start - integer representing the starting vertex index
+    // returns: void
+    void minimumSpanningTree(int start) {
+        if (start < MIN_VERTEX || start >= adjList.size()) {
+            cout << "Error: Starting substation " << start
+                 << " is out of range. Please specify an index between "
+                 << MIN_VERTEX << " and " << adjList.size() - 1 << "."
+                 << endl;
+            return;
+        }
+
+        vector<int> key(adjList.size(), INF_DIST);
+        vector<int> parent(adjList.size(), NO_PARENT);
+        vector<bool> inMST(adjList.size(), false);
+        priority_queue<Pair, vector<Pair>, greater<Pair>> minHeap;
+
+        key[start] = ZERO_DIST;
+        minHeap.push(make_pair(ZERO_DIST, start));
+
+        cout << "Minimum Spanning Tree edges:" << endl;
+
+        // Greedily select minimum-weight edges connecting new vertices to MST
+        while (!minHeap.empty()) {
+            int u = minHeap.top().second;
+            minHeap.pop();
+
+            if (inMST[u]) {
+                continue;
+            }
+
+            inMST[u] = true;
+
+            if (parent[u] != NO_PARENT) {
+                cout << "Edge from " << u << " to " << parent[u]
+                     << " with capacity: " << key[u] << " units" << endl;
+            }
+
+            for (auto &neighbor : adjList[u]) {
+                int v = neighbor.first;
+                int weight = neighbor.second;
+
+                if (!inMST[v] && weight < key[v]) {
+                    key[v] = weight;
+                    parent[v] = u;
+                    minHeap.push(make_pair(key[v], v));
+                }
+            }
+        }
+        cout << endl;
+    }
 };
 
 int main() {
@@ -241,6 +294,7 @@ int main() {
     powerGrid.dfs(START_VERTEX);
     powerGrid.bfs(START_VERTEX);
     powerGrid.shortestPath(START_VERTEX);
+    powerGrid.minimumSpanningTree(START_VERTEX);
 
     return 0;
 }
