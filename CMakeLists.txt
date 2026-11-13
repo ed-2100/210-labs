@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Wno-unqualified-std-cast-call" HAS_NO_UNQUALIFIED_STD_CAST_CALL)
+if(HAS_NO_UNQUALIFIED_STD_CAST_CALL)
+    add_compile_options(-Wno-unqualified-std-cast-call)
+endif()
+
 add_subdirectory(lab-1)
 add_subdirectory(lab-2)
 add_subdirectory(lab-3)
