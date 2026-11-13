@@ -5,7 +5,7 @@
 #include <queue>
 using namespace std;
 
-const int SIZE = 7;
+const int SIZE = 9;
 const int MIN_VERTEX = 0;
 const int START_VERTEX = 0;
 
@@ -129,10 +129,11 @@ public:
 };
 
 int main() {
-    // Define graph edges as (source, destination, weight)
+    // Define updated graph edges as (source, destination, weight)
     vector<Edge> edges = {
-        {0, 1, 12}, {0, 2, 8}, {0, 3, 21}, {2, 3, 6}, {2, 6, 2},
-        {5, 6, 6}, {4, 5, 9}, {2, 4, 4}, {2, 5, 5}
+        {0, 1, 8}, {0, 2, 21}, {1, 2, 6}, {1, 3, 5}, {1, 4, 4},
+        {3, 4, 9}, {5, 6, 10}, {6, 7, 3}, {5, 7, 15}, {5, 8, 5},
+        {6, 8, 7}, {2, 7, 11}, {2, 8, 8}
     };
 
     // Instantiate the graph and run adjacency list, DFS, and BFS operations
