@@ -337,7 +337,7 @@ int main() {
         }
     }
 
-    return 0;
+    return 0; // :)
 }
 
 // displayMenu() prints the interactive power grid options menu to the console
