@@ -44,9 +44,9 @@ public:
     void printGraph() {
         cout << "Graph's adjacency list:" << endl;
         for (int i = 0; i < adjList.size(); i++) {
-            cout << i << " --> ";
+            cout << i << " -->";
             for (Pair v : adjList[i]) {
-                cout << "(" << v.first << ", " << v.second << ") ";
+                cout << " (" << v.first << ", " << v.second << ")";
             }
             cout << endl;
         }
@@ -65,6 +65,9 @@ public:
 
         vector<bool> visited(adjList.size(), false);
         stack<int> vertexStack;
+        bool firstOutput = true;
+
+        visited[start] = true;
         vertexStack.push(start);
 
         cout << "DFS starting from vertex " << start << ":" << endl;
@@ -74,16 +77,18 @@ public:
             int curr = vertexStack.top();
             vertexStack.pop();
 
-            if (!visited[curr]) {
-                visited[curr] = true;
-                cout << curr << " ";
+            if (!firstOutput) {
+                cout << " ";
+            }
+            cout << curr;
+            firstOutput = false;
 
-                // Push all unvisited adjacent vertices onto the stack
-                for (auto &neighbor : adjList[curr]) {
-                    int nextVertex = neighbor.first;
-                    if (!visited[nextVertex]) {
-                        vertexStack.push(nextVertex);
-                    }
+            // Mark and push all unvisited adjacent vertices onto the stack
+            for (auto &neighbor : adjList[curr]) {
+                int nextVertex = neighbor.first;
+                if (!visited[nextVertex]) {
+                    visited[nextVertex] = true;
+                    vertexStack.push(nextVertex);
                 }
             }
         }
@@ -103,6 +108,7 @@ public:
 
         vector<bool> visited(adjList.size(), false);
         queue<int> vertexQueue;
+        bool firstOutput = true;
 
         visited[start] = true;
         vertexQueue.push(start);
@@ -113,9 +119,14 @@ public:
         while (!vertexQueue.empty()) {
             int curr = vertexQueue.front();
             vertexQueue.pop();
-            cout << curr << " ";
 
-            // Enqueue all unvisited adjacent vertices
+            if (!firstOutput) {
+                cout << " ";
+            }
+            cout << curr;
+            firstOutput = false;
+
+            // Mark and enqueue all unvisited adjacent vertices
             for (auto &neighbor : adjList[curr]) {
                 int nextVertex = neighbor.first;
                 if (!visited[nextVertex]) {
