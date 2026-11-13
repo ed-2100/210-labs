@@ -4,12 +4,15 @@
 #include <stack>
 #include <queue>
 #include <string>
+#include <climits>
 using namespace std;
 
 const int SIZE = 9;
 const int MIN_VERTEX = 0;
 const int START_VERTEX = 0;
 const int CAPACITY_SCALE = 100;
+const int INF_DIST = INT_MAX;
+const int ZERO_DIST = 0;
 
 struct Edge {
     int src, dest, weight;
@@ -158,6 +161,57 @@ public:
         }
         cout << endl;
     }
+
+    // shortestPath() calculates shortest distances from start via Dijkstra's
+    // arguments: start - integer representing the source node index
+    // returns: void
+    void shortestPath(int start) {
+        if (start < MIN_VERTEX || start >= adjList.size()) {
+            cout << "Error: Starting substation " << start
+                 << " is out of range. Please specify an index between "
+                 << MIN_VERTEX << " and " << adjList.size() - 1 << "."
+                 << endl;
+            return;
+        }
+
+        vector<int> dist(adjList.size(), INF_DIST);
+        priority_queue<Pair, vector<Pair>, greater<Pair>> minHeap;
+
+        dist[start] = ZERO_DIST;
+        minHeap.push(make_pair(ZERO_DIST, start));
+
+        // Relax edges in order of increasing cumulative path weight
+        while (!minHeap.empty()) {
+            int currDist = minHeap.top().first;
+            int u = minHeap.top().second;
+            minHeap.pop();
+
+            if (currDist > dist[u]) {
+                continue;
+            }
+
+            for (auto &neighbor : adjList[u]) {
+                int v = neighbor.first;
+                int weight = neighbor.second;
+
+                if (dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    minHeap.push(make_pair(dist[v], v));
+                }
+            }
+        }
+
+        cout << "Shortest path from node " << start << ":" << endl;
+        for (int i = 0; i < dist.size(); i++) {
+            cout << start << " -> " << i << " : ";
+            if (dist[i] == INF_DIST) {
+                cout << "Unreachable" << endl;
+            } else {
+                cout << dist[i] << endl;
+            }
+        }
+        cout << endl;
+    }
 };
 
 int main() {
@@ -181,11 +235,12 @@ int main() {
         "Solar Generation Array"
     };
 
-    // Instantiate the power grid graph and run topology, DFS, and BFS
+    // Instantiate the power grid graph and run all network analyses
     Graph powerGrid(edges, facilityTypes);
     powerGrid.printGraph();
     powerGrid.dfs(START_VERTEX);
     powerGrid.bfs(START_VERTEX);
+    powerGrid.shortestPath(START_VERTEX);
 
     return 0;
 }
