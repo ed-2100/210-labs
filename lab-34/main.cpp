@@ -3,11 +3,13 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <string>
 using namespace std;
 
 const int SIZE = 9;
 const int MIN_VERTEX = 0;
 const int START_VERTEX = 0;
+const int CAPACITY_SCALE = 100;
 
 struct Edge {
     int src, dest, weight;
@@ -20,14 +22,17 @@ class Graph {
 public:
     // Vector of vectors of Pairs to represent an adjacency list
     vector<vector<Pair>> adjList;
+    vector<string> nodeTypes;
 
-    // Graph() constructs an undirected graph from a vector of Edge structs
+    // Graph() constructs an undirected power grid graph with facility labels
     // arguments: edges - constant reference to a vector of Edge objects
+    //            types - constant reference to a vector of facility names
     // returns: none (constructor)
-    Graph(vector<Edge> const &edges) {
+    Graph(vector<Edge> const &edges, vector<string> const &types) {
         adjList.resize(SIZE);
+        nodeTypes = types;
 
-        // Add edges to the undirected graph
+        // Add transmission lines to the undirected power grid graph
         for (auto &edge : edges) {
             int src = edge.src;
             int dest = edge.dest;
@@ -38,100 +43,116 @@ public:
         }
     }
 
-    // printGraph() outputs the graph's adjacency list to the console
+    // printGraph() outputs the power grid network topology to the console
     // arguments: none
     // returns: void
     void printGraph() {
-        cout << "Graph's adjacency list:" << endl;
+        cout << "Regional Power Grid Network Topology:" << endl;
+        cout << "=====================================" << endl;
         for (int i = 0; i < adjList.size(); i++) {
-            cout << i << " -->";
+            cout << "Substation " << i << " (" << nodeTypes[i]
+                 << ") connects to:" << endl;
             for (Pair v : adjList[i]) {
-                cout << " (" << v.first << ", " << v.second << ")";
+                int cap = v.second * CAPACITY_SCALE;
+                cout << "  -> Substation " << v.first << " (Capacity: "
+                     << cap << " MW)" << endl;
             }
-            cout << endl;
         }
+        cout << endl;
     }
 
-    // dfs() performs an iterative Depth-First Search from a starting vertex
-    // arguments: start - integer representing the starting vertex index
+    // dfs() performs a Depth-First Search to trace cascading surge paths
+    // arguments: start - integer representing the starting substation index
     // returns: void
     void dfs(int start) {
         if (start < MIN_VERTEX || start >= adjList.size()) {
-            cout << "Error: Starting vertex " << start << " is out of range. "
-                 << "Please specify a vertex between " << MIN_VERTEX
-                 << " and " << adjList.size() - 1 << "." << endl;
+            cout << "Error: Starting substation " << start
+                 << " is out of range. Please specify an index between "
+                 << MIN_VERTEX << " and " << adjList.size() - 1 << "."
+                 << endl;
             return;
         }
 
         vector<bool> visited(adjList.size(), false);
         stack<int> vertexStack;
-        bool firstOutput = true;
 
         visited[start] = true;
         vertexStack.push(start);
 
-        cout << "DFS starting from vertex " << start << ":" << endl;
+        cout << "Grid Fault Trace (DFS) from Substation " << start << " ("
+             << nodeTypes[start] << "):" << endl;
+        cout << "Purpose: Tracing possible cascading surge paths through the "
+             << "grid" << endl;
+        cout << "============================================================"
+             << "====" << endl;
 
-        // Traverse deeply through the graph using a LIFO stack
+        // Traverse deeply through the grid using a LIFO stack
         while (!vertexStack.empty()) {
             int curr = vertexStack.top();
             vertexStack.pop();
 
-            if (!firstOutput) {
-                cout << " ";
-            }
-            cout << curr;
-            firstOutput = false;
+            cout << "Inspecting Substation " << curr << " ("
+                 << nodeTypes[curr] << ")" << endl;
 
-            // Mark and push all unvisited adjacent vertices onto the stack
+            // Mark and push all unvisited adjacent substations onto the stack
             for (auto &neighbor : adjList[curr]) {
                 int nextVertex = neighbor.first;
+                int cap = neighbor.second * CAPACITY_SCALE;
                 if (!visited[nextVertex]) {
                     visited[nextVertex] = true;
                     vertexStack.push(nextVertex);
+                    cout << "  -> Potential surge to Substation " << nextVertex
+                         << " (" << nodeTypes[nextVertex] << ") - Capacity: "
+                         << cap << " MW" << endl;
                 }
             }
         }
         cout << endl;
     }
 
-    // bfs() performs an iterative Breadth-First Search from a starting vertex
-    // arguments: start - integer representing the starting vertex index
+    // bfs() performs a Breadth-First Search for layer-by-layer load inspection
+    // arguments: start - integer representing the starting substation index
     // returns: void
     void bfs(int start) {
         if (start < MIN_VERTEX || start >= adjList.size()) {
-            cout << "Error: Starting vertex " << start << " is out of range. "
-                 << "Please specify a vertex between " << MIN_VERTEX
-                 << " and " << adjList.size() - 1 << "." << endl;
+            cout << "Error: Starting substation " << start
+                 << " is out of range. Please specify an index between "
+                 << MIN_VERTEX << " and " << adjList.size() - 1 << "."
+                 << endl;
             return;
         }
 
         vector<bool> visited(adjList.size(), false);
         queue<int> vertexQueue;
-        bool firstOutput = true;
 
         visited[start] = true;
         vertexQueue.push(start);
 
-        cout << "BFS starting from vertex " << start << ":" << endl;
+        cout << "Layer-by-Layer Grid Inspection (BFS) from Substation "
+             << start << " (" << nodeTypes[start] << "):" << endl;
+        cout << "Purpose: Analyzing power delivery zones by distance from "
+             << "source" << endl;
+        cout << "============================================================"
+             << "===" << endl;
 
-        // Traverse the graph level-by-level using a FIFO queue
+        // Traverse the grid level-by-level using a FIFO queue
         while (!vertexQueue.empty()) {
             int curr = vertexQueue.front();
             vertexQueue.pop();
 
-            if (!firstOutput) {
-                cout << " ";
-            }
-            cout << curr;
-            firstOutput = false;
+            cout << "Checking Substation " << curr << " ("
+                 << nodeTypes[curr] << ")" << endl;
 
-            // Mark and enqueue all unvisited adjacent vertices
+            // Mark and enqueue all unvisited adjacent substations
             for (auto &neighbor : adjList[curr]) {
                 int nextVertex = neighbor.first;
+                int cap = neighbor.second * CAPACITY_SCALE;
                 if (!visited[nextVertex]) {
                     visited[nextVertex] = true;
                     vertexQueue.push(nextVertex);
+                    cout << "  -> Next delivery zone: Substation "
+                         << nextVertex << " (" << nodeTypes[nextVertex]
+                         << ") - Capacity: " << cap << " MW" << endl;
                 }
             }
         }
@@ -140,18 +161,31 @@ public:
 };
 
 int main() {
-    // Define updated graph edges as (source, destination, weight)
+    // Define power grid transmission lines as (source, destination, weight)
     vector<Edge> edges = {
         {0, 1, 8}, {0, 2, 21}, {1, 2, 6}, {1, 3, 5}, {1, 4, 4},
         {3, 4, 9}, {5, 6, 10}, {6, 7, 3}, {5, 7, 15}, {5, 8, 5},
         {6, 8, 7}, {2, 7, 11}, {2, 8, 8}
     };
 
-    // Instantiate the graph and run adjacency list, DFS, and BFS operations
-    Graph graph(edges);
-    graph.printGraph();
-    graph.dfs(START_VERTEX);
-    graph.bfs(START_VERTEX);
+    // Define facility types for each of the 9 substations in the grid
+    vector<string> facilityTypes = {
+        "Main Power Plant",
+        "Primary Transformer Hub",
+        "High-Voltage Switchyard",
+        "Industrial Converter",
+        "Battery Storage Bank",
+        "Regional Distribution Hub",
+        "Grid Breaker Station",
+        "Backup Battery Bank",
+        "Solar Generation Array"
+    };
+
+    // Instantiate the power grid graph and run topology, DFS, and BFS
+    Graph powerGrid(edges, facilityTypes);
+    powerGrid.printGraph();
+    powerGrid.dfs(START_VERTEX);
+    powerGrid.bfs(START_VERTEX);
 
     return 0;
 }
